@@ -1,0 +1,75 @@
+\ProvidesPackage{beamercolorthemeAGH}[2017/04/03]
+
+\DeclareOptionBeamer{dark}{
+	% Check if level of darkness was given by a user
+	\ifthenelse{\equal{#1}{}}%
+	{
+		\def\AGH@darknesslevel{50} %if the level was not given, set it to 50
+	}
+	{
+		\def\AGH@darknesslevel{#1} %else set it to the value given by the user 
+	}
+	\ifthenelse{\AGH@darknesslevel < 50} %set the gray color level 
+	{
+		\pgfmathsetmacro{\AGH@graylevel}{100 - \AGH@darknesslevel}
+	}
+	{
+		\pgfmathsetmacro{\AGH@graylevel}{\AGH@darknesslevel}
+	}
+	\pgfmathsetmacro{\AGH@blockbodydarknesslevel}{\AGH@darknesslevel + 10}
+}
+\ProcessOptionsBeamer
+
+\mode<presentation>
+
+%%%%%%%%%%%%%Cambio de Colores
+\definecolor{AGH@blue}{RGB}{4,39,156}%blue  
+\definecolor{AGH@green}{RGB}{96,241,14}%green
+\definecolor{AGH@silver}{RGB}{165,166,165}%silver 
+
+%\definecolor{AGH@blue}{RGB}{30,30,30}
+%\definecolor{AGH@green}{RGB}{167,25,48}
+%\definecolor{AGH@silver}{RGB}{0,105,60} 
+
+\ifAGH@dark%
+	\colorlet{AGH@white}{white!90} 
+	\colorlet{AGH@main}{AGH@blue!\AGH@darknesslevel} 
+	\colorlet{AGH@gray}{gray!\AGH@graylevel} 
+\else
+	\definecolor{AGH@white}{RGB}{255,255,255} 
+	\colorlet{AGH@main}{AGH@white} 
+	\colorlet{AGH@gray}{gray} 
+\fi
+\setbeamercolor{palette primary}{fg=AGH@white,bg=AGH@silver}
+\setbeamercolor{palette secondary}{fg=AGH@white,bg=AGH@blue}
+\setbeamercolor{palette tertiary}{fg=AGH@white,bg=AGH@green}
+\setbeamercolor{structure}{fg=AGH@silver,bg=AGH@main}
+\setbeamercolor{item}{fg=AGH@blue!90,bg=AGH@main}%color bolas
+\setbeamercolor{background canvas}{bg=AGH@main}
+\ifAGH@dark%
+	\setbeamercolor{titlelike}{fg=AGH@blue,bg=AGH@white}
+	\setbeamercolor{navigation symbols}{fg=AGH@white, bg=AGH@silver}
+	\setbeamercolor{bibliography entry author}{fg=AGH@silver,bg=blue!90!AGH@blue}
+	\setbeamercolor{institute}{fg=AGH@white,bg=AGH@main}
+	\setbeamercolor{author}{fg=AGH@white,bg=AGH@main}
+	\setbeamercolor{date}{fg=AGH@white,bg=AGH@main}
+	\setbeamercolor{normal text}{fg=AGH@white,bg=AGH@main}
+	\setbeamercolor{block title}{fg=AGH@blue,bg=normal text.fg!60}
+	\setbeamercolor{block body}{fg=AGH@white,bg=AGH@blue!\AGH@blockbodydarknesslevel}
+	\setbeamercolor{block title alerted}{fg=alerted text.fg,bg=alerted text.fg!10}
+	\setbeamercolor{block body alerted}{bg=AGH@green!\AGH@blockbodydarknesslevel}
+	\setbeamercolor{block title example}{fg=example text.fg,bg=example text.fg!10}
+	\setbeamercolor{block body example}{bg=AGH@silver!\AGH@blockbodydarknesslevel}
+\else
+	\setbeamercolor{titlelike}{parent=palette secondary}
+	\setbeamercolor{navigation symbols}{fg=AGH@blue, bg=AGH@silver}
+	\setbeamercolor{bibliography entry author}{use=structure.fg=fg.stucture,bg=blue!50!AGH@white}
+	\setbeamercolor{block title}{fg=AGH@main,bg=AGH@blue!80!bg}
+	\setbeamercolor{block body}{fg=normal text.fg,bg=normal text.fg!10!bg}
+	\setbeamercolor{block title alerted}{fg=AGH@main,bg=AGH@green!80!bg}
+	\setbeamercolor{block body alerted}{fg=normal text.fg,bg=alerted text.fg!10!bg}
+	\setbeamercolor{block title example}{fg=AGH@main,bg=AGH@silver!80!bg}
+	\setbeamercolor{block body example}{fg=normal text.fg,bg=example text.fg!10!bg}
+\fi
+\mode<all>
+
