@@ -10,7 +10,7 @@
 
 \newcommand{\cstitle}{\textbf{Mineria de Datos}}
 \subtitle[]{P4: Portable Parallel Processing Pipelines
-for Interactive Information Visualization}
+	for Interactive Information Visualization}
 \newcommand{\cscourseCode}{1704146}
 \newcommand{\csauthor}{MSc. Vicente Machaca Arceda}
 %\institute[UNSA]{Universidad Nacional de San Agustín de Arequipa}
@@ -31,17 +31,17 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 
 \if\mycmd1
-	\usetheme[]{Feather}
-	\newcommand{\chref}[2]{	\href{#1}{{\usebeamercolor[bg]{Feather}#2}} }
+\usetheme[]{Feather}
+\newcommand{\chref}[2]{	\href{#1}{{\usebeamercolor[bg]{Feather}#2}} }
 \else
-	\usepackage{csformat}
+\usepackage{csformat}
 \fi
 
 \newcommand{\1}{
-        	\setbeamertemplate{background}{
-        		\includegraphics[width=\paperwidth,height=\paperheight]{img/1}
-        		\tikz[overlay] \fill[fill opacity=0.75,fill=white] (0,0) rectangle (-\paperwidth,\paperheight);
-        	}
+	\setbeamertemplate{background}{
+		\includegraphics[width=\paperwidth,height=\paperheight]{img/1}
+		\tikz[overlay] \fill[fill opacity=0.75,fill=white] (0,0) rectangle (-\paperwidth,\paperheight);
+	}
 }
 
 
@@ -58,14 +58,14 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 
 \begin{document}
-
-
+	
+	
 \AtBeginSubsection[]
 {
-    \begin{frame}
-        \frametitle{Tabla de contenido}
-        \tableofcontents[currentsubsection]
-    \end{frame}
+\begin{frame}
+\frametitle{Tabla de contenido}
+\tableofcontents[currentsubsection]
+\end{frame}
 }
 
 
@@ -74,20 +74,20 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 
 \if\mycmd1 % MY THEME
-	\1{
-	\begin{frame}[plain,noframenumbering] 
-		\titlepage 
-	\end{frame}}
+\1{
+\begin{frame}[plain,noframenumbering] 
+\titlepage 
+\end{frame}}
 
 \else % CS THEME
-	\maketitle
+\maketitle
 \fi
 
 
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Tabla de contenido}
-	\tableofcontents
+\tableofcontents
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -104,19 +104,19 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Introducción}{Visualización de datos}
-	\begin{columns}
-		\begin{column}{0.48\textwidth}
-			\begin{figure}[]
-				\centering
-				\includegraphics[width=\textwidth,height=0.5\textheight,keepaspectratio]{img/mineria/p4_2}
-				%\label{img:mot2}
-				\caption{Ejemplo de visualización de datos.}
-			\end{figure}	
-		\end{column}
-		\begin{column}{0.48\textwidth}
-			La visualización de datos a probado ser efectiva para el razonamiento de grandes volumenes de datos			\cite{card1999readings}.			
-		\end{column}
-	\end{columns}
+\begin{columns}
+	\begin{column}{0.48\textwidth}
+		\begin{figure}[]
+			\centering
+			\includegraphics[width=\textwidth,height=0.5\textheight,keepaspectratio]{img/mineria/p4_2}
+			%\label{img:mot2}
+			\caption{Ejemplo de visualización de datos.}
+		\end{figure}	
+	\end{column}
+	\begin{column}{0.48\textwidth}
+		La visualización de datos a probado ser efectiva para el razonamiento de grandes volumenes de datos			\cite{card1999readings}.			
+	\end{column}
+\end{columns}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -125,15 +125,15 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Introducción}{Gramáticas declarativas para visualización de datos}
+
+\begin{itemize}
+	\item\textbf{D$^3$} data-driven documents \cite{bostock2011d3}.
+	\item \textbf{ggplot2}: elegant graphics for data analysis \cite{wickham2016ggplot2}.
+	\item \textbf{Reactive vega}: A streaming dataflow architecture for declarative interactive visualization \cite{satyanarayan2015reactive}.
+	\item \textbf{Vega-lite}: A grammar of interactive graphics \cite{satyanarayan2016vega}.
 	
-	\begin{itemize}
-		\item\textbf{D$^3$} data-driven documents \cite{bostock2011d3}.
-		\item \textbf{ggplot2}: elegant graphics for data analysis \cite{wickham2016ggplot2}.
-		\item \textbf{Reactive vega}: A streaming dataflow architecture for declarative interactive visualization \cite{satyanarayan2015reactive}.
-		\item \textbf{Vega-lite}: A grammar of interactive graphics \cite{satyanarayan2016vega}.
-		
-	\end{itemize}
-	
+\end{itemize}
+
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -141,24 +141,24 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Introducción}{Gramáticas declarativas para visualización de datos}
-	\begin{columns}
-		\begin{column}{0.48\textwidth}
-			\begin{figure}[]
-				\centering
-				\includegraphics[width=\textwidth,height=0.4\textheight,keepaspectratio]{img/mineria/p4_3}
-				%\label{img:mot2}
-				\caption{Scatterplot en Vega-lite.}
-			\end{figure}	
-		\end{column}
-		\begin{column}{0.48\textwidth}
-					\begin{figure}[]
-						\centering
-						\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{img/mineria/p4_4}
-						%\label{img:mot2}
-						%\caption{Scatterplot en Vega-lite.}
-					\end{figure}	
-		\end{column}
-	\end{columns}
+\begin{columns}
+	\begin{column}{0.48\textwidth}
+		\begin{figure}[]
+			\centering
+			\includegraphics[width=\textwidth,height=0.4\textheight,keepaspectratio]{img/mineria/p4_3}
+			%\label{img:mot2}
+			\caption{Scatterplot en Vega-lite.}
+		\end{figure}	
+	\end{column}
+	\begin{column}{0.48\textwidth}
+		\begin{figure}[]
+			\centering
+			\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{img/mineria/p4_4}
+			%\label{img:mot2}
+			%\caption{Scatterplot en Vega-lite.}
+		\end{figure}	
+	\end{column}
+\end{columns}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -167,13 +167,13 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Introducción}{Problema}	
-	\begin{block}{Problema}
-		La mayoría de software de visualización de datos, no hacen uso del procesamiento paralelo para construir sistemas interactivos de alto desempeño \cite{li2018p4}.		
-	\end{block}
-	\pause
-	\begin{block}{Propuesta}
-		El paper presenta \textbf{P4}, un software de vizualización. P4 hace uso de un lenguaje declarativo y aprovecha el poder computacional del GPU.		
-	\end{block}	
+\begin{block}{Problema}
+	La mayoría de software de visualización de datos, no hacen uso del procesamiento paralelo para construir sistemas interactivos de alto desempeño \cite{li2018p4}.		
+\end{block}
+\pause
+\begin{block}{Propuesta}
+	El paper presenta \textbf{P4}, un software de vizualización. P4 hace uso de un lenguaje declarativo y aprovecha el poder computacional del GPU.		
+\end{block}	
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -187,12 +187,12 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Estado del arte}{Herramientas gráficas de visualización}	
-		\begin{itemize}
-			\item Existen muchas herramientas para la visualización de datos con gramáticas declarativas. \pause
-			\item Dichas herramientas utilizan solo el CPU. \pause
-			\item La adopción del GPU es lenta debido a su complejidad. \pause
-			\item Algunos enfoques se basan en la adopción de OpenGL, WebGL y CUDA.
-		\end{itemize}
+\begin{itemize}
+	\item Existen muchas herramientas para la visualización de datos con gramáticas declarativas. \pause
+	\item Dichas herramientas utilizan solo el CPU. \pause
+	\item La adopción del GPU es lenta debido a su complejidad. \pause
+	\item Algunos enfoques se basan en la adopción de OpenGL, WebGL y CUDA.
+\end{itemize}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -201,11 +201,11 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Estado del arte}{Técnicas de visualización de alto desempeño}	
-	\begin{itemize}
-		\item Métodos de reducción han sido aplicados: filtering, sampling y data cubes. \pause
-		\item Tambien se ha aplicado mulithreading en CPUs. \pause
-		\item Otros métodos toman ventaja del uso del GPU. \pause
-	\end{itemize}
+\begin{itemize}
+	\item Métodos de reducción han sido aplicados: filtering, sampling y data cubes. \pause
+	\item Tambien se ha aplicado mulithreading en CPUs. \pause
+	\item Otros métodos toman ventaja del uso del GPU. \pause
+\end{itemize}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -227,12 +227,12 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Arquitectura de P4}
-	\begin{figure}[]
-		\centering
-		\includegraphics[width=0.7\textwidth,keepaspectratio]{img/mineria/p4_5}
-		%\label{img:mot2}
-		\caption{Arquitectura de P4. Fuente: \cite{li2018p4}}
-	\end{figure}	
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.7\textwidth,keepaspectratio]{img/mineria/p4_5}
+	%\label{img:mot2}
+	\caption{Arquitectura de P4. Fuente: \cite{li2018p4}}
+\end{figure}	
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -246,35 +246,35 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Interfaces de programación de P4}{Base de datos de los ejemplos}
-	\begin{block}{}
-		Se utilizará una base de datos de nacimientos del 2015 (200000 muestras). Los atributos son:
-		
-		\begin{columns}
-			\begin{column}{0.48\textwidth}
-				\begin{itemize}
-					\item Mes de nacimiento.
-					\item Genero del bebe.
-					\item Peso del bebe.
-					\item Edad de la madre.
-					\item Raza de la madre.
-					\item Estado civil de la madre.
-					\item Grado de educación de la madre.
-				\end{itemize}
-			\end{column}
-			\begin{column}{0.48\textwidth}
-				\begin{itemize}
-					\item Altura de la madre.
-					\item Peso de la madre.
-					\item Aumento de peso de la madre durante el embarazo.
-					\item Edad del padre
-					\item Raza del padre.
-					\item Grado de educación del padre.
-				\end{itemize}	
-			\end{column}
-		\end{columns}
-		
-		
-	\end{block}
+\begin{block}{}
+	Se utilizará una base de datos de nacimientos del 2015 (200000 muestras). Los atributos son:
+	
+	\begin{columns}
+		\begin{column}{0.48\textwidth}
+			\begin{itemize}
+				\item Mes de nacimiento.
+				\item Genero del bebe.
+				\item Peso del bebe.
+				\item Edad de la madre.
+				\item Raza de la madre.
+				\item Estado civil de la madre.
+				\item Grado de educación de la madre.
+			\end{itemize}
+		\end{column}
+		\begin{column}{0.48\textwidth}
+			\begin{itemize}
+				\item Altura de la madre.
+				\item Peso de la madre.
+				\item Aumento de peso de la madre durante el embarazo.
+				\item Edad del padre
+				\item Raza del padre.
+				\item Grado de educación del padre.
+			\end{itemize}	
+		\end{column}
+	\end{columns}
+	
+	
+\end{block}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -283,13 +283,13 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Interfaces de programación de P4}{Transformación de datos}
-	\begin{block}{Transformación de datos}
-		\begin{itemize}
-			\item \textbf{Derive}.- Genera nuevos atributos. 
-			\item \textbf{Match}.- Filtra los  atributos.
-			\item \textbf{Aggregate}.- Agrupa atributos. 
-		\end{itemize}
-	\end{block}	
+\begin{block}{Transformación de datos}
+	\begin{itemize}
+		\item \textbf{Derive}.- Genera nuevos atributos. 
+		\item \textbf{Match}.- Filtra los  atributos.
+		\item \textbf{Aggregate}.- Agrupa atributos. 
+	\end{itemize}
+\end{block}	
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -297,12 +297,12 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Interfaces de programación de P4}{Transformación de datos}
-	\begin{figure}[]
-		\centering
-		\includegraphics[width=0.95\textwidth,keepaspectratio]{img/mineria/p4_6}
-		%\label{img:mot2}
-		\caption{Ejemplo de transformación de datos con P4. Fuente: \cite{li2018p4}}
-	\end{figure}
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.95\textwidth,keepaspectratio]{img/mineria/p4_6}
+	%\label{img:mot2}
+	\caption{Ejemplo de transformación de datos con P4. Fuente: \cite{li2018p4}}
+\end{figure}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -310,9 +310,9 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Interfaces de programación de P4}{Mapeo visual}
-	\begin{block}{Mapeo visual}
-		Permite que los atributos se renderizen de manera facil a canales visuales como: color, opacidad, ancho, altura, posición del eje \textit{x} y eje \textit{y}.
-	\end{block}	
+\begin{block}{Mapeo visual}
+	Permite que los atributos se renderizen de manera facil a canales visuales como: color, opacidad, ancho, altura, posición del eje \textit{x} y eje \textit{y}.
+\end{block}	
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -320,12 +320,12 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Interfaces de programación de P4}{Mapeo visual}
-	\begin{figure}[]
-		\centering
-		\includegraphics[width=\textwidth,keepaspectratio]{img/mineria/p4_8}
-		%\label{img:mot2}
-		\caption{Ejemplo de visualización de datos con P4. Fuente: \cite{li2018p4}}
-	\end{figure}
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\textwidth,keepaspectratio]{img/mineria/p4_8}
+	%\label{img:mot2}
+	\caption{Ejemplo de visualización de datos con P4. Fuente: \cite{li2018p4}}
+\end{figure}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -333,12 +333,12 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Interfaces de programación de P4}{Mapeo visual}
-	\begin{figure}[]
-		\centering
-		\includegraphics[width=\textwidth,keepaspectratio]{img/mineria/p4_9}
-		%\label{img:mot2}
-		\caption{Ejemplo de visualización de datos con P4. Fuente: \cite{li2018p4}}
-	\end{figure}
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\textwidth,keepaspectratio]{img/mineria/p4_9}
+	%\label{img:mot2}
+	\caption{Ejemplo de visualización de datos con P4. Fuente: \cite{li2018p4}}
+\end{figure}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -347,12 +347,12 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Interfaces de programación de P4}{Interacciones}
-	\begin{figure}[]
-		\centering
-		\includegraphics[width=\textwidth,keepaspectratio]{img/mineria/p4_10}
-		%\label{img:mot2}
-		\caption{Ejemplo de interacciones con P4. Fuente: \cite{li2018p4}}
-	\end{figure}
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\textwidth,keepaspectratio]{img/mineria/p4_10}
+	%\label{img:mot2}
+	\caption{Ejemplo de interacciones con P4. Fuente: \cite{li2018p4}}
+\end{figure}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -362,22 +362,22 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Interfaces de programación de P4}{Mejora de percepción}
-	\begin{block}{}
-		P4, mejora la reducción del ruido al mostrar grandes volumenes de datos. Esto lo logra procesando la opacidad en cada pixel $\hat{\alpha}$ con:
+\begin{block}{}
+	P4, mejora la reducción del ruido al mostrar grandes volumenes de datos. Esto lo logra procesando la opacidad en cada pixel $\hat{\alpha}$ con:
+	
+	\[
+	\hat{\alpha} = (1 - \alpha_{min})( \frac{p}{p_{max}} )^\gamma + \alpha_{min}
+	\]
+	Donde: \\
+	\begin{itemize}
+		\item $p$: Número de marcas sobrepuestas en pixel actual.
+		\item $p_{max}$: Máximo número de marcas sobrepuestas en toda la imagen.
+		\item $\gamma = 1/3$
+		\item $\alpha_{min} = 0.1$
 		
-		\[
-				\hat{\alpha} = (1 - \alpha_{min})( \frac{p}{p_{max}} )^\gamma + \alpha_{min}
-		\]
-		Donde: \\
-		\begin{itemize}
-			\item $p$: Número de marcas sobrepuestas en pixel actual.
-			\item $p_{max}$: Máximo número de marcas sobrepuestas en toda la imagen.
-			\item $\gamma = 1/3$
-			\item $\alpha_{min} = 0.1$
-			
-		\end{itemize}
-		
-	\end{block}
+	\end{itemize}
+	
+\end{block}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -386,12 +386,12 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Interfaces de programación de P4}{Mejora de percepción}
-	\begin{figure}[]
-		\centering
-		\includegraphics[width=0.8\textwidth,keepaspectratio]{img/mineria/p4_11}
-		%\label{img:mot2}
-		\caption{Izquierda: Alpha blending de WebGL, Centro: Ajuste de opacidad con P4, Derecha: Mapeo de color con P4. Fuente: \cite{li2018p4}}
-	\end{figure}
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.8\textwidth,keepaspectratio]{img/mineria/p4_11}
+	%\label{img:mot2}
+	\caption{Izquierda: Alpha blending de WebGL, Centro: Ajuste de opacidad con P4, Derecha: Mapeo de color con P4. Fuente: \cite{li2018p4}}
+\end{figure}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -410,21 +410,21 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Framework de procesamiento paralelo}{Primitivas}
-	\begin{block}{Primitivas de paralelización}
-		Las operaciones de P4, pueden ser implementadas como las primitivas de programación funcional: \textit{map}, \textit{filter} y \textit{reduce}. Entonces, si se implemnta dichas primitivas funcionales en GPU, se soluciona el problema de paralelización de P4. 
-		
-		\vspace{0.3cm}
-		
-		P4 tiene cuatro primitivas:
-		
-		\begin{itemize}
-			\item Fetch.
-			\item Map.
-			\item Filter.
-			\item Reduce.
-		\end{itemize}
-		
-	\end{block}
+\begin{block}{Primitivas de paralelización}
+	Las operaciones de P4, pueden ser implementadas como las primitivas de programación funcional: \textit{map}, \textit{filter} y \textit{reduce}. Entonces, si se implemnta dichas primitivas funcionales en GPU, se soluciona el problema de paralelización de P4. 
+	
+	\vspace{0.3cm}
+	
+	P4 tiene cuatro primitivas:
+	
+	\begin{itemize}
+		\item Fetch.
+		\item Map.
+		\item Filter.
+		\item Reduce.
+	\end{itemize}
+	
+\end{block}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -432,11 +432,51 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}{Framework de procesamiento paralelo}{Primitivas}
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.6\textwidth,keepaspectratio]{img/mineria/p4_12}
+	%\label{img:mot2}
+	\caption{Framework para el procesamiento paralelo de P4. Fuente: \cite{li2018p4}}
+\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Benchmark}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Benchmark}{Librerías}
+\begin{table}[]
+	\caption{Librerías utilizadas para la comparación con P4.}
+	\begin{tabular}{ll}
+		\hline
+		Libreria  & Versión \\ \hline
+		D3        & 3.5.17  \\
+		Vega      & 3.0.2   \\
+		Lodash    & 4.17.4  \\
+		Startdust & 0.1.1  
+	\end{tabular}
+\end{table}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Benchmark}{Librerías}
 	\begin{figure}[]
 		\centering
-		\includegraphics[width=0.6\textwidth,keepaspectratio]{img/mineria/p4_12}
+		\includegraphics[width=0.6\textwidth,keepaspectratio]{img/mineria/p4_13}
 		%\label{img:mot2}
-		\caption{Framewor para el procesamiento paralelo de P4. Fuente: \cite{li2018p4}}
+		\caption{Tiempo promedio de P4 y las demas librerías. Fuente: \cite{li2018p4}}
 	\end{figure}
 \end{frame}
 %-------------------------------------------------------
@@ -446,20 +486,13 @@ for Interactive Information Visualization}
 
 
 
-
-
-
-
-
-
-
 %-------------------------------------------------------
 %-------------------------------------------------------
 \begin{frame}[allowframebreaks]
-	\frametitle{References}
-	%\bibliographystyle{amsalpha}
-	\bibliographystyle{IEEEtran}
-	\bibliography{bibliography.bib}
+\frametitle{References}
+%\bibliographystyle{amsalpha}
+\bibliographystyle{IEEEtran}
+\bibliography{bibliography.bib}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -468,30 +501,31 @@ for Interactive Information Visualization}
 %-------------------------------------------------------
 %-------------------------------------------------------
 \if\mycmd1 % MY THEME
-\1{
-	{\1
-		\begin{frame}[plain,noframenumbering]
-			%\finalpage{Thank you}
-			\begin{figure}[]
-				\centering
-				\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{img/question.png}
-				%\label{img:mot2}
-				%\caption{Image example in 2 gray levels.}
-			\end{figure}
-		\end{frame}}
-	\else % CS THEME
-		\begin{frame}{Questions?}
-			\begin{figure}[]
-				\centering
-				\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{img/question.png}
-				%\label{img:mot2}
-				%\caption{Image example in 2 gray levels.}
-			\end{figure}
-			
-		\end{frame}
+
+
+	\begin{frame}[plain,noframenumbering]
+		%\finalpage{Thank you}
+		\begin{figure}[]
+			\centering
+			\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{img/question.png}
+			%\label{img:mot2}
+			%\caption{Image example in 2 gray levels.}
+		\end{figure}
+	\end{frame}
+	
+\else % CS THEME
+\begin{frame}{Questions?}
+	\begin{figure}[]
+		\centering
+		\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{img/question.png}
+		%\label{img:mot2}
+		%\caption{Image example in 2 gray levels.}
+	\end{figure}
+	
+\end{frame}
 \fi
 %-------------------------------------------------------
 %-------------------------------------------------------
 	
-
+	
 \end{document}
