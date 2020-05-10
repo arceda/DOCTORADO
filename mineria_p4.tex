@@ -431,6 +431,20 @@
 
 %-------------------------------------------------------
 %-------------------------------------------------------
+\begin{frame}{Framework de procesamiento paralelo}{\textit{map}, \textit{filter} y \textit{reduce}}
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\textwidth,keepaspectratio]{img/mineria/map_filter_reduce.jpg}
+	%\label{img:mot2}
+	\caption{Ejemplo de \textit{map}, \textit{filter} y \textit{reduce} utilizados en programación funcional.}
+\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
 \begin{frame}{Framework de procesamiento paralelo}{Primitivas}
 \begin{figure}[]
 	\centering
@@ -443,9 +457,36 @@
 %-------------------------------------------------------
 
 
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Framework de procesamiento paralelo}{\textit{Vertex shader} y \textit{Fragment shader}}
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\textwidth,keepaspectratio]{img/mineria/webgl.png}
+	%\label{img:mot2}
+	\caption{Ejemplo de \textit{Vertex shader} y \textit{Fragment shader} en WebGL.}
+\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Framework de procesamiento paralelo}{Primitivas}
+\begin{itemize}
+    \item \textbf{Fetch}.- La información se almacena como texturas y se usan los shader para acceder a la información.\pause
+    \item \textbf{Map}.- \textit{Vertex shader} para procesar resultados intermedios. \textit{Fragment shader} para escribir los resultados.\pause
+    \item \textbf{Filter}.- \textit{Vertex shader} para el filtro. \textit{Fragment shader} para guardar los resultados.\pause
+     \item \textbf{Reduce}.- Uiliza  \textit{blending} para obtener los máximos, mínimos, etc.
+\end{itemize}
+
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Benchmark}
+\section{Resultados}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -458,7 +499,7 @@
 	\begin{tabular}{ll}
 		\hline
 		Libreria  & Versión \\ \hline
-		D3        & 3.5.17  \\
+		$D^3$        & 3.5.17  \\
 		Vega      & 3.0.2   \\
 		Lodash    & 4.17.4  \\
 		Startdust & 0.1.1  
@@ -468,19 +509,100 @@
 %-------------------------------------------------------
 %-------------------------------------------------------
 
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Benchmark}{GPUs utilizadas}
+\begin{table}[]
+	\caption{Tarjetas GPU utilizadas en los experimentos.}
+	\begin{tabular}{llll}
+		\hline
+		Fabricante  & Modelo & Nucleos & Memoria \\ \hline
+		Intel &  HD520 & 192 & 1GB DDR3 \\
+		Nvidia  &  GTX940m & 384 & 2GB DDR3 \\
+		AMD  &  HD7970 & 2048 & 3GB DDR5 \\
+		Nvidia &  GTXTitan & 2688 & 6GB DDR5 \\
+	\end{tabular}
+\end{table}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
 
 %-------------------------------------------------------
 %-------------------------------------------------------
-\begin{frame}{Benchmark}{Librerías}
+\begin{frame}{Benchmark}{Desempeño en la transformación de datos}
 	\begin{figure}[]
 		\centering
-		\includegraphics[width=0.6\textwidth,keepaspectratio]{img/mineria/p4_13}
+		\includegraphics[width=\textwidth,keepaspectratio]{img/mineria/p4_13}
 		%\label{img:mot2}
-		\caption{Tiempo promedio de P4 y las demas librerías. Fuente: \cite{li2018p4}}
+		\caption{Tiempo promedio de P4 y las demas librerías para procesar las tareas de \textit{Match}, \textit{Derive} y \textit{Aggregate}. Fuente: \cite{li2018p4}}
 	\end{figure}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Benchmark}{Desempeño en la transformación de datos}
+	\begin{figure}[]
+		\centering
+		\includegraphics[width=\textwidth,keepaspectratio]{img/mineria/p4_14}
+		%\label{img:mot2}
+		\caption{Tiempo promedio de P4 y las demas librerías para procesar las tareas de \textit{Match}, \textit{Derive} y \textit{Aggregate}. Fuente: \cite{li2018p4}}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Benchmark}{Desempeño en la transformación de datos}
+	\begin{figure}[]
+		\centering
+		\includegraphics[width=0.8\textwidth,keepaspectratio]{img/mineria/p4_15}
+		%\label{img:mot2}
+		\caption{Comparación del tiempo promedio de inicialización y tiempo de visualización (tiempo por fotograma) con las demás librerías. Fuente: \cite{li2018p4}}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Benchmark}{Desempeño en la transformación de datos}
+	\begin{figure}[]
+		\centering
+		\includegraphics[width=0.9\textwidth,keepaspectratio]{img/mineria/p4_16}
+		%\label{img:mot2}
+		\caption{Comparación del tiempo promedio de inicialización y tiempo de visualización (tiempo por fotograma en varios GPUs. Fuente: \cite{li2018p4}}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusiones}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Conclusiones}{}
+	\begin{itemize}
+	    \item Mientras que la mayoría de herramientas se enfocan en la expresividad, P4 combina el procesamiento con GPU y gramáticas declarativas.
+	    \item P4 es mas rapido que otras herramientas de  transformación y visualización de datos.
+	    \item El desempeño de P4 depende fuertemente de la capacidad del GPU.
+	    \item Comparado con P4, $D^3$ tiene mejor expresividad para la visualización de datos.
+	\end{itemize}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+
+
+
 
 
 
@@ -501,8 +623,6 @@
 %-------------------------------------------------------
 %-------------------------------------------------------
 \if\mycmd1 % MY THEME
-
-
 	\begin{frame}[plain,noframenumbering]
 		%\finalpage{Thank you}
 		\begin{figure}[]
