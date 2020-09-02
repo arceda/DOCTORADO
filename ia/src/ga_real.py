@@ -1,39 +1,49 @@
-
-# genetic algorithm binary example
-
 import numpy as np
 import random
 #random.seed(1)
 from numpy.random import seed
+import pandas as pd
 #seed(1)
+np.set_printoptions(precision=4, suppress=True)
+
+def torneo(population, n):  
+  population_size = population.shape[0]
+
+  # we get the candidates to be fathers
+  random_indexes = np.random.randint(population_size, size=(n))  
+
+  #get the ramdom candidates (whole row)
+  candidates = np.take(population, random_indexes, axis=0) 
+
+  print("candidates: ")
+  print(candidates )
+
+  candidates_fitness = candidates[:, 2] #extract the fitness into a vector
+  best_candidate_tmp = candidates_fitness.argmin(axis=0) # obtnemos el indice the candidato con menor fitness
+  best_candidate = random_indexes[best_candidate_tmp] #indice dle candidato con menor indice, pero en la population
+
+  print("best candidate: ", population[best_candidate], "\n" )
+  return best_candidate
 
 def compute_fitness(population):
-    fitness_array = []
-
-
+    #print(population.shape)
+    i = 0
     for chromosome in population: 
-        #print(chromosome, chromosome.shape)
         x = chromosome[0]
         y = chromosome[1]
 
         fitness = (x + 2*y -7)**2 + (2*x + y - 5)**2
-        fitness_array.append(fitness)
-
-    print("fitness:", fitness_array)
-    population = np.hstack((population, np.matrix(fitness_array).T ))
-    return population
-
-#def crossover(father, mother):
-    
-        
-
+        population[i,2] = fitness  
+        i += 1
+   
 ###########################################################################################################
 ###########################################################################################################3333
 # Parametros
 population_size = 20
 num_genes = 2 # tenemos numeros de 0 a 511 => necesitamos binarios de 10 bits
-n = 16 # number of matting pool
-iterations = 5000
+n = 15 # number of matting pool
+iterations = 3000
+torneo_n = 2
 prop_crossover = 0.7
 BLX_alpha = 0.5
 prop_mutation = 0.05
@@ -48,52 +58,46 @@ print("population_size:", population_size)
 print("num_genes:", num_genes)
 print("matting pool sie:", n)
 print("iterations:", iterations)
+print("Torneo N:", torneo_n)
 print("BLX alpha:", BLX_alpha)
 print("prop_crossover:", prop_crossover)
 print("prop_mutation Uniform:", prop_mutation)
 print("...............................................................\n")
 
-population = np.random.uniform(limit_a, limit_b, size=(population_size, num_genes))
+population = np.random.uniform(limit_a, limit_b, size=(population_size, num_genes + 1))# the last column is fitness
 
 print("initial population")
-print(population, population.shape)
+print(population[:,0:2])
 
 print("compute fitness...")
-population = compute_fitness(population)
-print(population, population.shape)
+compute_fitness(population)
+population_df = pd.DataFrame(data=population, columns=["x", "y", "fitness"])
+print(population_df)
 
 
 
 for i in range(iterations):
-    
+    print("\n\nITERATION ", i , "...........................................................................")
     ###########################################################################################################
     ###########################################################################################################
+    print(population_df)
+
+    new_population = np.zeros( (n, num_genes + 1) )
+
     # Matting pool usando Torneo
     print("\ncreating matting pool...........................................") 
     matting_pool = []
 
     population_size = population.shape[0]
 
-    while len(matting_pool) < n:
-        candidate_1 = random.randint(0, population_size - 1) # 0 <= rand <= population_size - 1 
-        candidate_2 = random.randint(0, population_size - 1) # 0 <= rand <= population_size - 1 
-
-        fitness_candidate_1 = population[candidate_1, num_genes]
-        fitness_candidate_2 = population[candidate_2, num_genes]
-        #print(fitness_candidate_1, fitness_candidate_1)
-
-        if fitness_candidate_1 < fitness_candidate_2: 
-            matting_pool.append(candidate_1)
-        else:
-            matting_pool.append(candidate_2)
+    while len(matting_pool) < n:        
+        matting_pool.append( torneo(population, torneo_n) )
     print("matting_pool", matting_pool)
     ###########################################################################################################
     ###########################################################################################################
 
 
-    new_population= []
-    while len(new_population) < n:
-
+    for i in range(n):
         ###########################################################################################################
         ###########################################################################################################
         # Cruzamiento
@@ -101,17 +105,18 @@ for i in range(iterations):
         r = random.random()
         father_index = matting_pool[random.randint(0, n - 1)]
         mother_index = matting_pool[random.randint(0, n - 1)]
-        father = population[ father_index, 0:population.shape[1]-1 ]
-        mother = population[ mother_index, 0:population.shape[1]-1 ]
-        print("father:", father, " mother:", mother, " crossover_uniform")
-        if r <= prop_crossover:
-            
+        father = population[ father_index, 0:num_genes]
+        mother = population[ mother_index, 0:num_genes]
+        print("father:", father, " mother:", mother)
+        if r <= prop_crossover:            
             betha1 = np.random.uniform(-BLX_alpha, 1 + BLX_alpha)     
             betha2 = np.random.uniform(-BLX_alpha, 1 + BLX_alpha)     
             print("yes crossover...", " betha1:", betha1, " betha2:", betha2)   
-            c1 = father[0,0] + betha1*( mother[0,0] - father[0,0] )
-            c2 = father[0,1] + betha2*( mother[0,1] - father[0,1] )
-            child = [[c1, c2]]
+            #c1 = father[0,0] + betha1*( mother[0,0] - father[0,0] )
+            #c2 = father[0,1] + betha2*( mother[0,1] - father[0,1] )
+            c1 = father[0] + betha1*( mother[0] - father[0] )
+            c2 = father[1] + betha2*( mother[1] - father[1] )
+            child = [c1, c2]
         else:        
             if population[father_index, num_genes] > population[mother_index, num_genes]:
               print("not crossover, father have best fitness ", population[father_index, num_genes], population[mother_index, num_genes])
@@ -136,23 +141,21 @@ for i in range(iterations):
             pos = random.randint(0, num_genes - 1) 
             new_gene = np.random.uniform(limit_a, limit_b)
             #print(new_gene, child.shape)
-            child[0,pos] = new_gene
+            #child[0,pos] = new_gene
+            child[pos] = new_gene
             print("yes mutation child: ", child, " pos:", pos) # mutation bit flip
         else:
           print("not mutation")
         ###########################################################################################################
         ###########################################################################################################
 
-        new_population.append(child[0].tolist())
+        #new_population.append(child[0].tolist())
+        new_population[i,0:2] = child
 
 
-
-
-    new_population = np.array(new_population)
-    print("\nnew_population:")
-    print(new_population, new_population.shape)
-    population = compute_fitness(new_population)
-
+    population = new_population
+    compute_fitness(population)
+    population_df = pd.DataFrame(data=population, columns=["x", "y", "fitness"])
 
 
 ###########################################################################################################
@@ -181,9 +184,3 @@ ax = plt.axes(projection='3d')
 ax.plot_surface(x, y, z, cmap='viridis', edgecolor='none')
 ax.set_title('Surface plot')
 plt.show()
-
-
-#########################################################################################33
-# QUESTIONS : 
-# cuando no hay crossover, que padre tomamos para darle la inf al hijo
-# esta bien la gráfica de la funcion presentada en el informe?

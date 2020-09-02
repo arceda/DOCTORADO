@@ -69,9 +69,6 @@ for i in range(iterations):
     # Matting pool usando Torneo
     print("\ncreating matting pool...........................................") 
     matting_pool = []
-
-    population_size = population.shape[0]
-
     while len(matting_pool) < n:
         candidate_1 = random.randint(0, population_size - 1) # 0 <= rand <= population_size - 1 
         candidate_2 = random.randint(0, population_size - 1) # 0 <= rand <= population_size - 1 
