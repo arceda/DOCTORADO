@@ -297,3 +297,21 @@ plt.ylabel('Fitness')
 
 plt.savefig('fitness_history.png', dpi = 300)
 
+'''
+digraph G{
+0 [ label=" x " ];
+1 [ label=" + " ];
+2 [ label=" x " ];
+3 [ label=" * " ];
+4 [ label=" x " ];
+5 [ label=" / " ];
+6 [ label=" 3 " ];
+1 -> 0; 
+ 1 -> 2;  
+ 5 -> 4;  
+ 5 -> 6;  
+ 3 -> 1;  
+ 3 -> 5;
+}
+'''
+

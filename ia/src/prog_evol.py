@@ -37,7 +37,7 @@ def torneo(population, n):
 # automata -> vector que representa el automata, cada 7 atributos es un estado
 def draw_automata(num_attr_state, automata, states, file_name = 'automata'):
     dot = "digraph G { \n"
-    dot += "graph [ bgcolor=white, resolution=150, fontname=Arial, fontcolor=blue, fontsize=8 ]; \n"
+    dot += "graph [ bgcolor=white, resolution=400, fontname=Arial, fontcolor=blue, fontsize=8 ]; \n"
     dot += "node [ fontname=Arial, fontcolor=blue, fontsize=8]; \n"
     dot += "edge [ fontname=Arial, fontcolor=red, fontsize=8 ]; \n"
     dot += "rankdir=LR; \n"
@@ -48,6 +48,9 @@ def draw_automata(num_attr_state, automata, states, file_name = 'automata'):
     for i in range( int(automata.shape[0]/num_attr_state) ):
         current_state = states[ i ]  
         
+        if automata[i*num_attr_state] == '0':
+            continue
+
         label_1 = automata[i*num_attr_state + 1] + '|' + automata[i*num_attr_state + 3]
         label_2 = automata[i*num_attr_state + 2] + '|' + automata[i*num_attr_state + 4]
 
@@ -59,7 +62,8 @@ def draw_automata(num_attr_state, automata, states, file_name = 'automata'):
         
     dot += "}"
     #print(dot)
-
+    #node [shape = doublecircle]; LR_0 LR_3 LR_4 LR_8;
+    #node [shape = circle]; LR_1 LR_2 LR_5 LR_6 LR_7;
     
     graph = graphviz.Source(dot, format='png') # si no ponemos format, por defecto es pdf
     graph.render(file_name,view=True)
@@ -86,7 +90,7 @@ def automata_correction(num_attr_state, automata, states):
 
     #print(active_states)
     #print(inactive_states)
-    print("Inactive states: ", inactive_states, "automata:", automata)
+    #print("Inactive states: ", inactive_states, "automata:", ''.join(automata.tolist()) )
 
     # si no hay ninguna estado activo, el automata no es  factible
     if len(active_states) == 0:
@@ -102,7 +106,7 @@ def automata_correction(num_attr_state, automata, states):
                 pos = random.randint(0, len(active_states)-1)
                 automata[i*num_attr_state + 6] = active_states[pos]
     
-    print("corrected automata:", automata)
+    #print("corrected automata:", ''.join(automata.tolist()) )
     return True
 
 
@@ -113,30 +117,109 @@ def fitness(automata, db, states, num_attr_state):
     states_hist = []
     #states_hist.append(states[int(current_state_index/num_attr_state)])
     #print(initial_state_index, automata)
-    for i in range(len(db)):
-        
-        print("current state:", states[int(current_state_index/num_attr_state)])
-        print("current_state_index + 1:", automata[current_state_index + 1])
-        print("current_state_index + 5:", automata[current_state_index + 5])
-        print("current_state_index + 2:", automata[current_state_index + 2])
-        print("current_state_index + 6:", automata[current_state_index + 6])
+    acc_count = 0
+    for i in range(len(db)):        
+        #print("current state:", states[int(current_state_index/num_attr_state)])
+        #print("current_state_index + 1:", automata[current_state_index + 1])
+        #print("current_state_index + 5:", automata[current_state_index + 5])
+        #print("current_state_index + 2:", automata[current_state_index + 2])
+        #print("current_state_index + 6:", automata[current_state_index + 6])
 
-        if automata[current_state_index + 1] == db[i]:            
+        
+        if automata[current_state_index + 1] == db[i]:    
+            out_ =  automata[current_state_index + 3]
             out_put.append( automata[current_state_index + 3] )
             next_state = automata[current_state_index + 5]            
-        if automata[current_state_index + 2] == db[i]:            
+        if automata[current_state_index + 2] == db[i]:  
+            out_ =  automata[current_state_index + 3]          
             out_put.append( automata[current_state_index + 4] )
             next_state = automata[current_state_index + 6]
 
-        print("next_state:", next_state)
+        # para obtener el acc
+        if db[i] == out_:
+            acc_count += 1
+
+        #print("next_state:", next_state)
         #print(next_state, np.where(np.array(states) == next_state))
         current_state_index = (np.where(np.array(states) == next_state)[0][0])*num_attr_state
         states_hist.append(states[int(current_state_index/num_attr_state)])
 
-    print("automata:", automata)
-    print("input:   ", db)
-    print("output:  ", out_put)
-    print("st_his:  ", states_hist)
+    #print("automata:", automata)
+    #print("input:   ", db)
+    #print("output:  ", out_put)
+    #print("st_his:  ", states_hist)
+    return float(acc_count/len(db)), out_put, states_hist
+
+def mutate(automata, num_attr_state, num_states, states):
+    automata_mutated = automata.copy()
+    active_states = []
+    inactive_states = []
+    # por cada estado
+    for i in range( int(automata.shape[0]/num_attr_state) ):
+        #print(automata[i*num_attr_state])
+        if automata[i*num_attr_state] == '0':
+            inactive_states.append(states[i])
+        if automata[i*num_attr_state] == '1':
+            active_states.append(states[i])
+    r = random.random()
+    if 0.0 <= r <= 0.1:        
+        pos = random.randint(0, len(states) - 1) # para saber que stado moutamos
+        print ("mututation = desactivar un estado", "- state pos:", pos)
+        automata_mutated[ pos*num_attr_state ] = '0'
+        det = automata_correction(num_attr_state, automata_mutated, states)
+        if det == False:
+            return False, None
+
+    if 0.1 < r <= 0.3:        
+        pos = random.randint(0, len(states)  - 1) # para saber que stado moutamos
+        print ("mutation = cambiar estado incial", "- state pos:", pos)
+        initial_state_index = np.where(automata_mutated == '2')[0][0]    
+        automata_mutated[initial_state_index] = '1'
+        automata_mutated[ pos*num_attr_state ] = '2'
+
+    if 0.3 < r <= 0.5:
+        pos = random.randint(0, len(states)  - 1) # para saber que stado moutamos
+        print ("mutation = cambiar simbolo de entrada", "- state pos:", pos)
+        automata_mutated[pos*num_attr_state + 1] = str(1 - int( automata_mutated[pos*num_attr_state + 1] ))
+        automata_mutated[pos*num_attr_state + 2] = str(1 - int( automata_mutated[pos*num_attr_state + 1] ))
+
+    if 0.5 < r <= 0.7:
+        pos = random.randint(0, len(states)  - 1) # para saber que stado moutamos
+        pos_2 = random.randint(0, 1)  # para saber que salida mutamos
+        print ("mutation = cambiar un simbolo de salida", "- state pos:", pos, " salida:", pos_2)
+        automata_mutated[pos*num_attr_state + 3 + pos_2] = str(1 - int( automata_mutated[pos*num_attr_state + 3 + pos_2] ))
+
+    if 0.7 < r <= 0.9:
+        pos = random.randint(0, len(states)  - 1) # para saber que stado moutamos        
+        pos_2 = random.randint(0, len(active_states)  - 1)  # por este estado se cambiara el estado de salida
+        pos_3 = random.randint(0, 1)  # se cambiara la salida 1 o 2
+        print ("mutation = cambiar un estado de salida", "- state pos:", pos, 'por el estado:', active_states[pos_2], 'la salida:', pos_3 )
+        automata_mutated[pos*num_attr_state + 5 + pos_3] = active_states[pos_2]
+
+    if 0.9 < r <= 1.0: 
+        if  len(inactive_states) > 0:  
+            inactive_sta = inactive_states[random.randint(0, len(inactive_states)  - 1)] # estado inactivo a activar
+            #print(inactive_sta, states)
+            state_index = np.where(np.array(states) == inactive_sta)[0][0] #ubicamos el estado inactivo en el automata
+            print ("mutation = activar un estado", "- iinactive_sta to active:", inactive_sta) # para saber que stado moutamos
+            automata_mutated[state_index*num_attr_state] = '1'
+        else:
+            return False, None
+
+    return True, automata_mutated
+
+def show_pop(population, dataset):
+    for chromosome in population:
+        automata = chromosome[0:num_attr_state*num_states]
+        out_put = chromosome[num_attr_state*num_states]
+        fit = chromosome[num_attr_state*num_states + 1]
+
+        for i in range(len(states)):
+            automata_state = automata[i*num_attr_state:i*num_attr_state + num_attr_state]
+            print( ''.join(automata_state.tolist()) + '-', end='')
+        #print( ''.join(automata.tolist()), '--' , ''.join(dataset), '-', out_put, '-', fit )
+        print( '--' , ''.join(dataset), '--', out_put, '--', fit )
+    print()
 
 ###########################################################################################################
 ###########################################################################################################3333
@@ -170,40 +253,11 @@ print("mutation_prop:", mutation_prop)
 print("mutation_torneo_n:", mutation_torneo_n)
 print("...............................................................\n")
 
-'''
-digraph G {
-
-rankdir=LR;
-size="8,5"
-
-LR_0 -> LR_2 [ label = "SS(B)" ];
-LR_0 -> LR_1 [ label = "SS(S)" ];
-LR_1 -> LR_3 [ label = "S($end)" ];
-LR_2 -> LR_6 [ label = "SS(b)" ];
-LR_2 -> LR_5 [ label = "SS(a)" ];
-LR_2 -> LR_4 [ label = "S(A)" ];
-LR_5 -> LR_7 [ label = "S(b)" ];
-LR_5 -> LR_5 [ label = "S(a)" ];
-LR_6 -> LR_6 [ label = "S(b)" ];
-LR_6 -> LR_5 [ label = "S(a)" ];
-LR_7 -> LR_8 [ label = "S(b)" ];
-LR_7 -> LR_5 [ label = "S(a)" ];
-LR_8 -> LR_6 [ label = "S(b)" ];
-LR_8 -> LR_5 [ label = "S(a)" ];
-
-node [shape = doublecircle]; LR_0 LR_3 LR_4 LR_8;
-node [shape = circle]; LR_1 LR_2 LR_5 LR_6 LR_7;
-
-node [shape = point ]; q_o;
-q_o -> LR_0;
-
-}
-'''
-
 states = ['A', 'B', 'C', 'D', 'E']
 dataset = ['0', '1', '1', '0', '1', '1', '0', '1', '1', '0', '1', '1', '0', '1', '1']
 
-population = np.zeros(( population_size, num_attr_state*num_states + 1 )).astype(str)
+
+population = np.zeros(( population_size, num_attr_state*num_states + 2 )).astype(str)
 
 print( "building solutions...\n" )
 
@@ -228,7 +282,7 @@ while pop_count < population_size:
 
     det = automata_correction(num_attr_state, automata, states)    
     if det:
-
+        '''
         automata = np.array([
             '0', '0', '1', '0', '0', 'E', 'D', 
             '0', '1', '0', '1', '1', 'E', 'D', 
@@ -236,46 +290,16 @@ while pop_count < population_size:
             '2', '1', '0', '1', '1', 'D', 'E', 
             '1', '1', '0', '1', '1', 'E', 'D'])
         print(automata)
-
-        draw_automata(num_attr_state, automata, states, 'automata')
+        '''
+        #draw_automata(num_attr_state, automata, states, 'automata')
+        fit, out_put, states_hist = fitness(automata, dataset, states, num_attr_state)
         population[pop_count, 0:num_attr_state*num_states] = automata
-        population[pop_count, num_attr_state*num_states] = fitness(automata, dataset, states, num_attr_state)
-        #print("automata valid: ", automata)
-        
+        population[pop_count, num_attr_state*num_states] = ''.join(out_put)
+        population[pop_count, num_attr_state*num_states + 1] = fit      
 
-    #else:
-        #print("automata no valid: ", automata)
-
-    
-    
-
-    sys.exit(0)
-
-    possible_solution = np.array([ consts[0],  functions[0], consts[1],  functions[1], consts[2],  functions[2], consts[3]])
-
-    #print("possible_solution", possible_solution)
-
-    det, fitness, cache = check_solution_feasibility(possible_solution, dataset)
-    if det:
-        population[pop_count, 0:num_genes] = possible_solution
-        population[pop_count, num_genes] = fitness
-        #print("population", population[pop_count])
-
-        temp = np.zeros((cache.shape[0], 3))
-        temp[:,0] = dataset[:, 1]
-        temp[:,1] = cache[:, 0]
-        temp[:,2] = cache[:, 1]
-        #print( "Solution:",  possible_solution )
-        #print( pd.DataFrame(data=temp, columns=["y", "y'", "(y-y')^2"]) )
-        #print( "fitness:",  fitness, "\n" )
         pop_count += 1
 
-print(population)
-
-population_df = pd.DataFrame(data=population, columns=["oper_1", "func", "oper_2", "func", "oper_3", "func", "oper_4", "fitness"])
-print("Initial population:\n", population_df)
-
-#sys.exit(0)
+show_pop(population, dataset)
 
 fitness_history = []
 
@@ -283,103 +307,34 @@ for iter in range(iterations):
     print("\n\nITERATION ", iter , "...........................................................................")
     ###########################################################################################################
     ###########################################################################################################
-    print(population_df)    
-    #new_population = np.zeros( (population_size, num_genes + 1) ).astype(str)
-    new_population = []
-    
-    fitness_history.append(  [  np.mean(population[:, num_genes].astype(float) ), np.min(population[:, num_genes].astype(float) ) ] )
+    print("Current population:")
+    show_pop(population, dataset)
 
-    while len(new_population) < population_size:
-
-        ###########################################################################################################
-        ###########################################################################################################
-        # Replication
-        r = random.random()
-        if r <= replication_prop: 
-            print("\nReplication..............................................................")
-            sample_replication = population[torneo(population, replication_torneo_n)].copy()
-            new_population.append( sample_replication )
-            print("new chormosome added -> ", sample_replication)
-            print("new_pop.size=", len(new_population)) 
-
-        if len(new_population) >= population_size: break
-        ###########################################################################################################
-        ###########################################################################################################
-        # Crossover
-        r = random.random()
-        if r <= crossover_prop: 
-            print("\nCrossover................................................................")
-            father = population[torneo(population, crossover_torneo_n)]
-            mother = population[torneo(population, crossover_torneo_n)]
-
-            print("father:", father, " mother:", mother)    
-
-            pos = random.randint(0, num_genes - 1)
-            
-            child_1 = np.zeros( num_genes + 1).astype(str) 
-            child_2 = np.zeros( num_genes + 1).astype(str) 
-
-            child_1[0:pos] = father[0:pos]            
-            child_1[pos:num_genes] = mother[pos:num_genes]
-
-            child_2[0:pos] = mother[0:pos]
-            child_2[pos:num_genes] = father[pos:num_genes]
-
-            #print("position:", pos, " Child_1:", child_1, " child_2:", child_2) 
-
-            det_1, fitness_1, cache_1 = check_solution_feasibility(child_1, dataset)                
-            det_2, fitness_2, cache_2 = check_solution_feasibility(child_2, dataset)
-            
-            #if det_1 == True:
-            if det_1 == True and fitness_1 < float(child_1[num_genes]):
-                child_1[num_genes] = fitness_1
-                new_population.append( child_1 )
-                print("position:", pos, "Child_1 added", child_1, " FEASIBLE")  
-                print("new_pop.size=", len(new_population))  
-                if len(new_population) >= population_size: break
-            else:
-                print("position:", pos, "Child_1 NOT added", child_1, " NOT FEASIBLE")  
-            #if det_2 == True:
-            if det_2 == True and fitness_2 < float(child_2[num_genes]):
-                child_2[num_genes] = fitness_2
-                new_population.append( child_2 )
-                print("position:", pos, "Child_2 added", child_2, " FEASIBLE") 
-                print("new_pop.size=", len(new_population))   
-                if len(new_population) >= population_size: break
-            else:
-                print("position:", pos, "Child_2 NOT added", child_2, " NOT FEASIBLE")  
-        ###########################################################################################################
-        ###########################################################################################################
-        # Mutacion    
-        r = random.random()
+    offsprings = np.zeros(( population_size, num_attr_state*num_states + 2 )).astype(str)
         
-        if r <= mutation_prop:  
-            print("\nMutation................................................................")  
-            sample_replication = population[torneo(population, mutation_torneo_n)].copy()
-            # selccionamos el terminal o funcion a mutar en ambos hijos
-            pos = random.randint(0, num_genes - 1)
-                        
-            print("chromosome original:", sample_replication)
+    ##############################################################################################################
+    # MUTATION
 
-            if pos % 2 == 0: # replace by const
-                while sample_replication[pos] == consts[0]: # con esto aseguramos de no mutar por el mismo gen
-                    np.random.shuffle(consts) 
-                sample_replication[pos] = consts[0]
-            else: # replace by function
-                while sample_replication[pos] == functions[0]:
-                    np.random.shuffle(functions) 
-                sample_replication[pos] = functions[0]
-            
-            det_1, fitness_1, cache_1 = check_solution_feasibility(sample_replication, dataset)  
-            if det_1 and fitness_1 < float(sample_replication[num_genes]):
-            #if det_1:
-                new_population.append( sample_replication )   
-                sample_replication[num_genes] = fitness_1
-                print("chromosome mutatted added:", sample_replication, " at pos: ", pos)                
-            else:
-                print("chromosome mutatted NOT added:", sample_replication, " at pos: ", pos, " NOT FEASIBLE ")
-            print("new_pop.size=", len(new_population))
-           
+    for i in range(population.shape[0]):
+        automata = population[i, 0:num_attr_state*num_states]
+
+        det, automata_mut = mutate(automata, num_attr_state, num_states, states)
+
+        if det:
+            print("automata:", ''.join(automata.tolist()), "automata mutated:", ''.join(automata_mut.tolist()), '\n')
+            fit, out_put, states_hist = fitness(automata_mut, dataset, states, num_attr_state)
+            offsprings[i, 0:num_attr_state*num_states] = automata
+            offsprings[i, num_attr_state*num_states] = ''.join(out_put)
+            offsprings[i, num_attr_state*num_states + 1] = fit   
+        else:
+            print("automata mutated is not valid")
+
+    show_pop(offsprings, dataset)   
+    ##############################################################################################################
+
+    sys.exit(0)
+
+   
 
     population = np.array(new_population)
     population_df = pd.DataFrame(data=population, columns=["oper_1", "func", "oper_2", "func", "oper_3", "func", "oper_4", "fitness"])
@@ -395,30 +350,4 @@ print(population_df)
 print("Genetic algorithm result:",  np.min(population[:, num_genes].astype(float)))
 
 
-ps = population[ np.argmin(population[:, num_genes].astype(float)) ]
-print("BEST SOLUTION:\n")
-print( '|', ps[0], '|', ps[1], '|', ps[2], '|', ps[3], '|', ps[4], '|', ps[5], '|', ps[6], '|')
-
-print('digraph G{')
-for i in range(ps.shape[0] - 1):
-  print( i,  '[ label="', ps[i],'" ];')
-print("1 -> 0; \n 1 -> 2;  \n 5 -> 4;  \n 5 -> 6;  \n 3 -> 1;  \n 3 -> 5;")
-print('}')
-
-
-import matplotlib.pyplot  as plt
-
-fitness_history = np.array(fitness_history)
-
-fig = plt.figure()
-ax = plt.axes()
-
-ax.plot(range(fitness_history.shape[0]), fitness_history[:, 0], label="pop_fitness mean")
-ax.plot(range(fitness_history.shape[0]), fitness_history[:, 1], label="pop_fitness min")
-ax.legend()
-ax.set_ylim([0,1])
-plt.xlabel('Iterations')
-plt.ylabel('Fitness')
-
-plt.savefig('fitness_history.png', dpi = 300)
 
