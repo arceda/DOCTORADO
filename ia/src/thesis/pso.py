@@ -30,7 +30,8 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # el acercamiento es un crossover.
 
-
+def split(word): 
+    return [char for char in word]  
 
 
 def read_sequences(path):
@@ -80,6 +81,38 @@ def sample_fitness(sample):
 def compute_fitness(population):
     for sample in population:        
         sample[vector_size] = sample_fitness(sample)
+
+def build_population(sequences, k, max_length, min_length, population_size):
+    population = []
+    for index in range(population_size):    
+        align_seqs_length = random.randint(max_length, int(1.5*max_length) )
+        #print(align_seqs_length)
+        total_gaps = []
+        for seq in sequences:
+            seq_len = len(seq[1])        
+            gaps = []
+            for i in range( align_seqs_length - seq_len ):
+                gaps.append(random.randint(0, seq_len))
+            total_gaps.append( gaps )  
+
+        population.append( total_gaps )
+
+    #population = np.array( population )    
+    return population
+    #print(total_gaps)
+
+def print_solution(particle, sequences):
+    #print(particle, sequences)
+    for i in range( len(particle) ):
+        #print( particle[i], sequences[i] )
+        gaps = particle[i].copy()
+        gaps.sort()
+        align_seq = split(sequences[i][1])
+        #print(gaps, align_seq)
+        for gap in gaps:
+            align_seq.insert( gap, '-' )
+
+        print(align_seq)
         
 #sequences, k, max_length, min_length = read_sequences(current_dir + "/seqs/S7/")
 sequences, k, max_length, min_length = read_sequences_s8()
@@ -87,13 +120,9 @@ max_gaps_allowed = math.floor(0.3*max_length)
 gaps_allowed = np.random.randint(max_gaps_allowed+1, size=sequences.shape[0])
 
 print(sequences)
-print(sequences.shape)
-print(k, max_length, min_length)
-print(max_gaps_allowed, gaps_allowed)
-
-
-
-sys.exit(0)
+#print(sequences.shape)
+#print(k, max_length, min_length)
+#print(max_gaps_allowed, gaps_allowed)
 
 ###########################################################################################################
 ###########################################################################################################3333
@@ -117,6 +146,13 @@ print("rand_1 and rand_2 = [0.1]")
 print("phi_1 and phi_2 = 2")
 print("Iterations:", iterations)
 print("...............................................................\n")
+
+
+population = build_population(sequences, k, max_length, min_length, population_size)
+align = print_solution( population[0], sequences )
+
+sys.exit(0)
+
 
 positions = np.random.randint(att_per_seq, size=(population_size, vector_size))
 positions = np.random.randint(2, size=(population_size, vector_size))
