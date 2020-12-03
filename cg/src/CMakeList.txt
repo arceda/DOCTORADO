@@ -1,0 +1,5 @@
+add_subdirectory(path/to/glfw)
+include_directories(path/to/glfw/include)
+
+target_link_libraries(myapp glfw ${GLFW_LIBRARIES})
+target_link_libraries(myapp glfw ${OPENGL_glu_LIBRARY} ${GLFW_LIBRARIES})
