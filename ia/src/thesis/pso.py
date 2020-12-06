@@ -73,9 +73,9 @@ def build_population(sequences, k, max_length, min_length, population_size):
     population = []
     for index in range(population_size):   
         # cada particula alinead tendra un diferente tamanio 
-        align_seqs_length = random.randint(max_length, int(1.5*max_length) )
+        align_seqs_length = random.randint(max_length, int(1.8*max_length) )
         # tods con el mismo tamanio
-        align_seqs_length = int(1.2*max_length) 
+        #align_seqs_length = int(1.2*max_length) 
 
         #print(align_seqs_length)
         total_gaps = []
@@ -206,6 +206,13 @@ def distance(particle_1, particle_2):
     #print(matching_gaps, total_gaps)
     return (total_gaps - matching_gaps)/total_gaps
 
+def matrix_to_particle(particle): # redibe una matrizx y devuelve una lista de string [ 'ACTGT' ATCC' ... ]
+    seqs = []
+    for sol in particle:
+        seq_str = ''.join(sol)
+        seqs.append( seq_str )
+    return np.array(seqs).astype(object)
+
 def particle_to_matrix(particle): #particle is a list of strings
     matrix = []
     for sol in particle:
@@ -229,7 +236,7 @@ def remove_base(seq, n): #n: cantidad de bases a eliminar
     
     result = np.delete(seq, indices)
 
-    print("removing bases ( n =",n,") original:", seq, "result:", result, "indices:", indices)    
+    #print("removing bases ( n =",n,") original:", seq, "result:", result, "indices:", indices)    
     return result
 
 def add_base(left, right, n):
@@ -246,26 +253,83 @@ def add_base(left, right, n):
             break
 
     result = np.insert(right, indices, values)
-    print("adding bases ( n =",n,") original:", right, "result:", result, "indices:", indices, "values:", values)    
+    #print("adding bases ( n =",n,") original:", right, "result:", result, "indices:", indices, "values:", values)    
     return result
 
 def check_size(particle):
+    #print("particle before padding gap:\n", particle, particle.shape)
+    # insertamos padding gaps al final para que todas las seq tengan el mismo tamanio
+    lengths = []
+    for sol in particle:
+        lengths.append( sol.shape[0] )
+
+    max_len = np.argmax( lengths )
     
+    for i in range(particle.shape[0]):
+        if particle[i].shape[0] < lengths[max_len]:
+            for j in range( lengths[max_len] - particle[i].shape[0] ):
+                particle[i] = np.insert( particle[i], particle[i].shape[0], '-' )
+                #print("after insert gap:", particle[i])
 
+    # verificamos si en la ultima comlumna todos son gaps, si es asi, eliminamos    
+    particle = np.stack( particle, axis=0 )
+    #print("particle after padding gap:\n", particle, particle.shape)
+    #print("particle:", particle, particle.shape)
+    while True:
+        last_col = particle[ :, particle.shape[1] - 1 ]
+        #print("last_col:", last_col)
+        if np.all(last_col == '-'):
+            particle = particle[:, 0:particle.shape[1] - 1]
+        else:
+            break
+
+
+    #print("particle after padding gap 2:\n", particle, particle.shape)
+    return particle
+
+# ejemplo crosovers
+"""
+['W' 'G' 'K' 'V' '-'     '-' 'N' 'V' 'D']  	    W1=3
+['W' 'G' 'K' '-' '-'     'V' 'N' 'V' 'D']   	W2=4
+['W' 'G' 'K' 'V' '-'     'N' 'V' 'D']
+
+
+['W' 'G' 'K' '-' '-'     'V' 'N' 'V' 'D']	    W1=4
+['W' 'G' 'K' 'V' '-'     '-' 'N' 'V' 'D']   	W2=3
+['W' 'G' 'K' '-' '-'     'V' '-' 'N' 'V' 'D']
+"""
 def crossover(particle_1, particle_2): # particle_1=leader, particle_2 = particle
-    point = math.floor(distance(particle_1, particle_2)*len(particle_1[0]))
-    cross_point = 5
+    dist = distance(particle_1, particle_2)*len(particle_1[0])
+    cross_point = random.randint(0, len(particle_1[0])-1)
 
-    particle_1 = particle_to_matrix(particle_1)
-    particle_2 = particle_to_matrix(particle_2)     
+    if dist > 0.5:
+        if cross_point >= int(len(particle_1[0])/2): #el segmento mas largo es particle 1
+            particle_1 = particle_to_matrix(particle_1)
+            particle_2 = particle_to_matrix(particle_2)  
+        else: #el segmento mas largo es particle 2
+            particle_2 = particle_to_matrix(particle_1)
+            particle_1 = particle_to_matrix(particle_2) 
+    else:
+        if cross_point >= int(len(particle_1[0])/2): #el segmento mas largo es particle 1
+            particle_2 = particle_to_matrix(particle_1)
+            particle_1 = particle_to_matrix(particle_2)  
+        else: #el segmento mas largo es particle 2
+            particle_1 = particle_to_matrix(particle_1)
+            particle_2 = particle_to_matrix(particle_2) 
+
+
+    #particle_1 = particle_to_matrix(particle_1)
+    #particle_2 = particle_to_matrix(particle_2)     
 
     #print(particle_1, '\n\n', particle_2, '\n')
     #particle_2[:, 0:cross_point] = particle_1[:, 0:cross_point]
     #print(particle_1, '\n\n', particle_2, '\n')
 
+    #print("particle_2:\n", particle_2, particle_2.shape)
+
     new_particle_2 = []
     for i in range(particle_1.shape[0]):
-        print("crossover between:\n", particle_1[i], '\n', particle_2[i])
+        print("crossover between ( point = ", cross_point, ")\n", particle_1[i], '\n', particle_2[i])
 
         lp_1 = particle_1[i][0:cross_point]
         rp_1 = particle_1[i][cross_point:particle_1[i].shape[0]] 
@@ -291,10 +355,12 @@ def crossover(particle_1, particle_2): # particle_1=leader, particle_2 = particl
             tmp_rp_2 = add_base(lp_2, rp_2, w_1 - w_2)
             new_seq = np.hstack( ( lp_1, tmp_rp_2 ) )        
         
-        print("new_seq", new_seq, '\n')
+        print("new_seq", new_seq, new_seq.shape, '\n')
         new_particle_2.append( new_seq )
-
-    check_size( np.array(new_particle_2) )
+    
+    new_particle_2 = check_size( np.array(new_particle_2) )
+    print('fin crossover\n***********************************\n')
+    return matrix_to_particle(new_particle_2)
 
 
 #sequences, k, max_length, min_length = read_sequences(current_dir + "/seqs/S7/")
@@ -310,12 +376,12 @@ print(sequences)
 ###########################################################################################################
 ###########################################################################################################3333
 # Parametros
-population_size = 20
+population_size = 50
 att_per_seq = int(max_length*0.2)   # gaps dentro de una particula para cada secuencia
 vector_size = k*att_per_seq         # 0.2 porque solo se tiene como maximo un 20% de gaps
 phi_1 = 2
 phi_2 = 2
-iterations = 1
+iterations = 20
 
 ###########################################################################################################
 ###########################################################################################################
@@ -343,69 +409,40 @@ print("\nPopulation:\n", population_df)
 
 best_global_index = np.argmax(population[:,0])
 best_global = population[best_global_index]
-#print("\nbest_global:\n", best_global)
+print("\nbest_global:\n", best_global)
 
-dist = distance(np.array(['WGKV--NVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGK--VNVD', '-WDK---VN', 'S-KVGG-N-']))
+#dist = distance(np.array(['WGKV--NVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGK--VNVD', '-WDK---VN', 'S-KVGG-N-']))
 #print(dist)
 
-crossover(np.array(['WGKV--NVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGK--VNVD', '-WDK---VN', 'S-KVGG-N-']))
-crossover(np.array(['WGK--VNVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGKV--NVD', '-WDK---VN', 'S-KVGG-N-']))
+#crossover(np.array(['WGKV--NVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGK--VNVD', '-WDK---VN', 'S-KVGG-N-']))
+#crossover(np.array(['WGK--VNVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGKV--NVD', '-WDK---VN', 'S-KVGG-N-']))
+
+#sys.exit(0)
 
 for iter in range(iterations):
     print("\n***  ITERATION ", iter, "**************************************************************************")
     print("********************************************************************************************\n")
 
+    new_population = []
     for i in range( population_size ):
         print( "\nParticle ", i, "***********************************" )
         
-        crossover( best_global[1:-1], population[i, 1:-1] )
-        
-        sys.exit(0)
+        new_particle = crossover( best_global[1:population.shape[1]], population[i, 1:population.shape[1]] )
+        new_particle = np.insert(new_particle,0, None)
+        #print(new_particle)
+        new_population.append(new_particle)
+    
+    new_population = np.array(new_population).astype(object)
 
-        w = random.random()
-        rand_1 = random.random()
-        rand_2 = random.random()
+    population = new_population
+    evaluate_solution(population)
+    population_df = pd.DataFrame(data=population)
+    print("\nNew Population:\n", population_df)
 
-        print("w:", w, "rand 1:", rand_1, "rand 2:", rand_2)
+    best_global_index = np.argmax(population[:,0])
+    best_global = population[best_global_index]
+    print("\nBest global:\n", best_global)
 
-        v_current = population[i, 2:4]
-        p_best = best_locals[i, 0:2]
-        x = population[i, 0:2]
-        g = best_global[0:2]
-        v_next = w*v_current + phi_1 * rand_1 * ( p_best - x ) + phi_2 * rand_2 * ( g - x )
-        x_next = x + v_next
-        new_fitness = sample_fitness( x_next )
-
-        print("new position:", x_next, "new velocity:", v_next, "new fitness:", new_fitness)
-
-        if new_fitness < population[i, 4]:
-            best_locals[i, 0:2] = x_next
-            best_locals[i, 2] = new_fitness
-
-        if new_fitness < best_global[2]:
-            best_global[0:2] = x_next
-            best_global[2] = new_fitness
-
-        population[i, 0:2] = x_next 
-        population[i, 2:4] = v_next
-        population[i, 4] = new_fitness
-
-         
-    population_df = pd.DataFrame(data=population, columns=['x', 'y', 'v_x', 'v_y', 'fitness'])
-    print("\nPopulation:")
-    print(population_df)
-
-    best_locals_df = pd.DataFrame(data=best_locals, columns=['x', 'y', 'fitness'])
-    print("\nbest locals:\n", best_locals_df)
-    print("\nbest global:", best_global)
+    
 
 
-population = population[population[:, vector_size].argsort()]
-population_df = pd.DataFrame(data=population, columns=['x', 'y', 'a', 'b', 'fitness'])
-print("\nLast population:")
-print(population_df)
-
-print("..................................................")
-print("\nRESULT..........................................")
-print("Best fitness:",  best_global[2])
-print("Solution:",  best_global[0:2])
