@@ -64,3 +64,8 @@ ia/src/clonalg_results.txt
 ia/src/bee_results.txt
 ia/src/bat_results.txt
 cg/GLFW_GLAD_GLUT_GLEW_cmake_project_Base.zip
+cg/src/GLFW_GLAD_GLUT_GLEW_cmake_project_Base.zip
+cg/src/base/build/*
+cg/src/hello/build/*
+cg/src/hello/libraries/*
+cg/src/sample_cmake/*/build/*
