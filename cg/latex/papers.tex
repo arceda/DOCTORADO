@@ -1,0 +1,434 @@
+\documentclass[10pt]{beamer}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+
+%-------------------------------------------------------
+% INFORMATION IN THE TITLE PAGE
+%-------------------------------------------------------
+
+\newcommand{\cstitle}{\textbf{Tópicos en Computación Gráfica}}
+\subtitle[]{Papers}
+\newcommand{\cscourseCode}{Tópicos en Computación Gráfica}
+\newcommand{\csauthor}{MSc. Vicente Machaca Arceda}
+\institute[UNSA]{Universidad Nacional de San Agustín}
+\newcommand{\csemail}{vmachacaa@unsa.edu.pe}
+\newcommand{\instituteabr}{UNSA}
+\newcommand{\nameUp}{}
+\date{2021}
+\title[\cscourseCode]{\cstitle}
+\author{\csauthor}
+%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------
+% CHOOSE THE THEME
+%-------------------------------------------------------
+\def\mycmd{0} % CS THEME
+\def\mycmd{1} % MYTHEME
+%-------------------------------------------------------
+
+\if\mycmd1
+	\usetheme[]{Feather}
+	\newcommand{\chref}[2]{	\href{#1}{{\usebeamercolor[bg]{Feather}#2}} }
+\else
+	\usepackage{csformat}
+	\newcommand{\chref}[3][blue]{\href{#2}{\color{#1}{#3}}}%
+\fi
+
+\newcommand{\1}{
+        	\setbeamertemplate{background}{
+        		\includegraphics[width=\paperwidth,height=\paperheight]{img/1}
+        		\tikz[overlay] \fill[fill opacity=0.75,fill=white] (0,0) rectangle (-\paperwidth,\paperheight);
+        	}
+}
+
+
+
+%-------------------------------------------------------
+% THE BODY OF THE PRESENTATION
+%-------------------------------------------------------
+
+\begin{document}
+
+
+\AtBeginSubsection[]
+{
+    \begin{frame}
+        \frametitle{Overview}
+        \tableofcontents[currentsubsection]
+    \end{frame}
+}
+
+
+%-------------------------------------------------------
+% THE TITLEPAGE
+%-------------------------------------------------------
+
+\if\mycmd1 % MY THEME
+	\1{
+	\begin{frame}[plain,noframenumbering] 
+		\titlepage 
+	\end{frame}}
+
+\else % CS THEME
+	\maketitle
+\fi
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Content}
+	\tableofcontents
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Fluid simulation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Fluid simulation}{Example}	
+	\begin{figure}
+		\centering
+		\includegraphics[width=10cm]{img/papers/water.png}
+		\caption{Example of water simulation. Source: \cite{ando2020practical}.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Fluid simulation}{Example}	
+	\begin{figure}
+		\centering
+		\includegraphics[width=10cm]{img/papers/water2.png}
+		\caption{Example of water simulation. Source: \cite{ando2020practical}.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Fluid simulation}{Approaches}	
+	\begin{block}{Lagrangian (particle-based)}
+		Simulate the fluid as discrete \textbf{particles} of fluid.  Each particle has various properties, such as mass, velocity, etc. 
+	\end{block}
+
+	Advantages: 
+	\begin{itemize}
+		\item Conservation of mass comes easily.
+	\end{itemize}
+
+	Disadvantages: 
+	\begin{itemize}
+		\item They have issues with smooth surfaces.
+	\end{itemize}	
+	
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Fluid simulation}{Approaches}	
+
+	\begin{block}{Eulerian (grid-based)}
+		Tracks \textbf{fixed points} inside of the fluid. At each fixed point, we store the velocity or density. 
+	\end{block}
+
+	Advantages: 
+	\begin{itemize}
+		\item They have higher  accuracy,.
+		\item They do much better tracking smooth water surfaces.
+		
+	\end{itemize}
+	
+	Disadvantages: 
+	\begin{itemize}
+		\item They suffer from mass loss, and are often slower than particle based simulations.
+	\end{itemize}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Papers}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Paper 1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 1}{}
+	
+	\begin{block}{}
+		\centering
+		\textbf{A Particle-based Method for Preserving Fluid Sheets} \cite{ando2011particle}.
+	\end{block}
+
+	\begin{itemize}
+		\item \textbf{Year}: 2011
+		\item \textbf{Authors}: Ando, Ryoichi and Tsuruno, Reiji
+		\item \textbf{Event}: Proceedings of the 2011 ACM SIGGRAPH/Eurographics symposium on computer animation
+	\end{itemize}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 1}{Problem and Proposal}
+	\textbf{Problem:}	
+	\begin{itemize}
+		\item Particle based methods are no good for simulate thin fluids features.
+	\end{itemize}
+	
+	\textbf{Proposal:}
+	\begin{itemize}
+		\item It is a particle-based framework that preserves thin fluid features like those in Eulerian fluid.
+		\item Integrates Smoothed-Particle Hydrodynamics (SPH) and Particle-In-Cell/Fluid-Implicit-Particle (PIC/FLIP).
+		\item The thin sheets are preserved by inserting new particles at sparse thin points in the sheets. These particles are then quickly removed as they
+		dive into the deep water.
+	\end{itemize}
+
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 1}{Proposal}
+	\begin{figure}
+		\centering
+		\includegraphics[width=11cm]{img/papers/paper1.png}
+		\caption{Water splash example. Source: \cite{ando2011particle}.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 1}{Results}
+	\begin{figure}
+		\centering
+		\includegraphics[width=10cm]{img/papers/paper1_2.png}
+		\caption{Water simulation example. Source: \cite{ando2011particle}.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Paper 2}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 2}{}
+	
+	\begin{block}{}
+		\centering
+		\textbf{Adaptive Fluid Simulation Using a Linear Octree Structure} \cite{flynn2018adaptive}.
+	\end{block}
+	
+	\begin{itemize}
+		\item \textbf{Year}: 2018
+		\item \textbf{Authors}: Flynn, Sean and Egbert, Parris and Holladay, Seth and Oborn, Jeremy
+		\item \textbf{Event}: Proceedings of Computer Graphics International 2018
+	\end{itemize}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 2}{Problem and Proposal}
+	\textbf{Problem:}
+	\begin{itemize}
+		\item The uniform Eulerian simulation grid has remained the most
+		popular data structure for fluid simulation. Nevertheless, it is inefficient (cell grids are no dynamics). 
+	\end{itemize}
+
+	\textbf{Proposal}
+	\begin{itemize}
+		\item Proposed the use of a linear Octree instead of the uniform Eulerian simulation grid.
+	\end{itemize}	
+	
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 2}{Results}
+	\begin{figure}
+		\centering
+		\includegraphics[width=10cm]{img/papers/paper2.png}
+		\caption{Water simulation using a linear Octree. Source: \cite{flynn2018adaptive}.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Paper 3}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 3}{}
+	
+	\begin{block}{}
+		\centering
+		\textbf{A practical octree liquid simulator with adaptive surface resolution} \cite{ando2020practical}.
+	\end{block}
+	
+	\begin{itemize}
+		\item \textbf{Year}: 2020
+		\item \textbf{Authors}: Ando, Ryoichi and Batty, Christopher
+		\item \textbf{Event}: ACM Transactions on Graphics (TOG)
+	\end{itemize}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 3}{Problem and Proposal}
+	\textbf{Problem:}
+	\begin{itemize}
+		\item Spatially adaptive grids are efficient for simulating large-scale
+		liquid scenarios, but in order to enable adaptivity along the liquid surface
+		these inefficient.
+	\end{itemize}
+	
+	\textbf{Proposal}
+	\begin{itemize}
+		\item They develop a novel Octree Poisson discretization for free surfaces and gives smooth surface motions even across Octree	T-junctions.
+	\end{itemize}	
+	
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 3}{Proposal}
+	\begin{figure}
+		\centering
+		\includegraphics[width=10cm]{img/papers/paper3.png}
+		\caption{The progressive remeshing using the Octree. Source: \cite{ando2020practical}.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 3}{Results}
+	\begin{figure}
+		\centering
+		\includegraphics[width=10cm]{img/papers/paper3_2.png}
+		\caption{A moving cylinder stirs a tank. Source: \cite{ando2020practical}.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Paper 3}{Results}
+	\begin{figure}
+		\centering
+		\includegraphics[width=10cm]{img/papers/paper3_3.png}
+		\caption{Swimming fish jumping over a shallow rocky waterfall. Source: \cite{ando2020practical}.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}[allowframebreaks]
+	\frametitle{References}
+	%\bibliographystyle{amsalpha}
+	\bibliographystyle{IEEEtran}
+	\bibliography{bibliography.bib}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\if\mycmd1 % MY THEME
+\1{
+	{\1
+		\begin{frame}[plain,noframenumbering]
+			%\finalpage{Thank you}
+			\begin{figure}[]
+				\centering
+				\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{img/question.png}
+				%\label{img:mot2}
+				%\caption{Image example in 2 gray levels.}
+			\end{figure}
+	\end{frame}}
+	\else % CS THEME
+	\begin{frame}{Questions?}
+		\begin{figure}[]
+			\centering
+			\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{img/question.png}
+			%\label{img:mot2}
+			%\caption{Image example in 2 gray levels.}
+		\end{figure}
+		
+	\end{frame}
+	\fi
+	%-------------------------------------------------------
+	%-------------------------------------------------------
+	
+
+\end{document}
