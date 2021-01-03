@@ -191,10 +191,15 @@ drawmodel(void)
     if (!pmodel) 
 	{
 		
-		//pmodel = glmReadOBJ("data/al.obj");
+#ifdef __unix__
+    pmodel = glmReadOBJ("/home/vicente/Documents/base/data//al.obj");
 
-		pmodel = glmReadOBJ("D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/al.obj");
+#elif defined(_WIN32) || defined(WIN32) 
 
+    pmodel = glmReadOBJ("D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/al.obj");
+
+#endif
+	
         if (!pmodel) exit(0);
         glmUnitize(pmodel);
         glmFacetNormals(pmodel);
@@ -580,37 +585,94 @@ screen_menu(int value)
     switch (value) {
     case 'a':
         //name = "data/al.obj";
-		name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/al.obj";
+		
+
+#ifdef __unix__
+    
+    name = "/home/vicente/Documents/base/data//al.obj";
+
+#elif defined(_WIN32) || defined(WIN32) 
+
+    name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/al.obj";
+
+#endif
+
 
 		break;
     case 's':
-        //name = "data/soccerball.obj";
-		name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/soccerball.obj";
+
+#ifdef __unix__
+    
+    name = "/home/vicente/Documents/base/data//soccerball.obj";
+
+#elif defined(_WIN32) || defined(WIN32) 
+
+    name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/soccerball.obj";
+
+#endif
+
 
 		break;
     case 'd':
-        //name = "data/dolphins.obj";
-		name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/dolphins.obj";
+#ifdef __unix__
+    
+    name = "/home/vicente/Documents/base/data//dolphins.obj";
+
+#elif defined(_WIN32) || defined(WIN32) 
+
+    name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/dolphins.obj";
+
+#endif
+
 
         break;
     case 'f':
-        //name = "data/flowers.obj";
-		name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/flowers.obj";
+#ifdef __unix__
+    
+    name = "/home/vicente/Documents/base/data//flowers.obj";
+
+#elif defined(_WIN32) || defined(WIN32) 
+
+    name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/flowers.obj";
+
+#endif
 
         break;
     case 'j':
-        //name = "data/f-16.obj";
-		name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/f-16.obj";
+#ifdef __unix__
+    
+    name = "/home/vicente/Documents/base/data//f-16.obj";
+
+#elif defined(_WIN32) || defined(WIN32) 
+
+    name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/f-16.obj";
+
+#endif
 
         break;
     case 'p':
-        //name = "data/porsche.obj";
-		name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/porsche.obj";
+#ifdef __unix__
+    
+    name = "/home/vicente/Documents/base/data//porsche.obj";
+
+#elif defined(_WIN32) || defined(WIN32) 
+
+    name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/porsche.obj";
+
+#endif
+
 
         break;
     case 'r':
-        //name = "data/rose+vase.obj";
-		name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/rose+vase.obj";
+#ifdef __unix__
+    
+    name = "/home/vicente/Documents/base/data//rose+vase.obj";
+
+#elif defined(_WIN32) || defined(WIN32) 
+
+    name = "D:/Documents/Manuel/UCSP/Docencia/2020/CG/Laboratorio/GLFW_GLAD_GLUT_GLEW_cmake_project/data/rose+vase.obj";
+
+#endif
 
         break;
     }

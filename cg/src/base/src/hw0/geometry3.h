@@ -12,23 +12,23 @@
 
 
 #ifdef __unix__         
-// May need to replace with absolute path on some systems
-#define PATH_TO_TEAPOT_OBJ "//home//manuel//Documents//Projects//OpenGL//GLFW_GLAD_GLUT_GLEW_cmake_project//src//hw0//teapot.obj"
+    // May need to replace with absolute path on some systems
+	#define PATH_TO_TEAPOT_OBJ "//home//manuel//Documents//Projects//OpenGL//GLFW_GLAD_GLUT_GLEW_cmake_project_Base//src//hw0//teapot.obj"
 
 #elif defined(_WIN32) || defined(WIN32) 
-// May need to replace with absolute path on some systems
-#define PATH_TO_TEAPOT_OBJ "D://Documents//Manuel//UCSP//Docencia//2020//CG//Laboratorio//GLFW_GLAD_GLUT_GLEW_cmake_project//src//hw0//teapot.obj"
+	// May need to replace with absolute path on some systems
+	#define PATH_TO_TEAPOT_OBJ "D://Documents//Manuel//UNSA//Docencia//2020//CG//Laboratorio//Projects//OpenGL//GLFW_GLAD_GLUT_GLEW_cmake_project_Base//src//hw0//teapot.obj"
 #endif
 
 
-const int numobjects = 2; // ** NEW ** number of objects for buffer 
-const int numperobj = 3;
-const int ncolors = 4;
+const int numobjects = 2 ; // ** NEW ** number of objects for buffer 
+const int numperobj  = 3 ;
+const int ncolors = 4 ; 
 GLuint VAOs[numobjects + ncolors], teapotVAO; // A VAO for each object
-GLuint buffers[numperobj*numobjects + ncolors + 1], teapotbuffers[3]; // ** NEW ** List of buffers for geometric data 
-GLuint objects[numobjects]; // ** NEW ** For each object
-GLenum PrimType[numobjects];
-GLsizei NumElems[numobjects];
+GLuint buffers[numperobj*numobjects+ncolors+1], teapotbuffers[3]; // ** NEW ** List of buffers for geometric data 
+GLuint objects[numobjects] ; // ** NEW ** For each object
+GLenum PrimType[numobjects] ;
+GLsizei NumElems[numobjects] ;
 
 // For the geometry of the teapot
 std::vector <glm::vec3> teapotVertices;
@@ -41,8 +41,8 @@ std::vector <glm::mat4> modelviewStack;
 // ** NEW ** Floor Geometry is specified with a vertex array
 // ** NEW ** Same for other Geometry 
 
-enum { Vertices, Colors, Elements }; // For arrays for object 
-enum { FLOOR, CUBE }; // For objects, for the floor
+enum {Vertices, Colors, Elements} ; // For arrays for object 
+enum {FLOOR, CUBE} ; // For objects, for the floor
 
 const GLfloat floorverts[4][3] = {
 	{ 0.5, 0.5, 0.0 },{ -0.5, 0.5, 0.0 },{ -0.5, -0.5, 0.0 },{ 0.5, -0.5, 0.0 }
@@ -57,10 +57,10 @@ const GLfloat floortex[4][2] = {
 
 // CUBES FOR ADDING TO THE SCENE
 
-const GLfloat wd = 0.1;
-const GLfloat ht = 0.5;
-const GLfloat _cubecol[4][3] = {
-	{ 1.0, 0.0, 0.0 },{ 0.0, 1.0, 0.0 },{ 0.0, 0.0, 1.0 },{ 1.0, 1.0, 0.0 } };
+const GLfloat wd = 0.1 ; 
+const GLfloat ht = 0.5 ; 
+const GLfloat _cubecol[4][3] = { 
+  {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 1.0, 0.0} } ;
 const GLfloat cubeverts[8][3] = {
 	{ -wd, -wd, 0.0 },{ -wd, wd, 0.0 },{ wd, wd, 0.0 },{ wd, -wd, 0.0 },
 	{ -wd, -wd, ht },{ wd, -wd, ht },{ wd, wd, ht },{ -wd, wd, ht }
@@ -76,12 +76,12 @@ const GLubyte cubeinds[12][3] = {
 };
 
 
-void initobject(GLuint object, GLfloat * vert, GLint sizevert, GLfloat * col, GLint sizecol, GLubyte * inds, GLint sizeind, GLenum type);
-void drawobject(GLuint object);
+void initobject(GLuint object, GLfloat * vert, GLint sizevert, GLfloat * col, GLint sizecol, GLubyte * inds, GLint sizeind, GLenum type) ;
+void drawobject(GLuint object) ;
 void initcubes(GLuint object, GLfloat * vert, GLint sizevert, GLubyte * inds, GLint sizeind, GLenum type);
-void drawcolor(GLuint object, GLuint color);
-void inittexture(const char * filename, GLuint program);
-void drawtexture(GLuint object, GLuint texture);
+void drawcolor(GLuint object, GLuint color) ;
+void inittexture (const char * filename, GLuint program) ;
+void drawtexture(GLuint object, GLuint texture) ;
 void loadteapot();
 void drawteapot();
 void pushMatrix(glm::mat4);
@@ -115,44 +115,44 @@ void initobject(GLuint object, GLfloat * vert, GLint sizevert, GLfloat * col, GL
 
 // Very basic code to read a ppm file
 // And then set up buffers for texture coordinates
-void inittexture(const char * filename, GLuint program) {
-	int i, j, k;
-	FILE * fp;
-	assert(fp = fopen(filename, "rb"));
-	fscanf(fp, "%*s %*d %*d %*d%*c");
-	for (i = 0; i < 256; i++)
-		for (j = 0; j < 256; j++)
-			for (k = 0; k < 3; k++)
-				fscanf(fp, "%c", &(woodtexture[i][j][k]));
-	fclose(fp);
+void inittexture (const char * filename, GLuint program) {
+  int i,j,k ;
+  FILE * fp ; 
+   assert(fp = fopen(filename,"rb")) ;
+   fscanf(fp,"%*s %*d %*d %*d%*c") ;
+   for (i = 0 ; i < 256 ; i++)
+     for (j = 0 ; j < 256 ; j++)
+       for (k = 0 ; k < 3 ; k++)
+	 fscanf(fp,"%c",&(woodtexture[i][j][k])) ;
+   fclose(fp) ;  
 
-	// Set up Texture Coordinates
-	glGenTextures(1, texNames);
-	glBindVertexArray(VAOs[FLOOR]);
-	glBindBuffer(GL_ARRAY_BUFFER, buffers[numobjects*numperobj + ncolors]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(floortex), floortex, GL_STATIC_DRAW);
-	// Use layout location 2 for texcoords
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
+   // Set up Texture Coordinates
+   glGenTextures(1, texNames) ; 
+   glBindVertexArray(VAOs[FLOOR]);
+   glBindBuffer(GL_ARRAY_BUFFER, buffers[numobjects*numperobj+ncolors]) ; 
+   glBufferData(GL_ARRAY_BUFFER, sizeof (floortex), floortex,GL_STATIC_DRAW);
+   // Use layout location 2 for texcoords
+   glEnableVertexAttribArray(2);
+   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
 
-	glActiveTexture(GL_TEXTURE0);
-	glEnable(GL_TEXTURE_2D);
+   glActiveTexture(GL_TEXTURE0) ; 
+   glEnable(GL_TEXTURE_2D) ; 
 
-	glBindTexture(GL_TEXTURE_2D, texNames[0]);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE,
-		woodtexture);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glBindVertexArray(0);
-	// Define a sampler.  See page 709 in red book, 7th ed.
-	GLint texsampler;
-	texsampler = glGetUniformLocation(program, "tex");
-	// Note that the value assigned to the texture sampler is n, where n is the active
-	// texture number provided to glActiveTexture(). In this case, it's texture unit 0.
-	glUniform1i(texsampler, 0);
-	istex = glGetUniformLocation(program, "istex");
+   glBindTexture (GL_TEXTURE_2D, texNames[0]) ; 
+   glTexImage2D(GL_TEXTURE_2D,0,GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE,
+                woodtexture) ;
+   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR) ; 
+   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR) ; 
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT) ;
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT) ;
+   glBindVertexArray(0);
+   // Define a sampler.  See page 709 in red book, 7th ed.
+   GLint texsampler ; 
+   texsampler = glGetUniformLocation(program, "tex") ; 
+   // Note that the value assigned to the texture sampler is n, where n is the active
+   // texture number provided to glActiveTexture(). In this case, it's texture unit 0.
+   glUniform1i(texsampler,0) ; 
+   istex = glGetUniformLocation(program,"istex") ; 
 }
 
 // This function initializes a bunch of color cubes
@@ -216,7 +216,7 @@ void loadteapot() {
 	float minY = std::numeric_limits<float>::infinity(), minZ = std::numeric_limits<float>::infinity();
 	float maxY = -std::numeric_limits<float>::infinity(), maxZ = -std::numeric_limits<float>::infinity();
 
-
+	
 
 	fp = fopen(PATH_TO_TEAPOT_OBJ, "rb");
 

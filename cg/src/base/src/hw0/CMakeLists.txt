@@ -19,6 +19,8 @@ ${DEPENDENCY_DIR}/include/freeglut
 
 )
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -fexceptions -std=c++11 -Wno-deprecated-declarations -Wno-reorder")
+
 message( "\nBuild mode test is: ${CMAKE_BUILD_TYPE}" )
 
 if ( CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -50,12 +52,13 @@ if ( CMAKE_BUILD_TYPE STREQUAL "Debug")
 	    message("\nOpenGL_GLUT_GLFW_Program -- Debug mode Windows ****************")
 		target_link_libraries( ${PROJECT_NAME} 
 						   opengl32
-						   freeglutd.lib
+						   freeglut_staticd.lib
 						   glad.lib
 	                       glfw3.lib
 						   glew32d.lib
 						   FreeImaged.lib
 						   glm_static.lib
+						   
 						    )
 	else()
 		message("\nOpenGL_GLUT_GLFW_Program -- Debug mode Linux ****************")
@@ -78,13 +81,14 @@ if ( CMAKE_BUILD_TYPE STREQUAL "Debug")
 						   libfreeimage.a
 						   libglm_static.a
 						    )
+
 	endif()					    	
 else()
 	if ( WIN32 )
 		message("\nOpenGL_GLUT_GLFW_Program -- Release mode Windows ****************")
 		target_link_libraries( ${PROJECT_NAME} 
 						   opengl32
-						   freeglut.lib
+						   freeglut_static.lib
 						   glad.lib
 	                       glfw3.lib
 						   glew32.lib
@@ -95,6 +99,7 @@ else()
 		message("\nOpenGL_GLUT_GLFW_Program -- Release mode Linux ****************")
 		target_link_libraries( ${PROJECT_NAME} 
 						  ${OPENGL_LIBRARY}
+												    
 							-lm
 							-lGL
 							-lGLU
@@ -111,6 +116,7 @@ else()
 						   libglut.a
 						   libfreeimage.a
 						   libglm_static.a
-						    )
+							)
+
 	endif()	
 endif ()                      
