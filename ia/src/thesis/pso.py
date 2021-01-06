@@ -148,7 +148,10 @@ def evaluate_solution(population):
 
         total_seqs_align = np.array(total_seqs_align)
         #print(total_seqs_align)
+        score = MSA_score(total_seqs_align)
+
         # compute fitness
+        '''
         cols = total_seqs_align.T
         score = 0
         for col in cols:      
@@ -162,9 +165,41 @@ def evaluate_solution(population):
             elif np.all(col == col[0]): # si todos los elementos son iguales
                 score += 2
                 #print("2")
-
+        '''
         particle[0] = score
     
+#multiple sequence alignment score
+def MSA_score(sequences):
+    
+    total_score = 0
+    num_seqs = len(sequences)
+    for i in range(num_seqs):
+        for j in range( i+1, num_seqs ):
+            #print( "i, j", i, "-", j )
+            total_score += pairwise_alignment_score(sequences[i], sequences[j])
+
+    #print("MSA SCORE")
+    #print(sequences)   
+    #print(total_score)
+
+    return total_score
+
+def pairwise_alignment_score(seq1, seq2):
+    opening_gap = 1
+    gap_extension = 1
+    equality = 2
+
+    score = 0
+    for i in range(len(seq1)):
+        if seq1[i] == seq2[i] and seq1[i] != '-':
+            score += equality
+        elif seq1[i] == seq2[i] and seq1[i] == '-':
+            score += 0
+        elif seq1[i] == '-' or seq2[i] == '-':
+            score -= gap_extension
+
+    return score
+
 def get_gap_indices(particle_1, particle_2):
     gaps_1 = []
     gaps_2 = []
@@ -432,6 +467,7 @@ for iter in range(iterations):
         #print(new_particle)
         new_population.append(new_particle)
     
+
     new_population = np.array(new_population).astype(object)
 
     population = new_population
@@ -442,6 +478,11 @@ for iter in range(iterations):
     best_global_index = np.argmax(population[:,0])
     best_global = population[best_global_index]
     print("\nBest global:\n", best_global)
+    print( "Score:", best_global[0] )
+    for z in range( 1, best_global.shape[0] ):
+        print(best_global[z])
+
+
 
     
 
