@@ -13,7 +13,7 @@
 
 #ifdef __unix__         
     // May need to replace with absolute path on some systems
-	#define PATH_TO_TEAPOT_OBJ "//home//manuel//Documents//Projects//OpenGL//GLFW_GLAD_GLUT_GLEW_cmake_project_Base//src//hw0//teapot.obj"
+	#define PATH_TO_TEAPOT_OBJ "../../../src//hw0//teapot.obj"
 
 #elif defined(_WIN32) || defined(WIN32) 
 	// May need to replace with absolute path on some systems

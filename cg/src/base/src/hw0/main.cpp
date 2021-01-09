@@ -411,10 +411,10 @@ void init (void)
 
 #ifdef __unix__         
         //Shader ourShader(
-    //    path_vertex_shader = "//home//manuel//Documents//Projects//OpenGL//GLFW_GLAD_GLUT_GLEW_cmake_project//src//Tutorial_03//3.3.shader.vs"; 
-    //    path_fragment_shader = "//home//manuel//Documents//Projects//OpenGL//GLFW_GLAD_GLUT_GLEW_cmake_project//src//Tutorial_03//3.3.shader.fs";
-    vertexshader = initshaders(GL_VERTEX_SHADER, "/home/vicente/Documents/base/datasrc//hw0//shaders//light.vert.glsl");
-	fragmentshader = initshaders(GL_FRAGMENT_SHADER, "/home/vicente/Documents/base/datasrc//hw0//shaders//light.frag.glsl");
+    //    path_vertex_shader = "/home/vicente/Downloads/GLFW_GLAD_GLUT_GLEW_cmake_project//src//Tutorial_03//3.3.shader.vs"; 
+    //    path_fragment_shader = "/home/vicente/Downloads/GLFW_GLAD_GLUT_GLEW_cmake_project//src//Tutorial_03//3.3.shader.fs";
+    vertexshader = initshaders(GL_VERTEX_SHADER, "../../../src//hw0//shaders//light.vert.glsl");
+	fragmentshader = initshaders(GL_FRAGMENT_SHADER, "../../../src//hw0//shaders//light.frag.glsl");
 
 #elif defined(_WIN32) || defined(WIN32) 
         //Shader ourShader(
@@ -453,7 +453,7 @@ void init (void)
 	// Initialize texture
 	//inittexture("wood.ppm", shaderprogram) ; 
 #ifdef __unix__         
-	inittexture("/home/vicente/Documents/base/datasrc//hw0//wood.ppm", shaderprogram); 
+	inittexture("../../../src//hw0//wood.ppm", shaderprogram); 
 #elif defined(_WIN32) || defined(WIN32) 
 	inittexture("D://Documents//Manuel//UNSA//Docencia//2020//CG//Laboratorio//Projects//OpenGL//GLFW_GLAD_GLUT_GLEW_cmake_project_Base//src//hw0//wood.ppm", shaderprogram); 
 #endif

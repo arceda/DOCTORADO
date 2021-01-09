@@ -8,7 +8,7 @@
 
 
 // May need to replace with absolute path on some systems 
-#define PATH_TO_TEAPOT_OBJ_FILE "/home/vicente/Documents/base/src//hw1//teapot.obj"
+#define PATH_TO_TEAPOT_OBJ_FILE "../../../src//hw1//teapot.obj"
 
 #include <iostream>
 #include "Geometry.h"
@@ -204,8 +204,8 @@ void init() {
 	// later, per update lights
 
 #ifdef __unix__         
-   	vertexshader = initshaders(GL_VERTEX_SHADER,"/home/vicente/Documents/base/src//hw1//shaders//light.vert.glsl");
-	fragmentshader = initshaders(GL_FRAGMENT_SHADER,"/home/vicente/Documents/base/src//hw1//shaders//light.frag.glsl");
+   	vertexshader = initshaders(GL_VERTEX_SHADER,"../../../src//hw1//shaders//light.vert.glsl");
+	fragmentshader = initshaders(GL_FRAGMENT_SHADER,"../../../src//hw1//shaders//light.frag.glsl");
 
 #elif defined(_WIN32) || defined(WIN32) 
 	vertexshader = initshaders(GL_VERTEX_SHADER, "D://Documents//Manuel//UNSA//Docencia//2020//CG//Laboratorio//Projects//OpenGL//GLFW_GLAD_GLUT_GLEW_cmake_project_Base//src//hw1//shaders//light.vert.glsl");

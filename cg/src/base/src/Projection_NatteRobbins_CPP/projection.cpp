@@ -192,7 +192,9 @@ drawmodel(void)
 	{
 		
 #ifdef __unix__
-    pmodel = glmReadOBJ("/home/vicente/Documents/base/data//al.obj");
+    //pmodel = glmReadOBJ("/home/vicente/Documents/base/data//al.obj");
+    pmodel = glmReadOBJ("../../../data/al.obj"); //lo estamos llamando desde el directorio build/src/
+    //pmodel = glmReadOBJ("/home/vicente/cursos/DOCTORADO/cg/src/base/data/al.obj");
 
 #elif defined(_WIN32) || defined(WIN32) 
 
