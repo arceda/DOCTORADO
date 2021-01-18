@@ -1,6 +1,8 @@
 import numpy as np
 import random
 
+simulations = 30
+
 def split(word): 
     return [char for char in word]  
 
