@@ -13,6 +13,7 @@ import glob
 np.set_printoptions(precision=4, suppress=True)
 random.seed(1)
 from numpy.random import seed
+pd.set_option("display.max_rows", None, "display.max_columns", None)
 seed(1)
 
 ######## global variables ##################################### 
@@ -335,7 +336,11 @@ def check_size(particle):
 """
 def crossover(particle_1, particle_2): # particle_1=leader, particle_2 = particle
     dist = distance(particle_1, particle_2)*len(particle_1[0])
-    cross_point = random.randint(0, len(particle_1[0])-1)
+    
+    seq_size_1 = len(particle_1[0])
+    seq_size_2 = len(particle_2[0])
+
+    cross_point = random.randint(0, min(seq_size_1, seq_size_2) -1)
 
     if dist > 0.5:
         if cross_point >= int(len(particle_1[0])/2): #el segmento mas largo es particle 1
@@ -398,6 +403,68 @@ def crossover(particle_1, particle_2): # particle_1=leader, particle_2 = particl
     return matrix_to_particle(new_particle_2)
 
 
+# this mutation insert a gap in a ramdon position in a random particle
+def mutate_particle(particle):
+    num_particles = particle.shape[0]
+    pos = random.randint(1, num_particles - 1)   
+    gap_position = random.randint(0, len(particle[pos]) - 1)
+
+    #despues de inseretar un gap, debo insertar otro en los demas para que tengan la misma longitud
+    #0 insertamos al principio, 1=insertamos al final
+    fill_position = random.randint(0, 1) 
+
+    print( "MUTATION particle pos:", pos, " gap at: ", gap_position)
+    print("particle", particle)
+
+    for _i in range(1, num_particles):        
+        if _i == pos:
+            particle[pos] = particle[pos][:gap_position] + "-" + particle[pos][gap_position:]
+        else:
+            if fill_position == 0:
+                particle[_i] = "-" + particle[_i]
+            else:
+                particle[_i] =  particle[_i] + "-" 
+    
+    print("particle mutated", particle)
+
+
+# revisamos si hay gapos al inicio y al final que se puedan eliminar
+def clean_particles(particle):
+    seqs = particle[1:particle.shape[0]]       
+
+    # cast string to list pra tratarlo como una matriz
+    seq_vec = []
+    for seq in seqs:
+        seq_list = split(seq)
+        seq_vec.append( seq_list )
+
+    seq_vec = np.array(seq_vec)
+
+    #cols = total_seqs_align.T
+    print("\nCLEANING ")
+    print( particle )
+    print( seq_vec )
+
+    while True:
+        col = seq_vec[ :, 0 ]
+        if np.all(col == '-'):
+            seq_vec = seq_vec[ :, 1:-1 ]
+        else:
+            break
+
+    while True:
+        col = seq_vec[ :, -1 ]
+        if np.all(col == '-'):
+            seq_vec = seq_vec[ :, 0:-2 ]
+        else:
+            break
+
+    particle_ = matrix_to_particle(seq_vec)
+    particle_ = np.insert(particle_, 0, None)
+
+    print( particle_ )
+    return particle_
+
 #sequences, k, max_length, min_length = read_sequences(current_dir + "/seqs/S7/")
 sequences, k, max_length, min_length = read_sequences_s8()
 max_gaps_allowed = math.floor(0.3*max_length)
@@ -416,6 +483,7 @@ att_per_seq = int(max_length*0.2)   # gaps dentro de una particula para cada sec
 vector_size = k*att_per_seq         # 0.2 porque solo se tiene como maximo un 20% de gaps
 phi_1 = 2
 phi_2 = 2
+mutation_rate = 0.2
 iterations = 20
 simulations = 30
 
@@ -465,7 +533,14 @@ for iter in range(iterations):
         
         new_particle = crossover( best_global[1:population.shape[1]], population[i, 1:population.shape[1]] )
         new_particle = np.insert(new_particle,0, None)
-        #print(new_particle)
+        
+        #print("new particle: ", new_particle)
+        r = random.uniform(0,1)
+        if r > mutation_rate:
+            mutate_particle(new_particle)
+
+        new_particle = clean_particles(new_particle)
+
         new_population.append(new_particle)
     
 
@@ -481,8 +556,11 @@ for iter in range(iterations):
     print("\nBest global:\n", best_global)
     print( "Score:", best_global[0] )
     for z in range( 1, best_global.shape[0] ):
+        print(">", z)
         print(best_global[z])
 
+# here it is a MSA viewer
+# https://www.ebi.ac.uk/Tools/msa/mview/
 
 
     
