@@ -14,6 +14,8 @@ np.set_printoptions(precision=4, suppress=True)
 random.seed(1)
 from numpy.random import seed
 pd.set_option("display.max_rows", None, "display.max_columns", None)
+pd.set_option('display.width', 1000)
+np.set_printoptions(linewidth=200)
 seed(1)
 
 ######## global variables ##################################### 
