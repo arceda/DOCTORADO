@@ -11,12 +11,17 @@ import re
 import os
 import glob
 np.set_printoptions(precision=4, suppress=True)
-random.seed(1)
+
+import warnings
+warnings.filterwarnings("ignore")
+
 from numpy.random import seed
 pd.set_option("display.max_rows", None, "display.max_columns", None)
 pd.set_option('display.width', 1000)
 np.set_printoptions(linewidth=200)
-seed(1)
+
+#seed(1)
+#random.seed(1)
 
 ######## global variables ##################################### 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -300,6 +305,7 @@ def check_size(particle):
     lengths = []
     for sol in particle:
         lengths.append( sol.shape[0] )
+        #lengths.append( len(sol) )
 
     max_len = np.argmax( lengths )
     
@@ -336,22 +342,99 @@ def check_size(particle):
 ['W' 'G' 'K' 'V' '-'     '-' 'N' 'V' 'D']   	W2=3
 ['W' 'G' 'K' '-' '-'     'V' '-' 'N' 'V' 'D']
 """
+def crossover_v2(particle_1, particle_2): # particle_1=leader, particle_2 = particle
+    print("\nCROSSOVER: \n", particle_1, "=> leader", "\n", particle_2, "=> particle")
+    
+    dist = distance(particle_1, particle_2)
+    if dist == 0: # si es la misma secuencia
+        return particle_1
+    
+    
+    #print(int(len(particle_1[0])/2), int(dist*max(len(particle_1[0]), len(particle_2[0])) - 2))
+    #r_min = int(len(particle_1[0])/3)
+    r_min = 1
+    r_max = int(dist*max(len(particle_1[0]), len(particle_2[0])) - 1)
+    cross_point = random.randint( min(r_min, r_max), max(r_min, r_max))
+    
+
+    print(" dist = ", dist, "crosspoint =", cross_point)
+
+    if dist > 0.5:
+        particle_1 = particle_to_matrix(particle_1)
+        particle_2 = particle_to_matrix(particle_2)
+    else:
+        particle_1 = particle_to_matrix(particle_2)
+        particle_2 = particle_to_matrix(particle_1)
+    
+    child = []
+
+    for i in range(particle_1.shape[0]): 
+        #seq_1_gaps, seq_2_gaps = get_gap_indices(particle_1, particle_2)
+        seq_1_gaps = np.where(particle_1[i] == '-')[0]
+        seq_2_gaps = np.where(particle_2[i] == '-')[0]
+        child_gaps = []
+        child_seq_without_gaps = np.delete(particle_1[i], seq_1_gaps)
+        
+        if seq_1_gaps.shape[0] > 0:                        
+            print("\npar_1 => ",particle_1[i], "---- gaps:", seq_1_gaps, "\npar_2 => ", particle_2[i], "---- gaps:",  seq_2_gaps)
+            child_gaps = seq_1_gaps[seq_1_gaps <= cross_point]
+            for gap in seq_2_gaps:
+                if gap > cross_point:
+                    child_gaps = np.insert(child_gaps,child_gaps.shape[0], gap)
+            
+            # insertamos los hgaps en el hijo
+            
+            child_seq = child_seq_without_gaps.copy()
+            for gap in child_gaps:
+                if gap > child_seq.shape[0]:
+                    child_seq = np.insert(child_seq, child_seq.shape[0], '-')    
+                else:
+                    child_seq = np.insert(child_seq, gap, '-')
+                
+            print("child => ", child_seq, "---- gaps:", child_gaps)
+            
+            child.append(''.join(child_seq))
+
+        else:
+            
+            child.append(''.join(particle_1[i]))
+
+    # falta agregar que todas las seq tengan el mismo tamanio
+    max_length = len(max(child, key=len))
+    for i in range(len(child)):
+        length = len(child[i])
+        for j in range( max_length - length ):
+            child[i] = child[i] + '-' 
+
+    return np.array(child).astype(object)
+
+"""
+['W' 'G' 'K' 'V' '-'     '-' 'N' 'V' 'D']  	    W1=3
+['W' 'G' 'K' '-' '-'     'V' 'N' 'V' 'D']   	W2=4
+['W' 'G' 'K' 'V' '-'     'N' 'V' 'D']
+
+
+['W' 'G' 'K' '-' '-'     'V' 'N' 'V' 'D']	    W1=4
+['W' 'G' 'K' 'V' '-'     '-' 'N' 'V' 'D']   	W2=3
+['W' 'G' 'K' '-' '-'     'V' '-' 'N' 'V' 'D']
+"""
 def crossover(particle_1, particle_2): # particle_1=leader, particle_2 = particle
+    print(particle_1, "\n", particle_2)
     dist = distance(particle_1, particle_2)*len(particle_1[0])
     
     seq_size_1 = len(particle_1[0])
     seq_size_2 = len(particle_2[0])
 
-    cross_point = random.randint(0, min(seq_size_1, seq_size_2) -1)
+    cross_point = random.randint(0, min(seq_size_1, seq_size_2) - 2)
 
-    if dist > 0.5:
+    if dist > 0.5: # the leader will provide the largest segment
         if cross_point >= int(len(particle_1[0])/2): #el segmento mas largo es particle 1
             particle_1 = particle_to_matrix(particle_1)
             particle_2 = particle_to_matrix(particle_2)  
         else: #el segmento mas largo es particle 2
             particle_2 = particle_to_matrix(particle_1)
             particle_1 = particle_to_matrix(particle_2) 
-    else:
+    else: # the leader will provide the shortest segment
         if cross_point >= int(len(particle_1[0])/2): #el segmento mas largo es particle 1
             particle_2 = particle_to_matrix(particle_1)
             particle_1 = particle_to_matrix(particle_2)  
@@ -370,14 +453,15 @@ def crossover(particle_1, particle_2): # particle_1=leader, particle_2 = particl
     #print("particle_2:\n", particle_2, particle_2.shape)
 
     new_particle_2 = []
-    for i in range(particle_1.shape[0]):
+    for i in range(particle_1.shape[0]): 
         print("crossover between ( point = ", cross_point, ")\n", particle_1[i], '\n', particle_2[i])
 
+        # algoritmo antiguo, tiene errores
         lp_1 = particle_1[i][0:cross_point]
         rp_1 = particle_1[i][cross_point:particle_1[i].shape[0]] 
 
         lp_2 = particle_2[i][0:cross_point]
-        rp_2 = particle_2[i][cross_point:particle_1[i].shape[0]] 
+        rp_2 = particle_2[i][cross_point:particle_2[i].shape[0]] 
 
         #print(lp_1, rp_1)
         #print(lp_2, rp_2)
@@ -399,6 +483,7 @@ def crossover(particle_1, particle_2): # particle_1=leader, particle_2 = particl
         
         print("new_seq", new_seq, new_seq.shape, '\n')
         new_particle_2.append( new_seq )
+        
     
     new_particle_2 = check_size( np.array(new_particle_2) )
     print('fin crossover\n***********************************\n')
@@ -415,11 +500,12 @@ def mutate_particle(particle):
     #0 insertamos al principio, 1=insertamos al final
     fill_position = random.randint(0, 1) 
 
-    print( "MUTATION particle pos:", pos, " gap at: ", gap_position)
-    print("particle", particle)
+    print( "\nMUTATION particle pos:", pos, " gap at: ", gap_position, "************************************")
+    print("particle\t\t", particle)
 
     for _i in range(1, num_particles):        
         if _i == pos:
+            print(particle[pos][:gap_position], particle[pos][gap_position:])
             particle[pos] = particle[pos][:gap_position] + "-" + particle[pos][gap_position:]
         else:
             if fill_position == 0:
@@ -427,10 +513,10 @@ def mutate_particle(particle):
             else:
                 particle[_i] =  particle[_i] + "-" 
     
-    print("particle mutated", particle)
+    print("particle mutated\t", particle)
 
 
-# revisamos si hay gapos al inicio y al final que se puedan eliminar
+# revisamos si hay gaps al inicio y al final que se puedan eliminar
 def clean_particles(particle):
     seqs = particle[1:particle.shape[0]]       
 
@@ -438,26 +524,33 @@ def clean_particles(particle):
     seq_vec = []
     for seq in seqs:
         seq_list = split(seq)
-        seq_vec.append( seq_list )
+        seq_vec.append( np.array(seq_list) )
 
     seq_vec = np.array(seq_vec)
+    #print( seq_vec , seq_vec.shape)
+    rows = seq_vec.shape[0]
+    cols = seq_vec[0].shape[0]
+    seq_vec = np.concatenate( seq_vec, axis=0 )
+    seq_vec = np.reshape( seq_vec, (rows, cols) )
 
     #cols = total_seqs_align.T
     print("\nCLEANING ")
     print( particle )
-    print( seq_vec )
+    print( seq_vec , seq_vec.shape)
 
     while True:
         col = seq_vec[ :, 0 ]
         if np.all(col == '-'):
-            seq_vec = seq_vec[ :, 1:-1 ]
+            print("remove first col")
+            seq_vec = seq_vec[ :, 1:seq_vec.shape[1] ]
         else:
             break
 
     while True:
-        col = seq_vec[ :, -1 ]
+        col = seq_vec[ :, seq_vec.shape[1]-1 ]
         if np.all(col == '-'):
-            seq_vec = seq_vec[ :, 0:-2 ]
+            print("remove last col")
+            seq_vec = seq_vec[ :, 0:seq_vec.shape[1] - 1 ]
         else:
             break
 
@@ -480,87 +573,100 @@ print(sequences)
 ###########################################################################################################
 ###########################################################################################################3333
 # Parametros
-population_size = 50
+population_size = 30
 att_per_seq = int(max_length*0.2)   # gaps dentro de una particula para cada secuencia
 vector_size = k*att_per_seq         # 0.2 porque solo se tiene como maximo un 20% de gaps
-phi_1 = 2
-phi_2 = 2
 mutation_rate = 0.2
 iterations = 20
 simulations = 30
+
+num_test = int(sys.argv[1])
 
 ###########################################################################################################
 ###########################################################################################################
 print("\n...............................................................")
 print("PARAMETERS:")
 print("population_size:", population_size)
-print("rand_1 and rand_2 = [0.1]")
-print("phi_1 and phi_2 = 2")
 print("Iterations:", iterations)
 print("...............................................................\n")
 
 
-population = build_population(sequences, k, max_length, min_length, population_size)
-population_df = pd.DataFrame(data=population)
-print("\nPopulation:\n", population_df)
-
-#total_seqs_align, score = evaluate_solution( [ [4,5], [4,5,7,8], [1,7,8] ], [['01','WGKVNVD'], ['02','WDKVN'], ['03','SKVGGN']] )
-#print(total_seqs_align)
-#print("score", score)
-
-evaluate_solution(population)
-population_df = pd.DataFrame(data=population)
-print("\nPopulation:\n", population_df)
-
-
-best_global_index = np.argmax(population[:,0])
-best_global = population[best_global_index]
-print("\nbest_global:\n", best_global)
-
-#dist = distance(np.array(['WGKV--NVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGK--VNVD', '-WDK---VN', 'S-KVGG-N-']))
-#print(dist)
-
-#crossover(np.array(['WGKV--NVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGK--VNVD', '-WDK---VN', 'S-KVGG-N-']))
-#crossover(np.array(['WGK--VNVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGKV--NVD', '-WDK---VN', 'S-KVGG-N-']))
 
 #sys.exit(0)
 
-for iter in range(iterations):
-    print("\n***  ITERATION ", iter, "**************************************************************************")
-    print("********************************************************************************************\n")
+best_fitnes = []
+for test in range(num_test):
 
-    new_population = []
-    for i in range( population_size ):
-        print( "\nParticle ", i, "***********************************" )
-        
-        new_particle = crossover( best_global[1:population.shape[1]], population[i, 1:population.shape[1]] )
-        new_particle = np.insert(new_particle,0, None)
-        
-        #print("new particle: ", new_particle)
-        r = random.uniform(0,1)
-        if r > mutation_rate:
-            mutate_particle(new_particle)
+    population = build_population(sequences, k, max_length, min_length, population_size)
+    population_df = pd.DataFrame(data=population)
+    print("\nPopulation:\n", population_df)
 
-        new_particle = clean_particles(new_particle)
+    #total_seqs_align, score = evaluate_solution( [ [4,5], [4,5,7,8], [1,7,8] ], [['01','WGKVNVD'], ['02','WDKVN'], ['03','SKVGGN']] )
+    #print(total_seqs_align)
+    #print("score", score)
 
-        new_population.append(new_particle)
-    
-
-    new_population = np.array(new_population).astype(object)
-
-    population = new_population
     evaluate_solution(population)
     population_df = pd.DataFrame(data=population)
-    print("\nNew Population:\n", population_df)
+    print("\nPopulation:\n", population_df)
+
 
     best_global_index = np.argmax(population[:,0])
     best_global = population[best_global_index]
-    print("\nBest global:\n", best_global)
-    print( "Score:", best_global[0] )
-    for z in range( 1, best_global.shape[0] ):
-        print(">", z)
-        print(best_global[z])
+    print("\nbest_global:\n", best_global)
 
+    #dist = distance(np.array(['WGKV--NVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGK--VNVD', '-WDK---VN', 'S-KVGG-N-']))
+    #print(dist)
+
+    #crossover(np.array(['WGKV--NVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGK--VNVD', '-WDK---VN', 'S-KVGG-N-']))
+    #crossover(np.array(['WGK--VNVD', 'WDKV--N--', 'S-KVGGN--']), np.array(['WGKV--NVD', '-WDK---VN', 'S-KVGG-N-']))
+
+
+    for iter in range(iterations):
+        print("\n***  ITERATION ", iter, "**************************************************************************")
+        print("********************************************************************************************\n")
+
+        new_population = []
+        for i in range( population_size ):
+            print( "\nParticle ", i, "***********************************" )
+            
+            new_particle = crossover_v2( best_global[1:population.shape[1]], population[i, 1:population.shape[1]] )
+            #new_particle = crossover( best_global[1:population.shape[1]], population[i, 1:population.shape[1]] )
+            new_particle = np.insert(new_particle,0, None)
+            
+
+            print("\nnew particle: ", new_particle)
+            #sys.exit(0)
+            r = random.uniform(0,1)
+            if r > mutation_rate:
+                mutate_particle(new_particle)
+
+            new_particle = clean_particles(new_particle)
+
+            new_population.append(new_particle)
+        
+
+        new_population = np.array(new_population).astype(object)
+
+        population = new_population
+        evaluate_solution(population)
+        population_df = pd.DataFrame(data=population)
+        print("\nNew Population:\n", population_df)
+
+        best_global_index = np.argmax(population[:,0])
+        best_global = population[best_global_index]
+        print("\nBest global:\n", best_global)
+        print( "Score:", best_global[0] )
+        
+        for z in range( 1, best_global.shape[0] ):
+            print(">", z)
+            print(best_global[z])
+
+    best_fitnes.append( best_global[0] )
+
+
+
+print("\nsolutions: ", best_fitnes, " mean: ", np.mean( np.array(best_fitnes) ))
+print("\n", sequences)
 # here it is a MSA viewer
 # https://www.ebi.ac.uk/Tools/msa/mview/
 
