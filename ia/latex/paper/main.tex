@@ -1,9 +1,35 @@
 \documentclass{cup-pan}
 \usepackage[utf8]{inputenc}
 \usepackage{blindtext}
+\usepackage{multicol}
+% para el codigo fuente
+\usepackage{listings}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+	language=Python,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+\usepackage[spanish]{babel}
 
 \renewcommand{\figurename}{Figura.}
 \renewcommand{\tablename}{Tabla.}
+\renewcommand{\abstractname}{Resumen}
 
 
 \title{Implementación de la tesis: \\``Multiple Sequence Alignment using Particle Swarm Optimization''}
@@ -30,14 +56,15 @@
 	\maketitle
 	
 	\begin{abstract}
-		Viral subtyping play a major role for the appropriate diagnosis and treatment of illness. Actually, the most used method for viral subtyping relies on BLAST method that look for similar genomes in big data sets on the Web. The major disadvantages is that we need a big data set where to look for, also we expose the privacy sample genome consulted. An alternative emerged with the use of machine learning models that take the viral sample genome and predict the subtyping. Several methods have been proposed for viral subtyping, based on machine learning models, in this study we compared the two most relevant based on k-mer frequency, Kameris proposed by \citet{solis2018open} and Castor-KRFE proposed by \citet{lebatteux2019toward}. Both have the same results when we avoid their dimensionality reduction and feature elimination, but when not, Kameris slightly outperform Castor-KRFE. Moreover, Castor-KRFE could get a small feature vector for $k>5$ (in k-mer).
+		Este reporte presenta la implementación y análisis de la tesis: ``\textit{Multiple Sequence Alignment using Particle Swarm Optimization}''. Dicha tesis propone el uso de \textit{Particle Swarn Optimization} (PSO) para solucionar el problema de \textit{Multiple Sequence Alignment} (MSA). El autor propone la posición de cada \textit{gap}, como vector para la representación de las partículas, luego define un \textit{crossover} para simular el movimiento de una partícula hacia la partícula lider. Además, tambien se propone una mutación para diversificar la solución. En las pruebas realizadas, se comprobo que PSO obtiene muy buenos resultados e incluso similares a CLUSTALW.
+		\\
 		
-		\keywords{HIV, Polyomavirus, genome, viral subtyping, k-mer, machine learning.}
+		%\keywords{PSO, MSA, alineamiento de secuencias.}
 	\end{abstract}
 	
 	
 	\section{Introducción}
-	El area de Bioinformática ha tenido un auge en las ultimas decadas. Por ejemplo, el proyecto: \textit{The Human Genome Project} (HGP) que inicio en 1990 y fue completado el 2003, donde participarón varios paises como EEUU, Reino Unido, Japón, Francia, Alemania, España y China  \citep{hgp2021}; el proyecto tenia como objetivo secuenciar todo el genoma humano, el cual resulto ser una secuencia de aproximadamente 3.2 billones de pares de bases \citep{archibald2018genomics}. En la actualidad exixten diversas areas de investigación como: la prediccón de estructura de proteinas, predicción de la función de una proteina a partir de estructuras de redes de proteinas, descubrimiento de medicamentos, predicción de enfermedades a partir del genoma, analisis de virus, etc. Es tan grande este campo de estudio que incluso se ha dividido en otras areas como \textit{metagenomics}, \textit{proteomics}, \textit{chemical informatics}, etc. 
+	El area de Bioinformática ha tenido un auge en las ultimas decadas. Por ejemplo, el proyecto: \textit{The Human Genome Project} (HGP) que inicio en 1990 y fue completado el 2003, donde participarón varios paises como EEUU, Reino Unido, Japón, Francia, Alemania, España y China  \citep{hgp2021}; el proyecto tenia como objetivo secuenciar todo el genoma humano, el cual resulto ser una secuencia de aproximadamente 3.2 billones de pares de bases \citep{archibald2018genomics}. En la actualidad exixten diversas areas de investigación como: la prediccón de estructura de proteinas, predicción de la función de una proteina a partir de estructuras de redes de proteinas, descubrimiento de medicamentos, predicción de enfermedades a partir del genoma, análisis de virus, etc. Es tan grande este campo de estudio que incluso se ha dividido en otras areas como \textit{metagenomics}, \textit{proteomics}, \textit{chemical informatics}, etc. 
 	
 	\subsection{Problema}
 	
@@ -109,18 +136,32 @@
 	\end{figure}
 
 
+	\subsection{Función objetivo}
+	La función objetivo propuesta por \citet{zablocki2009multiple} es la misma utilizada para medir el desempeño de los algoritmos basados en alineamiento como CLUSTAL para el problema de MSA. Por ejemplo en la Figura \ref{fig:fo}, se presenta un ejemplo del cálculo del \textit{score} del alineamiento de dos secuencias. En este ejemplo se utilizo un  \textit{match score} : +1, \textit{mismatch score}: 0, \textit{openning gap}: -1 y \textit{gap penalty}: -1. Para el caso de MSA, se procesa este \textit{score} por cada posible conbinación de dos secuencias. Para los experimentos se usaron estos mismos valores.
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.5\textwidth]{images/fo}
+		\caption{Ejemplo del cálculo del \textit{score} del alineamiento de dos secuencias de ADN. En este caso se utilizo: \textit{match score} : +1, \textit{mismatch score}: 0, \textit{openning gap}: -1 y \textit{gap penalty}: -1}
+		\label{fig:fo}
+	\end{figure}
+	
+	\subsection{Mutaciones}
+	Para diversificar al algoritmo de PSO, \citet{zablocki2009multiple} propuso hacer mutaciones a las partículas. El proceso de mutación consistia en escoger de manera aleatoria una partícula, luego dentro de dicha partícula se escogia una secuencia y se insertaba un \textit{gap} en una posición aleatoria. Luego, para que todas las secuencias dentro de la partícula tengan la misma longitud, se insertaba un \textit{gap} al principio o al final según un valor generado aleatoriamente.
+	
+
 	\section{Experimentos}
 	
 	En esta sección detallaremos las bases de datos utilizadas y los parametros del algoritmo PSO para poder replicar los resultados.
 	
 	\subsection{Bases de datos}
-	\citet{zablocki2009multiple} propone un conjunto de 7 bases de datos. S1, S2, S3, S4, S5, S6 y S7 que el construyo a partir de un conjunto de secuencias de ADN. En la Tabla \ref{tab:datasets}, presentamos el \textit{ascension code} de cada secuencia utilizada. Ademas, el autor propuso un conjunto pequeño de secuencias para hacer pruebas rapidas, a este conjunto lo llamo S8. En nuestro caso, al ser una tesis un poco antigua, algunas secuencias ya no estaban disponibles en NCBI, y solo logramos obtener las secuencias de S6, S7 y S8.
+	\citet{zablocki2009multiple} propone un conjunto de 7 bases de datos. S1, S2, S3, S4, S5, S6 y S7 que el construyo a partir de un conjunto de secuencias de ADN. En la Tabla \ref{tab:datasets}, presentamos el \textit{ascension code} de cada secuencia utilizada. Ademas, el autor propuso un conjunto pequeño de secuencias para hacer pruebas rapidas, a este conjunto lo llamo S8. En nuestro caso, al ser una tesis un poco antigua, algunas secuencias ya no estaban disponibles en NCBI, y solo logramos obtener las secuencias de S6, S7 y S8. \\
 	
 	\begin{table}[h]
 		\caption{Bases de datos utilizados por \citet{zablocki2009multiple}. S1, S2, S3, S4, S5, S6 y S7 es el nombre que el autor definio para cada conjunto de secuencias. La segunda columna representa el \textit{ascension code} de cada secuencia.}
 		\begin{tabular}{lp{12cm}}
 
-			\textbf{Dataset} & \textbf{Secuencias} \\
+			\textbf{\textit{Dataset}} & \textbf{Secuencias} \\
 			\hline			
 			S1	& HCV2L1A10 HCV2L3A5 HCV2L3C1 HCV2L3C8 HCV2L3D4 HCV2L3E6 HCV2L3A7 HCV2L3A9 HCV2L3B2  HCV2L3B1		\\				
 			S2	& HS06674 HS06675 HS06676 HS06677 HS06679 \\
@@ -130,19 +171,113 @@
 			S6  & PP59651 PP59652 PP59653 PP59654 PP59655 PP59656 \\
 			S7  & AB023287 AB023286 AB023285 AB023284 AB023283	AB023279 AB023278 AB023276 \\
 			\hline 
-		\end{tabular}
-		
+		\end{tabular}		
 		\label{tab:datasets}
 	\end{table}
 
+	Como se menciono anterioriormente, se utilizaron las bases de datos S6, S7 y S8. En la Tabla \ref{tab:datasets2}, detallamos datos adicionales de las bases de datos utilizadas. Por ejemplo la base de datos mas sencilla es S8, en la Figura \ref{fig:s8}, mostramos este conjunto de secuencias.
+	
+	
+	\begin{table}[h]
+		\centering
+		\caption{Bases de datos utilizados en los experimentos.}
+		\begin{tabular}{p{2cm}p{2cm}p{2cm}p{2cm}}
+			
+			\textbf{\textit{Dataset}} & \textbf{Longitud mínima} & \textbf{Longitud máxima} & \textbf{Cantidad de secuencias}\\
+			\hline				
+			S6  &  8 & 17801 & 153\\
+			S7  &  457 & 457 & 8\\
+			S8  &  7 & 10 & 5\\
+			\hline 
+		\end{tabular}		
+		\label{tab:datasets2}
+	\end{table}
+
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.3\textwidth]{images/s8}
+		\caption{Conjunto de secuencias de la base de datos S8. Se utilizo Mega para colorear cada base.}
+		\label{fig:s8}
+	\end{figure}
+	
+	
+	
+
 	\subsection{Parametros}
+	
+	Los parametros son descritos en la Tabla \ref{tab:param}. Para reducir el tiempo de procesamiento reducimos el valor de algunos parametros como la cantidad de iteraciones, el autor proponia en este caso 1000 iteraciones. Luego la cantidad de veces que se replico cada experimento era de 30 y nosotros solo lo replicamos 10 veces.
+	
+	\begin{table}[h]
+		\centering
+		\caption{Parametros utilizados en los experimentos. Algunos parametros fueron distintos a los planteados por \citet{zablocki2009multiple} (iteraciones), con el objetivo de reducir el tiempo de procesamiento.}
+		\begin{tabular}{p{5cm}p{2cm}}
+			
+			\textbf{Parametro} & \textbf{Valor} \\
+			\hline			
+			Iteraciones	& 30		\\				
+			Cantidad de partículas & 25 \\
+			Probabilidad de mutación & 0.2 \\ 
+			\textit{Gaps} permitidos & 30\% \\	
+			Cantidad de veces que se replico el experimento & 10 \\		
+			\hline 
+		\end{tabular}		
+		\label{tab:param}
+	\end{table}
 	
 	\section{Resultados}
 	
+	En la Tabla \ref{tab:result}, se muestra el \textit{score} (resultado de la función objetivo) obtenido en cada base de datos. Como se puede apreciar, el \textit{score} depende de la complejidad del problema, por ejemplo en el conjunto de secuencias S8 obtenemos un score bajo, pero para las secuencias de S6 (la mas compleja), obtenemos un \textit{score} mucho mas grande. La idea es que mientras mayor sea el \textit{score}, es mejor. \\
+	
+	\begin{table}[h]
+		\centering
+		\caption{Resultados obtenidos en cada base de datos. Se hicieron pruebas incluyendo y excluyendo la mutación.}
+		\begin{tabular}{p{2cm}p{3cm}p{3cm}p{2cm}}
+			
+			\textbf{\textit{Dataset}} & \textbf{\textit{PSO} con mutación}  & \textbf{\textit{PSO} sin mutación} & \textbf{CLUSTALW} \\
+			\hline			
+			S6	& 12678	& 10012	& 18045 \\				
+			S7 & 11105 & 9054 & 12564 \\
+			S8 & 32 & 28 & 49 \\ 				
+			\hline 
+		\end{tabular}		
+		\label{tab:result}
+	\end{table}
 
-		
+
+	Para visualizar mejor el resultado de los alineamientos se utilizo la herramieta Mega, esta herramienta colorea cada base según su posición para ver mejor su alineamiento. En la Figura \ref{fig:s8_align}, mostramos el resultado luego de alinear el conjunto de secuencias de S8 utilizando PSO y CLUSTALW. Como podemos ver, existen muchas soluciones para cada problema, e incluso podemos llegar a tener un diferentes soluciones con un mismo \textit{score}. En la Figura \ref{fig:s7_align}, mostramos un parte del alineamiento de las secuencias de S7, recordemos que estas secuencias tienen una longitud de 457 bases.
+	
+	
+	\begin{figure}[h]
+		\centering
+		\begin{multicols}{2}
+			\includegraphics[width=0.3\textwidth]{images/s8_align}\par 
+			\includegraphics[width=0.3\textwidth]{images/s8_align_mega}\par 
+		\end{multicols}
+		\caption{\textbf{Izquierda}: Resultado luego de alinear las secuencias de la base de datos S8 utilizando PSO.\\  \textbf{Derecha}: Resultado luego de alinear las secuencias de la base de datos S8 utilizando CLUSTALW.}
+		\label{fig:s8_align}
+	\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/s7_align}
+	\caption{Resultado luego de alinear las secuencias de la base de datos S7 utilizando PSO. Solo se esta mostrando un extracto, porque las secuencias tienen una longitud de 457 bases.}
+	\label{fig:s7_align}
+\end{figure}
+	
+	
+	\section{Discusión}
+	
+	De la Tabla \ref{tab:result}, comprobamos que el desempeño de PSO es bueno y casi llega a una solución similar a CLUSTAW. Además, uno de los problemas de PSO es que llega muy pronto a optimos locales, debido a eso en los resultados comprobamos como aplicando una diversificación (mutación) se mejoran los resultados. Otro de PSO y otros algoritmos similares es en como el autor plantea el desplazamiento de cada partícula, en este trabajo se planteo utilizar un \textit{crossover}, pero existen trabajos recientes propuestos por \citet{zhan2019probpfp}, \citet{lalwani2019multi} y \citet{moustafa2017fragmented} donde obtienen mejores resultados modificando la función de movimiento de cada partícula y combinando PSO con las cadenas de Markov. \\
+	
+	Una prueba visual del buen desempeño de PSO es presentado en las Figuras \ref{fig:s8_align} y \ref{fig:s7_align}. Como vemos en las imágenes, se aprecia que se ha obtenido un alineamiento aceptable. Cada base (letra) es representada con un color distinto y esta forma de visualización ayuda bastante para determinar el alineamiento entre dos o mas secuencias.
 	
 	\section{Conclusiones}
+	
+	La tesis propone el uso de PSO para solucionar el problema de MSA. El autor evalua los resultados en 8 bases de datos, que representan un conjunto de secuencias de diferentes longitudes. El autor obtuvo dichas secuencias de NCBI, pero al ser una tesis del 2009, algunas secuencias ya no estaban presentes.\\
+	
+	El autor tambien propone aplicar una mutación a las partículas para evitar caer en optimos locales, esta mutación se basaba en insertar un \textit{gap} dentro de una secuencia de una partícula. Esta diversificación (mutación) mejoro el desempeño de PSO. \\
+	
+	Para comprobar el desempeño de PSO, se comparó sus resultados con CLUSTALW. El desempeño de PSO fue bueno y logro un \textit{score} similar a CLUSTALW. En la actualidad existen varias modificaciones en la forma de como se define una partícula y la función de movimientno de esta con muy buenos resultados. \\
 	
 	
 	%\blinddocument
@@ -152,9 +287,9 @@
 	%\verb|\documentclass[nosupp]{cup-pan}|
 	%\end{quote}
 	
-	\clearpage
+	%\clearpage
 	
 	\printbibliography
 	%\bibliography{refs}
 	%\bibliographystyle{apalike}
-\end{document}
+\end{document} 

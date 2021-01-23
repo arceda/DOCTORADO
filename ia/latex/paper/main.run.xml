@@ -58,9 +58,7 @@
       <file>chicago-dates-common.cbx</file>
       <file>chicago-authordate.cbx</file>
       <file>biblatex.cfg</file>
-      <file>english.lbx</file>
-      <file>american.lbx</file>
-      <file>cms-american.lbx</file>
+      <file>spanish.lbx</file>
     </requires>
   </internal>
   <external package="biblatex" priority="5" active="0">

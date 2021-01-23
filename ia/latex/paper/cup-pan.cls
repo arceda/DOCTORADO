@@ -94,11 +94,11 @@
   %\emph{\bfseries \@journalname\ (\the\year)}\par
   \emph{\bfseries \@journalname\ (2009)}\par
   %\textcolor{PANDarkBlue}{\bfseries DOI: }10.1017/pan.xxxx.xx\par
-  \textcolor{PANDarkBlue}{\bfseries Thesis: }Master Thesis\par
+  \textcolor{PANDarkBlue}{\bfseries Tipo de tesis: }\\Tesis de maestría\par
   %\textcolor{PANDarkBlue}{\bfseries\@corrauthorname}\\Fabien Bernard\par
-  \textcolor{PANDarkBlue}{\bfseries Thesis author}\\Fabien Bernard\par
+  \textcolor{PANDarkBlue}{\bfseries Autor de la tesis}\\Fabien Bernard\par
 %  \textcolor{PANDarkBlue}{\bfseries\@editorname}\\Fabien Bernard\par
-  \textcolor{PANDarkBlue}{\bfseries Report author}\\V.E. Machaca Arceda\par
+  \textcolor{PANDarkBlue}{\bfseries Autor del reporte}\\V.E. Machaca Arceda\par
   %\textcopyright\space The Author(s) \the\year.
   %Published by Cambridge University Press on behalf of the Society for Political Methodology.%
   \textcopyright\space The Author(s) 2009.
@@ -199,7 +199,7 @@
   \bibstring[\emph]{andothers}%
 }{}{}
 
-\newcommand{\insert@supplmat}{\section*{Supplementary Material}For supplementary material accompanying this paper, please visit \url{https://github.com/arceda/bio-samples/tree/master/viral/viral_classification}}
+\newcommand{\insert@supplmat}{\section*{Material adicional}Para material adicional a este reporte, por favor visite: \url{https://github.com/arceda/DOCTORADO/tree/master/ia/src/thesis}}
 \if@suppmat
   \xpretocmd{\printbibliography}{\insert@supplmat}{}{}
   \AtBeginEnvironment{thebibliography}{\insert@supplmat}

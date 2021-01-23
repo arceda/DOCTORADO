@@ -560,14 +560,14 @@ def clean_particles(particle):
     print( particle_ )
     return particle_
 
-#sequences, k, max_length, min_length = read_sequences(current_dir + "/seqs/S7/")
-sequences, k, max_length, min_length = read_sequences_s8()
+sequences, k, max_length, min_length = read_sequences(current_dir + "/seqs/S/")
+#sequences, k, max_length, min_length = read_sequences_s8()
 max_gaps_allowed = math.floor(0.3*max_length)
 gaps_allowed = np.random.randint(max_gaps_allowed+1, size=sequences.shape[0])
 
 print(sequences)
 #print(sequences.shape)
-#print(k, max_length, min_length)
+print(k, max_length, min_length)
 #print(max_gaps_allowed, gaps_allowed)
 
 ###########################################################################################################
