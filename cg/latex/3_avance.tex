@@ -1,0 +1,240 @@
+%package list
+\documentclass{article}
+\usepackage[top=3cm, bottom=3cm, outer=3cm, inner=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{url}
+%\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{array}
+%\usepackage{multicol}
+\newcolumntype{x}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
+\usepackage{natbib}
+\usepackage{pdfpages}
+\usepackage{multirow}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{multicol}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\csemail}{vmachacaa@ulasalle.edu.pe}
+\newcommand{\csdocente}{MSc. Vicente Enrique Machaca Arceda}
+\newcommand{\cscurso}{Tópicos en Computación Gráfica}
+\newcommand{\csuniversidad}{Universidad San Agustín de Arequipa}
+\newcommand{\csescuela}{Doctorado en Ciencias de la Computación}
+\newcommand{\cspracnr}{03}
+\newcommand{\cstema}{Predicción y modelado en 3D de estructuras terciarias de proteinas a partir del \textit{contact map}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\usepackage[english,spanish]{babel}
+\usepackage[utf8]{inputenc}
+\AtBeginDocument{\selectlanguage{spanish}}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\refname}{Referencias}
+\renewcommand{\tablename}{Tabla} %esto no funciona cuando se usa babel
+\AtBeginDocument{%
+	\renewcommand\tablename{Tabla}
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{30pt}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+\fancyhead[L]{\raisebox{-0.2\height}{\includegraphics[width=3cm]{img/logo_unsa}}}
+\fancyhead[C]{}
+\fancyhead[R]{\fontsize{7}{7}\selectfont	\csuniversidad \\ \csescuela \\ \textbf{\cscurso} }
+\fancyfoot[L]{MSc. Vicente Machaca}
+\fancyfoot[C]{\cscurso}
+\fancyfoot[R]{Página \thepage}
+
+
+% para el codigo fuente
+\usepackage{listings}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+	language=Python,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+
+
+
+\begin{document}
+	
+	\vspace*{10px}
+	
+	\begin{center}	
+		\fontsize{17}{17} \textbf{ Avance N$^\text{o}$ \cspracnr}
+	\end{center}
+	%\centerline{\textbf{\underline{\Large Título: Informe de revisión del estado del arte}}}
+	%\vspace*{0.5cm^
+	
+
+	\begin{table}[h]
+		\begin{tabular}{|x{4cm}|x{6.3cm}|x{4cm}|}
+			\hline 
+			\textbf{ALUMNO} & \textbf{PROGRAMA}  & \textbf{CURSO}   \\
+			\hline 
+			\csdocente & \csescuela & \cscurso    \\
+			\hline 
+		\end{tabular}
+	\end{table}	
+	
+	
+	\begin{table}[h]
+		\begin{tabular}{|x{4cm}|x{6.3cm}|x{4cm}|}
+			\hline 
+			\textbf{AVANCE} & \textbf{TEMA}  & \textbf{FECHA}   \\
+			\hline 
+			\cspracnr & \cstema & 20-02-2021 \\
+			\hline 
+		\end{tabular}
+	\end{table}
+	
+	
+	\section{Introducción}
+	
+	Las proteínas son moléculas complejas que cumplen un rol crítico en nuestro cuerpo, estas cumplen la mayoria de funciones en la células \citep{anderson1998proteome}. Además, la función de una proteína depende de su estructura \citep{rangwala2010introduction} y ultimanmente se ha descubierto que esta función tambien depende de las relación de una proteina con otras \citep{canzarprotein}. Mas aún, es importante saber, que la estructura de una proteina puede cambiar en el tiempo y su función tambien cambia en el tiempo. \\
+	
+	Conocer la estructura de una proteína es de suma importancia para el análisis de su función, generación de medicamentos, etc. \citep{rangwala2010introduction}. Además, lograr predecir y entender el funcionamiento de estas proteinas y la interacción de redes de proteínas es considerado el nuevo santo crial de la Binformática en estos tiempos \citep{srihari2017computational}. 
+	
+	
+	\section{Conceptos previos}
+	
+	En esta sección detallaremos algunos conceptos previos del area de Bioinformática/\textit{Proteomics} para comprender el trabajo.
+	
+	\subsection{Estructura de las proteinas}
+	
+	Existen 4 tipos de estructuras de proteínas \citep{russell2002igenetics}:
+	
+	\begin{enumerate}
+		\item \textbf{Estructura primaría:} Secuencia de aminoacidos (ver Figura \ref{fig:protein_structure} (a)).
+		\item \textbf{Estructura secundaría:} Pequeños patrones, los mas comunes son las elises $\alpha$ y hojas $\beta$ (ver Figura \ref{fig:protein_structure} (b)).
+		\item \textbf{Estructura terciaría:} Representa la unión de los segmentos de la estructura secundaría (ver Figura \ref{fig:protein_structure} (c)). En este caso solo estamos considerando una cadena de aminoacidos (las proteinas a veces son conformadas por varias cadenas de aminoacidos).
+		\item \textbf{Estructura cuaternaría:} Union de varias estructuras terciarias (varias cadenas de aminoacidos) (ver Figura \ref{fig:protein_structure} (d)).
+	\end{enumerate}
+	
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.6\textwidth]{img/papers/protein_structure}
+		\caption{Ejemplo de las 4 estructuras de proteínas. Fuente: \citep{russell2002igenetics}}
+		\label{fig:protein_structure}
+	\end{figure}
+	
+	
+	\subsection{\textit{Contact map}}
+	
+	Representa la distancia de cada posible aminoacido, cuando forman proteínas. El \textit{contact map}, es representado como un gráfico en 2D, y es el elegido por los modelos de machine learning en la predicción de las estructuras de proteínas. En la Figura \ref{fig:contact_map}, mostramos como es un \textit{contact map}.
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/papers/contact_map}
+		\caption{Ejemplo del contact map de una proteína.}
+		\label{fig:contact_map}
+	\end{figure}
+	
+	\section{Avances}
+	En esta sección, detallaremos el estado anterior del proyecto y los avances realizados estas dos ultimas semanas.
+	
+	\subsection{Estado anterior}
+	
+	Se definio la propuesta del trabajo y se reviso el \textit{paper} propuesto por  \cite{adhikari2018confold2}, el cúal propone reconstruir la estructura terciaria de una proteína a partir del \textit{contact map}. 
+	
+		
+	\subsection{Avance y estado actual}
+	
+	\begin{enumerate}
+		\item Se reviso a detalle el \textit{paper} propuesto por  \cite{adhikari2018confold2}, el cúal propone la herramienta CONFOLD2. 
+		\item Se preparo el ambiente de desarrollo de CONFOLD2. En esta etapa se tuvo que compilar la herramienta  \href{http://cns-online.org/v1.3/}{CNS}, pero esta tenia errores al ejecutar la aplicación (ver Figura \ref{fig:cns_error}). 
+		
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{img/papers/cns_problem}
+			\caption{Errores al compilar y ejecutar la herramienta CNS.}
+			\label{fig:cns_error}
+		\end{figure}
+		
+		\item Luego de varios intentos fallidos, se tuvo que modificar el código de la herramienta CNS (implementada en Fortran) y se logro ejecutarla (ver Figura \ref{fig:cns}).
+		
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{img/papers/cns}
+			\caption{Se logro compilar sin errores la herramienta CNS.}
+			\label{fig:cns}
+		\end{figure}
+	
+		\item Se clono el repositorio de CONFOLD2 desde \href{https://github.com/multicom-toolbox/CONFOLD2}{Github} y se probó su código de ejemplo. Este proceso, empieza a generar archivos .pbd que representan pequeñas porciones de la estructura de una proteína, En la Figura \ref{fig:protein_1} mostramos algunas de estas estructuras. 
+		
+		
+		
+		\begin{figure}[h]
+			\centering
+			\begin{multicols}{2}
+				\includegraphics[width=7.5cm,height=5cm]{img/papers/protein_1}\par 
+				\includegraphics[width=7.5cm,height=5cm]{img/papers/protein_2}\par 
+				\includegraphics[width=7.5cm,height=5cm]{img/papers/protein_3}\par 
+				\includegraphics[width=7.5cm,height=5cm]{img/papers/protein_4}\par 
+			\end{multicols}
+			\caption{Ejemplo de la construcción de la proteína con CONFOLD2.}
+			\label{fig:protein_1}
+		\end{figure}
+		
+	
+		
+		\item El tiempo de procesamiento de CONFOLD2, tomo alrededor de 30 minutos, pero al final en las ultimas etapas mostro errores (al parecer en esta etapa uniría las pequeñas estructuras generadas anteriormente). En la Figura \ref{fig:confold_error_1} y \ref{fig:confold_error_2} mostramos los errores, aún se está trabajando en la solución.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{img/papers/confold_error_1}
+			\caption{Error al finalizar la ejecución de CONFOLD2.}
+			\label{fig:confold_error_1}
+		\end{figure}
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{img/papers/confold_error_2}
+			\caption{Error al finalizar la ejecución de CONFOLD2.}
+			\label{fig:confold_error_2}
+		\end{figure}
+		
+	\end{enumerate}
+	
+
+	
+
+
+
+	
+	
+	\clearpage
+	\bibliographystyle{apalike}
+	%\bibliographystyle{IEEEtranN}
+	\bibliography{bibliography}
+	
+	
+	
+	
+	
+\end{document}
