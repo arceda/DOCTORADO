@@ -160,73 +160,28 @@
 	
 	\subsection{Estado anterior}
 	
-	Se definio la propuesta del trabajo y se reviso el \textit{paper} propuesto por  \cite{adhikari2018confold2}, el cúal propone reconstruir la estructura terciaria de una proteína a partir del \textit{contact map}. 
-	
+	Se descargo las fuentes de CONFOLD2 \cite{adhikari2018confold2} y CNS para replicar los resultados de la predicción de estructuras de proteinas a partir del \textit{contact map}. Dicha herramienta genera como salida un archivo .pdb que contiene la posición de cada atomo. Tambien se empezo el desarrollo de una herramienta que pueda visualizar los archivos .pdb, llamaremos a esta herramienta ArgosMol.
 		
 	\subsection{Avance y estado actual}
 	
-	\begin{enumerate}
-		\item Se reviso a detalle el \textit{paper} propuesto por  \cite{adhikari2018confold2}, el cúal propone la herramienta CONFOLD2. 
-		\item Se preparo el ambiente de desarrollo de CONFOLD2. En esta etapa se tuvo que compilar la herramienta  \href{http://cns-online.org/v1.3/}{CNS}, pero esta tenia errores al ejecutar la aplicación (ver Figura \ref{fig:cns_error}). 
-		
-		\begin{figure}
-			\centering
-			\includegraphics[width=0.8\textwidth]{img/papers/cns_problem}
-			\caption{Errores al compilar y ejecutar la herramienta CNS.}
-			\label{fig:cns_error}
-		\end{figure}
-		
-		\item Luego de varios intentos fallidos, se tuvo que modificar el código de la herramienta CNS (implementada en Fortran) y se logro ejecutarla (ver Figura \ref{fig:cns}).
-		
-		\begin{figure}
-			\centering
-			\includegraphics[width=0.8\textwidth]{img/papers/cns}
-			\caption{Se logro compilar sin errores la herramienta CNS.}
-			\label{fig:cns}
-		\end{figure}
-	
-		\item Se clono el repositorio de CONFOLD2 desde \href{https://github.com/multicom-toolbox/CONFOLD2}{Github} y se probó su código de ejemplo. Este proceso, empieza a generar archivos .pbd que representan pequeñas porciones de la estructura de una proteína, En la Figura \ref{fig:protein_1} mostramos algunas de estas estructuras. 
+Se continuo con el desarrollo de la herramienta ArgosMol para visualizar archivos .pdb. Esta herramienta surge como una alternativa a  herramientas \textit{desktop} como: PyMol, VMD, JMol y Chimera. Además, considerando que en estos ultimos años, se ha priorizado el desarrollo de herramientas Web que hacen uso de WebGL \footnote{Librería para el desarrollo de modelos 3D. \href{https://get.webgl.org/}{Enlace.}}, 		
+		Three.js \footnote{Librería de alto nivel para el desarrollo de modelos 3D, hace uso de WebGL. \href{https://threejs.org/}{Enlace.}} y 		
+		3DMol.js \footnote{Librería para el modelado de átomos y moleculas, hace uso de WebGL. \href{https://threejs.org/}{Enlace.}}; 
+		ArgosMol surge como como una alterntiva Web adicional, facil de usar y que sigue los principios presentados por \cite{youkharibache2017twelve}. La herramienta es presentada en la Figura \ref{fig:argos1} y esta disponible en la Web en \href{http://134.209.44.160/protein-web/3dmol/protein_interaction.php}{ArgosMol}. 
 		
 		
-		
-		\begin{figure}[h]
-			\centering
-			\begin{multicols}{2}
-				\includegraphics[width=7.5cm,height=5cm]{img/papers/protein_1}\par 
-				\includegraphics[width=7.5cm,height=5cm]{img/papers/protein_2}\par 
-				\includegraphics[width=7.5cm,height=5cm]{img/papers/protein_3}\par 
-				\includegraphics[width=7.5cm,height=5cm]{img/papers/protein_4}\par 
-			\end{multicols}
-			\caption{Ejemplo de la construcción de la proteína con CONFOLD2.}
-			\label{fig:protein_1}
-		\end{figure}
-		
-	
-		
-		\item El tiempo de procesamiento de CONFOLD2, tomo alrededor de 30 minutos, pero al final en las ultimas etapas mostro errores (al parecer en esta etapa uniría las pequeñas estructuras generadas anteriormente). En la Figura \ref{fig:confold_error_1} y \ref{fig:confold_error_2} mostramos los errores, aún se está trabajando en la solución.
-		
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=\textwidth]{img/papers/confold_error_1}
-			\caption{Error al finalizar la ejecución de CONFOLD2.}
-			\label{fig:confold_error_1}
-		\end{figure}
-		
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=\textwidth]{img/papers/confold_error_2}
-			\caption{Error al finalizar la ejecución de CONFOLD2.}
-			\label{fig:confold_error_2}
-		\end{figure}
-		
-	\end{enumerate}
-	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{img/papers/argos1}
+		\caption{ Ejemplo de visualización de proteínas con ArgosMol. }
+		\label{fig:argos1}
+	\end{figure}
 
-	
+ArgosMol es una herramienta Web para la visualización en 3D de proteínas. Está influenciada en otras herramientas Web como:
 
-
-
-	
+\begin{itemize}
+	\item wce
+\end{itemize}
 	
 	\clearpage
 	\bibliographystyle{apalike}
