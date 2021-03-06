@@ -3,13 +3,13 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{helvet}
-
+\usepackage{multicol}
 %-------------------------------------------------------
 % INFORMATION IN THE TITLE PAGE
 %-------------------------------------------------------
 
 \newcommand{\cstitle}{\textbf{Tópicos en Computación Gráfica}}
-\subtitle[]{Final project proposal}
+\subtitle[]{ArgosMol: A web tool for protein visualization}
 \newcommand{\cscourseCode}{Tópicos en Computación Gráfica}
 \newcommand{\csauthor}{MSc. Vicente Machaca Arceda}
 \institute[UNSA]{Universidad Nacional de San Agustín}
@@ -30,7 +30,7 @@
 
 \if\mycmd1
 	\usetheme[]{Feather}
-	\newcommand{\chref}[2]{	\href{#1}{{\usebeamercolor[bg]{Feather}#2}} }
+	\newcommand{\chref}[2]{\href{#1}{{\usebeamercolor[bg]{Feather}#2}}}
 \else
 	\usepackage{csformat}
 	\newcommand{\chref}[3][blue]{\href{#2}{\color{#1}{#3}}}%
@@ -149,21 +149,6 @@
 
 %-------------------------------------------------------
 %-------------------------------------------------------
-\begin{frame}{Protein structure}{SARS-CoV-2}	
-	
-	\begin{figure}
-		\centering
-		\includegraphics[width=10cm]{img/papers/covid_protein}
-		\caption{Example of SARS-CoV-2 protein structure. Source: \chref{https://cen.acs.org/articles/98/i12/es-El-mapeo-de-protenas-encuentra-69-potenciales.html?PageSpeed=noscript}{CEn}.}
-	\end{figure}
-	
-\end{frame}
-%-------------------------------------------------------
-%-------------------------------------------------------
-
-
-%-------------------------------------------------------
-%-------------------------------------------------------
 \begin{frame}{Numbers}{}
 
 	\begin{block}{}
@@ -171,26 +156,120 @@
 	\end{block}	
 
 	\begin{block}{}
-		Only about \textbf{1\%} of the total number of sequenced proteins has experimentally determined. \cite{rangwala2011introduction}.
+		Only about \textbf{1\%} of the total number of sequenced proteins has experimentally determined \cite{rangwala2011introduction}.
 	\end{block}	
 
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
 
+\subsection{Motivation}
+
 %-------------------------------------------------------
 %-------------------------------------------------------
-\begin{frame}{Protein structure prediction}{}
+\begin{frame}{Motivation}{}	
+
+\begin{block}{}
+	Is one of the most used task in Bioinformatics \cite{o2010visualization, mura2010introduction}.
+\end{block}	
+\pause
+\begin{block}{}
+	Ligand-binding pockets or other details in macromolecular assemblies helps to elucidate the	relationship between protein structure and function \cite{reynolds2018ezmol}.
+\end{block}
+\pause
+\begin{block}{}
+	Interactive visualization of large molecular structures can now be achieved via web-based 3D, It is not restricted to stand alone applications \cite{wang2020icn3d}.
+\end{block}
+
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+\subsection{Problem}
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Problem}{}
 	
-	\begin{figure}
-		\centering
-		\includegraphics[width=10cm]{img/papers/protein_structure_prediction}
-		%\caption{Example of SARS-CoV-2 protein structure. Source: \chref{https://cen.acs.org/articles/98/i12/es-El-mapeo-de-protenas-encuentra-69-potenciales.html?PageSpeed=noscript}{CEn}.}
-	\end{figure}
+\begin{block}{}
+	There is not a robust Web-based tool for protein visualization. The current applications are in development:
+	\begin{itemize}
+		\item They have bugs.
+		\item They doesn't have all the functionality like stand-alone applications. 
+		\item They are not easy to use.
+	\end{itemize}
+\end{block}
 	
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Related work}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Related work}{Jolecule}	
+	\begin{figure}
+		\centering
+		\includegraphics[width=8cm]{img/argosmol/state_art1}
+		\caption{Web page of Jolecule.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Related work}{NGL}	
+	\begin{figure}
+		\centering
+		\includegraphics[width=8cm]{img/argosmol/state_art2}
+		\caption{Web page of NGL \cite{rose2015ngl}.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Related work}{EzMol}	
+	\begin{figure}
+		\centering
+		\includegraphics[width=8cm]{img/argosmol/state_art3}
+		\caption{Web page of EzMol \cite{reynolds2018ezmol}.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Related work}{iCn3D}	
+	\begin{figure}
+		\centering
+		\includegraphics[width=8cm]{img/argosmol/state_art4}
+		\caption{Web page of iCn3D \cite{wang2020icn3d}.}
+	\end{figure}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+%\begin{frame}{Related work}{Web3DMol}	%
+%	\begin{figure}
+%		\centering
+%		\includegraphics[width=8cm]{img/argosmol/state_art5}
+%		\caption{Web page of Web3DMol \cite{shi2017web3dmol}.}
+%	\end{figure}
+%\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -201,54 +280,17 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Protein structure prediction}
+\subsection{ArgosMol}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %-------------------------------------------------------
 %-------------------------------------------------------
-\begin{frame}{Protein structure prediction}{}
-	
-	\begin{block}{}
-		\centering
-		\textbf{DESTINI: A deep-learning approach to contact-driven protein structure prediction} \cite{gao2019destini}.
-	\end{block}
-	
-	\begin{itemize}
-		\item \textbf{Year}: 2019
-		\item \textbf{Authors}: Gao, Mu and Zhou, Hongyi and Skolnick, Jeffrey
-		\item \textbf{Event}: Journal of Scientific reports
-	\end{itemize}
-\end{frame}
-%-------------------------------------------------------
-%-------------------------------------------------------
-
-%-------------------------------------------------------
-%-------------------------------------------------------
-\begin{frame}{Protein structure prediction}{}
+\begin{frame}{ArgosMol}{}	
 	\begin{figure}
 		\centering
-		\includegraphics[width=10cm]{img/papers/paper4}
-		\caption{Pipeline for 3D protein structure prediction using deep learning. Source: \cite{ando2020practical}.}
-	\end{figure}
-\end{frame}
-%-------------------------------------------------------
-%-------------------------------------------------------
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Contact map}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%-------------------------------------------------------
-%-------------------------------------------------------
-\begin{frame}{Contact map}{3D model from contact map}
-	\begin{figure}
-		\centering
-		\includegraphics[width=8cm]{img/papers/contact_map}
-		\caption{Contact map derive from 3D protein model. Source: \cite{emerson2017protein}.}
+		\includegraphics[width=8cm]{img/argosmol/argos1}
+		\caption{Web page of ArgosMol \chref{http://134.209.44.160/argosmol/protein_interaction.php}{Enlace}.}
 	\end{figure}
 \end{frame}
 %-------------------------------------------------------
@@ -256,14 +298,18 @@
 
 %-------------------------------------------------------
 %-------------------------------------------------------
-\begin{frame}{Contact map}{3D model from contact map}
-	\begin{block}{}
-		Reconstruct a 3D protein model from the contact map is challenging \cite{emerson2017protein}.
-	\end{block}
-
-	\begin{block}{}
-		Methods are divided into \textit{ad initio} and template-based \cite{emerson2017protein}.
-	\end{block}
+\begin{frame}{ArgosMol}{Visualization}	
+	\begin{figure}[h]
+		\centering
+		\begin{multicols}{2}
+			\includegraphics[width=5cm,height=3cm]{img/argosmol/argos2}\par 
+			\includegraphics[width=5cm,height=3cm]{img/argosmol/argos3}\par 
+			\includegraphics[width=5cm,height=3cm]{img/argosmol/argos4}\par 
+			\includegraphics[width=5cm,height=3cm]{img/argosmol/argos5}\par 
+		\end{multicols}
+		\caption{Visualization in ArgosMol.}
+		\label{fig:protein_1}
+	\end{figure}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -271,81 +317,55 @@
 
 %-------------------------------------------------------
 %-------------------------------------------------------
-\begin{frame}{3D reconstruction}{Protein structure Modeling}
-	
-	\begin{block}{}
+\begin{frame}{ArgosMol}{Colors}	
+	\begin{figure}[h]
 		\centering
-		\textbf{Reconstruction of 3D Structures from Protein Contact Maps} \cite{vassura2008reconstruction}.
-	\end{block}
-	
-	\begin{itemize}
-		\item \textbf{Year}: 2008
-		\item \textbf{Authors}: Transactions on Computational Biology and Bioinformatics
-		\item \textbf{Event}: BMC Bioinformatics
-	\end{itemize}
+		\begin{multicols}{2}
+			\includegraphics[width=5cm,height=3cm]{img/argosmol/argos6}\par 
+			\includegraphics[width=5cm,height=3cm]{img/argosmol/argos7}\par 
+			\includegraphics[width=5cm,height=3cm]{img/argosmol/argos8}\par 
+			\includegraphics[width=5cm,height=3cm]{img/argosmol/argos9}\par 
+		\end{multicols}
+		\caption{Colors in ArgosMol.}
+		\label{fig:protein_1}
+	\end{figure}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
 
-
 %-------------------------------------------------------
 %-------------------------------------------------------
-\begin{frame}{CONFOLD2}{Protein structure Modeling}
-	
-	\begin{block}{}
+\begin{frame}{ArgosMol}{Model and sequence}	
+	\begin{figure}
 		\centering
-		\textbf{CONFOLD2: improved contact-driven ab initio protein structure modeling} \cite{adhikari2018confold2}.
-	\end{block}
-	
-	\begin{itemize}
-		\item \textbf{Year}: 2018
-		\item \textbf{Authors}: Adhikari, Badri and Cheng, Jianlin
-		\item \textbf{Event}: BMC Bioinformatics
-	\end{itemize}
+		\includegraphics[width=10cm]{img/argosmol/argos10}
+		\caption{Relation between the model and the sequence in ArgosMol.}
+	\end{figure}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Deep learning}
+\section{Conclusions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Conclusions}{}	
 
-%-------------------------------------------------------
-%-------------------------------------------------------
-\begin{frame}{DMPfold}{Protein structure Prediction}
-	
 	\begin{block}{}
-		\centering
-		\textbf{Deep learning extends de novo protein modelling coverage of genomes using iteratively predicted structural constraints} \cite{greener2019deep}.
+		ArgosMol is an alternative to stand-alone applications that requiere instalation.
 	\end{block}
-	
-	\begin{itemize}
-		\item \textbf{Year}: 2019
-		\item \textbf{Authors}: Greener, Joe G and Kandathil, Shaun M and Jones, David T
-		\item \textbf{Event}: Nature communications
-		\item \textbf{Repository}: \chref{https://github.com/psipred/DMPfold}{git} 
-	\end{itemize}
-\end{frame}
-%-------------------------------------------------------
-%-------------------------------------------------------
 
-
-%-------------------------------------------------------
-%-------------------------------------------------------
-\begin{frame}{AlphaFold}{Protein structure Prediction}
-	
 	\begin{block}{}
-		\centering
-		\textbf{Protein structure prediction using multiple deep neural networks in the 13th Critical Assessment of Protein Structure Prediction (CASP13)} \cite{senior2019protein}.
+		ArgosMol is part of a small number of Web-based tools for protein viosualization. Nevertheleses, ArgosMol improve the usability and the relation between the model and sequence.
 	\end{block}
-	
-	\begin{itemize}
-		\item \textbf{Year}: 2019
-		\item \textbf{Authors}: Senior, Andrew W and Evans, ...
-		\item \textbf{Event}: CASP13
-	\end{itemize}
+
+	\begin{block}{}
+		In future version of ArgosMol, we will include protein structure prediction.
+	\end{block}
+
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
