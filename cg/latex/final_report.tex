@@ -86,7 +86,7 @@
 	\vspace*{10px}
 	
 	\begin{center}	
-		\fontsize{17}{17} \textbf{ ArgosMol: Una plataforma web para el modelado de estructuras terciarias de proteinas }
+		\fontsize{17}{17} \textbf{ ArgosMol: Una plataforma web para la visualización de estructuras de proteinas }
 	\end{center}
 	%\centerline{\textbf{\underline{\Large Título: Informe de revisión del estado del arte}}}
 	%\vspace*{0.5cm^
@@ -106,14 +106,29 @@
 	
 \section{Introducción}
 	
-	Las proteínas son moléculas complejas que cumplen un rol crítico en nuestro cuerpo, estas cumplen la mayoria de funciones en la células \citep{anderson1998proteome}. Además, la función de una proteína depende de su estructura \citep{rangwala2010introduction} y ultimanmente se ha descubierto que esta función tambien depende de las relación de una proteina con otras \citep{canzarprotein}. Mas aún, es importante saber, que la estructura de una proteina puede cambiar en el tiempo y su función tambien cambia en el tiempo. \\
+	Las proteínas son moléculas complejas que cumplen un rol crítico en nuestro cuerpo, estas cumplen la mayoria de funciones en la células \citep{anderson1998proteome}. Además, la función de una proteína depende de su estructura \citep{rangwala2010introduction} y recientemente se ha descubierto que esta función tambien depende de las relación de una proteina con otras \citep{canzarprotein}. Mas aún, es importante saber, que la estructura de una proteina puede cambiar en el tiempo y su función tambien cambia en el tiempo. Conocer la estructura de una proteína es de suma importancia para el análisis de su función, generación de medicamentos, etc. \citep{rangwala2010introduction}. Además, lograr predecir y entender el funcionamiento de estas proteinas y la interacción de redes de proteínas es considerado el nuevo santo crial de la Binformática en estos tiempos \citep{srihari2017computational}. \\
 	
-	Conocer la estructura de una proteína es de suma importancia para el análisis de su función, generación de medicamentos, etc. \citep{rangwala2010introduction}. Además, lograr predecir y entender el funcionamiento de estas proteinas y la interacción de redes de proteínas es considerado el nuevo santo crial de la Binformática en estos tiempos \citep{srihari2017computational}. 
+
+	Adicionalmente, una de las tares mas  utilizadas en Bioinformática es la visualización de moleculas \citep{o2010visualization, mura2010introduction}. La visualización de los \textit{Ligand-binding} y detalles de las macromoleculas ayudan a comprender la relación de una estructura de proteína con su función \citep{reynolds2018ezmol}. Además, en la actualidad la visualización de estructuras de proteína pueden ser realizados a traves de herramientas Web, dejando de lado otras herramientas que requieren instalación \citep{wang2020icn3d}. Esto ha acasionado, que se empiece el desarrollo de herramientas Web para la visualización de proteínas, pero estas son pocas, tienen errores y algunas no son intuitivas y dificiles de utilizar.\\
+	
+		
+	Frente a la problematica mencionada anteriormente, se propone la herramienta Web ArgosMol, esta plataforma tiene el objetivo de ser facil de usar, seguir los principios propuestos por \cite{youkharibache2017twelve} y mantener una relación constante entre el modelo 3D y la secuencia de aminoacidos (cualquier acción realizada en el modelo, se refleja en la secuencia de aminoacidos y viceversa). 	
 	
 	
 \section{Marco teórico}
 	
 	En esta sección detallaremos algunos conceptos previos del area de Bioinformática/\textit{Proteomics} para comprender el trabajo.
+	
+	
+	\subsection{Aminoacidos}
+		
+	Deacuerdo a \cite{medlineplus_2021}, los aminoácidos son compuestos orgánicos que se combinan entre ellos para formar proteínas. En otras palabras, las proteínas estan hechas de aminoacidos. Tenemos tres tipos de aminoacidos: 
+	
+	\begin{itemize}
+		\item \textbf{Esenciales}: El cuerpo no los puede producir, entonces debemos consumirlos en los alimentos. Los 9 aminoácidos esenciales son: histidina, isoleucina, leucina, lisina, metionina, fenilalanina, treonina, triptófano y valina.
+		\item \textbf{No esenciales}: El cuerpo es capaz de producir estos aminoacidos y estos son: alanina, arginina, asparagina, ácido aspártico, cisteína, ácido glutámico, glutamina, glicina, prolina, serina y tirosina.
+		\item \textbf{Condicionales}: Por lo regular no son esenciales, excepto en momentos de enfermedad y estrés, los aminoacidos condicionales son: arginina, cisteína, glutamina, tirosina, glicina, ornitina, prolina y serina. 
+	\end{itemize}
 	
 	\subsection{Estructura de las proteinas}
 	
@@ -127,7 +142,7 @@
 	\end{enumerate}
 	
 	
-	\begin{figure}
+	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.6\textwidth]{img/papers/protein_structure}
 		\caption{Ejemplo de las 4 estructuras de proteínas. Fuente: \citep{russell2002igenetics}}
@@ -139,30 +154,37 @@
 	
 	Representa la distancia de cada posible aminoacido, cuando forman proteínas. El \textit{contact map}, es representado como un gráfico en 2D, y es el elegido por los modelos de machine learning en la predicción de las estructuras de proteínas. En la Figura \ref{fig:contact_map}, mostramos como es un \textit{contact map}.
 	
-	\begin{figure}
+	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/papers/contact_map}
 		\caption{Ejemplo del contact map de una proteína.}
 		\label{fig:contact_map}
 	\end{figure}
 	
+	
+	
+	
 \section{Trabajos relacionados}
 
-Las herramientas mas utilizadas para la visualización de proteínas son herramientas de escritorio, entre estás tenemos: PyMol, VMD, JMol y Chimera. Una de las principales desventajas de estas aplicaciones es que son faciles de utilizar y requieren ser instaladas. Debido a esta problematica, en los ultimos años se ha empezado el desarrollo de herramientas Web que permiten visualizar proteínas con el menor esfuerzo posible. \\
+Las herramientas mas utilizadas para la visualización de proteínas son herramientas de escritorio, entre estás tenemos: Chimera \citep{pettersen2004ucsf}, PyMol \citep{pymol2017pymol} y CnD3 \citep{wang2000cn3d}. Una de las principales desventajas de estas aplicaciones es que no son faciles de utilizar y requieren ser instaladas. Debido a esta problematica, en los ultimos años se ha empezado el desarrollo de herramientas Web que permiten visualizar proteínas con el menor esfuerzo posible. \\
 
-Una de las primeras propuestas es \href{http://jolecule.com/}{Jolecule}, esta herramienta es desarrollada por Bosco Ho desde el 2011, aunque no tiene una publicación, es una herramienta con constante desarrollo hasta la actualidad. Dicha aplicación esta desarrollada sobre three.js y es de código libre. Jolecule, tiene algunos problemas de renderización, por momentos ciertas partes de la proteína no se visualizan, tambien, en su página no se permite cargar una archivo .pdb para visualizarlo al menos que levatemos la aplicación en nuestro servidor. \\
+Una de las primeras propuestas es \href{http://jolecule.com/}{Jolecule}, esta herramienta es desarrollada por Bosco Ho desde el 2011, aunque no tiene una publicación, es una herramienta con constante desarrollo hasta la actualidad. Dicha aplicación esta desarrollada sobre three.js y es de código libre. Jolecule, tiene algunos problemas de renderización, por momentos ciertas partes de la proteína no se visualizan. Tambien, en su página no se permite cargar una archivo .pdb para visualizarlo al menos que levatemos la aplicación en nuestro servidor. \\
 
 La herramienta \href{https://nglviewer.org/}{NGL}  propuesta por \cite{rose2015ngl}, tambien está desarrollada sobre three.js y es de código libre. Aunque, en ciertas ocaciones la aplicación presenta errores, es una aplicación facil de utilizar.\\
 
+Quizas, la herramienta mas intuitiva y con mayor cantidad de esquemas de colores y formas de visualización es \href{http://web3dmol.net/}{Web3DMol}. Propuesta por \cite{shi2017web3dmol}, esta herramienta permite permite ver a una sola vista el modelo 3D y la secuencia de aminoacidos (ambos completamente relacionados).\\
 
-\href{http://www.sbg.bio.ic.ac.uk/ezmol/}{EzMol} propuesta por \cite{reynolds2018ezmol} es una aplicación  desarrollada sobre 3dmol.js. Según los autores, el objetivo de EzMol, es ser la una herramietna de facil uso. EzMol, tiene un \textit{wizard} que guia al usuario durante el proceso de visualización, este \textit{wizard} es util para usuarios inexpertos pero le resta puntos de usabilidad a la aplicación.  \\
+\href{http://www.sbg.bio.ic.ac.uk/ezmol/}{EzMol} propuesta por \cite{reynolds2018ezmol} es una aplicación  desarrollada sobre 3dmol.js. Según los autores, el objetivo de EzMol, es ser  una herramietna de facil uso. EzMol, tiene un \textit{wizard} que guia al usuario durante el proceso de visualización, este \textit{wizard} es util para usuarios inexpertos pero le resta puntos de usabilidad a la aplicación.  \\
 
-Finalmente tenemos \href{https://www.ncbi.nlm.nih.gov/Structure/icn3d/full.html}{iCn3D}, propuesta por  \cite{wang2020icn3d}. Esta herramienta tambien ha sido desarrollada sobre three.js. Esta aplicación, tiene mas funcionalidades que las otras herramientas mencionadas anteriormente y tambien es de facil uso. Un problema con esta herramienta es que no permite ver la secuencia de aminoacidos en forma paralela al modelo 3D, tambien tiene algunos problemas  con la posición de sus menus y botones.
+
+Finalmente tenemos \href{https://www.ncbi.nlm.nih.gov/Structure/icn3d/full.html}{iCn3D}, propuesta por  \cite{wang2020icn3d}. Esta herramienta tambien ha sido desarrollada sobre three.js. Esta aplicación, tiene mas funcionalidades que las otras herramientas mencionadas anteriormente y tambien es de facil uso. Lamentablemente la herramienta no permite ver la secuencia de aminoacidos en forma paralela al modelo 3D y tambien tiene algunos problemas  con la posición de sus menus y botones.
+
+
 
 
 \section{Propuesta}
 	
-ArgosMol surge como una alternativa a  herramientas \textit{desktop} como: PyMol, VMD, JMol y Chimera, considerando que en estos ultimos años, se ha priorizado el desarrollo de herramientas Web que hacen uso de WebGL \footnote{Librería para el desarrollo de modelos 3D. \href{https://get.webgl.org/}{Enlace.}}, 		
+ArgosMol surge como una alternativa a  herramientas \textit{desktop} como: Chimera \citep{pettersen2004ucsf}, PyMol \citep{pymol2017pymol} o CnD3 \citep{wang2000cn3d}, considerando que en estos ultimos años, se ha priorizado el desarrollo de herramientas Web que hacen uso de WebGL \footnote{Librería para el desarrollo de modelos 3D. \href{https://get.webgl.org/}{Enlace.}}, 		
 Three.js \footnote{Librería de alto nivel para el desarrollo de modelos 3D, hace uso de WebGL. \href{https://threejs.org/}{Enlace.}} y 		
 3DMol.js. \footnote{Librería para el modelado de átomos y moleculas, hace uso de WebGL. \href{https://threejs.org/}{Enlace.}}; Además, ArgosMol ha tomado en cuenta los principios de desarrollo de toda aplicación de visualización de moleculas, presentado por \cite{youkharibache2017twelve} \\
 
@@ -315,13 +337,13 @@ ArgosMol esta en su versión 1.0 permite ver la estructura terciaria de las prot
 
 \section{Conclusiones}
 
-En este proyecto se ha estudiado el area de predicción de estructuras de proteínas y su visualización. Al ser un trabajo complejo, se decidio enfocarnos en la visualización de proteínas.\\
+En este proyecto se ha estudiado el area de predicción de estructuras de proteínas y su visualización en herramientas Web. Al ser un trabajo complejo, se decidio enfocarnos en la visualización de proteínas y dejando la tarea de predicción de estructuras de proteínas como trabajo futuro.\\
 
-Se proposu la herramienta Web ArgosMol de facil uso, la cúal es una alternativa a herramientas de escritorio que requieren instalación y tienen una curva de aprendizaje alto.\\
+Se propone la herramienta Web ArgosMol, la cual es una plataforma para la visualización de estructuras de proteínas, es de facil uso, y es una alternativa a herramientas de escritorio que requieren instalación y tienen una curva de aprendizaje alto.\\
 
-Entre las funcionalidaddes de ArgosMol se propuso 3 formas de visualización (\textit{cartoon, trace, stick}), varios esquemas de colores, atajos de teclado y un enlace permanente entre la secuencia de aminoacidos y el modelo 3D.
+Entre las funcionalidaddes de ArgosMol se propone 3 formas de visualización (\textit{cartoon, trace, stick}), varios esquemas de colores (por cadena polipeptídica, por tipo de estructura secundaria y según el tipo de aminoacido), atajos de teclado y un enlace permanente entre la secuencia de aminoacidos y el modelo 3D.
 	
-	%\clearpage
+	\clearpage
 	\bibliographystyle{apalike}
 	%\bibliographystyle{IEEEtranN}
 	\bibliography{bibliography}
