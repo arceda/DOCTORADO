@@ -164,26 +164,96 @@
 		
 	\subsection{Avance y estado actual}
 	
-Se continuo con el desarrollo de la herramienta ArgosMol para visualizar archivos .pdb. Esta herramienta surge como una alternativa a  herramientas \textit{desktop} como: PyMol, VMD, JMol y Chimera. Además, considerando que en estos ultimos años, se ha priorizado el desarrollo de herramientas Web que hacen uso de WebGL \footnote{Librería para el desarrollo de modelos 3D. \href{https://get.webgl.org/}{Enlace.}}, 		
-		Three.js \footnote{Librería de alto nivel para el desarrollo de modelos 3D, hace uso de WebGL. \href{https://threejs.org/}{Enlace.}} y 		
-		3DMol.js \footnote{Librería para el modelado de átomos y moleculas, hace uso de WebGL. \href{https://threejs.org/}{Enlace.}}; 
-		ArgosMol surge como como una alterntiva Web adicional, facil de usar y que sigue los principios presentados por \cite{youkharibache2017twelve}. La herramienta es presentada en la Figura \ref{fig:argos1} y esta disponible en la Web en \href{http://134.209.44.160/protein-web/3dmol/protein_interaction.php}{ArgosMol}. 
-		
-		
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=\textwidth]{img/papers/argos1}
-		\caption{ Ejemplo de visualización de proteínas con ArgosMol. }
-		\label{fig:argos1}
-	\end{figure}
+Se inicio el desarrollo de la herramienta ArgosMol para visualizar archivos .pdb. Esta herramienta surge como una alternativa a  herramientas \textit{desktop} como: PyMol, VMD, JMol y Chimera. Además, considerando que en estos ultimos años, se ha priorizado el desarrollo de herramientas Web que hacen uso de WebGL \footnote{Librería para el desarrollo de modelos 3D. \href{https://get.webgl.org/}{Enlace.}}, 		
+Three.js \footnote{Librería de alto nivel para el desarrollo de modelos 3D, hace uso de WebGL. \href{https://threejs.org/}{Enlace.}} y 		
+3DMol.js \footnote{Librería para el modelado de átomos y moleculas, hace uso de WebGL. \href{https://threejs.org/}{Enlace.}}; 
 
-ArgosMol es una herramienta Web para la visualización en 3D de proteínas. Está influenciada en otras herramientas Web como:
+
+\subsubsection{ArgosMol}
+
+ArgosMol surge como como una alterntiva Web, facil de usar y tomando en cuenta los principios presentados por \cite{youkharibache2017twelve}. La herramienta es presentada en la Figura \ref{fig:argos1} y esta disponible en este \href{http://134.209.44.160/protein-web/3dmol/protein_interaction.php}{enlace}. Además, ArgosMol está influenciada por otras herramientas Web como:
 
 \begin{itemize}
-	\item wce
+	\item \textbf{Jolecule}.- Desarrollada por Bosco Ho desde el 2011 hasta la actualidad. \href{http://jolecule.com/}{Enlace}.
+	\item \textbf{NGL}.- Presentada por \cite{rose2015ngl}. \href{https://nglviewer.org/}{Enlace}.
+	\item \textbf{EzMol}.- Presentada por \cite{reynolds2018ezmol}. \href{http://www.sbg.bio.ic.ac.uk/ezmol/}{Enlace}.
+	\item \textbf{iCn3D}.- Presentada por \cite{wang2020icn3d}. \href{https://www.ncbi.nlm.nih.gov/Structure/icn3d/full.html}{Enlace}.	
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{img/papers/argos1}
+	\caption{ Ejemplo de visualización de proteínas con ArgosMol. }
+	\label{fig:argos1}
+\end{figure}
+
+\subsubsection{Funcionalidades implementadas}
+
+Las funcionalidades implementadas hasta ahora son:
+
+\begin{itemize}
+	\item Permite tres vistas de la proteina y sus posibles combinaciones (ver Figura \ref{fig:argos2}), las tres vistas son: 
+		\begin{itemize}
+			\item \textit{Stick}: Enlaces entre átomos.
+			\item \textit{Cartoon}: Solo estructuras secundarias como élices y pliegues.
+			\item \textit{Trace}: \textit{Backbone} de la proteina.
+		\end{itemize}
+
+	\begin{figure}[H]
+		\centering
+		\begin{multicols}{2}
+			\includegraphics[width=7.5cm,height=5cm]{img/papers/argos2}\par 
+			\includegraphics[width=7.5cm,height=5cm]{img/papers/argos3}\par 
+			\includegraphics[width=7.5cm,height=5cm]{img/papers/argos4}\par 
+			\includegraphics[width=7.5cm,height=5cm]{img/papers/argos6}\par 
+		\end{multicols}
+		\caption{Ejemplo de las tres formas de ver la estructura de una proteina y sus posibles combinaciones entre ellas.}
+		\label{fig:argos2}
+	\end{figure}
+
+	\item Tambien, según las recomendaciones del docente y algunos autores, se puede visualizar cada aminoacido por color. Se ha tomado en cuenta 5 esquemas de colores: 
+		\begin{itemize}
+			\item \textit{Green}: Todos los aminoacido en color verde.
+			\item \textit{Spectrum}: Por estructura secundaria.
+			\item \textit{Rasmol color}: Según la polaridad de cada aminoacido.
+			\item \textit{Rasmol shape}: Según la forma de cada aminoacido.
+			\item \textit{MAE}: Propuesta por la herramienta MAEditor.
+		\end{itemize}
+	
+	En la Figura \ref{fig:argos1} mostramos el esquema \textit{green}, mientras que en la Figura \ref{fig:argos3}, mostramos los cuatro esquemas restantes. Además, debajo del modelo mostramos la secuencia de aminoacidos siguiendo el mismo esquema de colores (esta funcionalidad es propuesta por \cite{youkharibache2017twelve}).
+	
+	\begin{figure}[H]
+		\centering
+		\begin{multicols}{2}
+			\includegraphics[width=7.5cm,height=5cm]{img/papers/argos2}\par 
+			\includegraphics[width=7.5cm,height=5cm]{img/papers/argos7}\par 
+			\includegraphics[width=7.5cm,height=5cm]{img/papers/argos8}\par 
+			\includegraphics[width=7.5cm,height=5cm]{img/papers/argos9}\par 
+		\end{multicols}
+		\caption{Ejemplo de los cinco esquemas de colores propuestos por ArgosMol. (Arriba Izq.): \textit{spectrum}. (Arriba der.) \textit{rasmol color}. (Abajo izq.) \textit{rasmol shape}. (Abajo der.) \textit{MAE}.}
+		\label{fig:argos3}
+	\end{figure}
+
+	\item Tambien podemos ver las etiquetas de cada aminoacido en el modelo 3D. Estás etiquetes pueden activarse con eventos \textit{clic} del mouse sobre cada aminoacido o activando la opción de ver todas las etiquetas en conjunto. En la Figura \ref{fig:argos4}, mostrasmos un ejemplo.
+	
+	\begin{figure}[H]
+		\centering
+		\begin{multicols}{2}
+			\includegraphics[width=7.5cm,height=5cm]{img/papers/argos11}\par 
+			\includegraphics[width=7.5cm,height=5cm]{img/papers/argos10}\par 
+		\end{multicols}
+		\caption{Ejemplo del uso de etiquetas en ArgosMol.}
+		\label{fig:argos4}
+	\end{figure}
+	
 \end{itemize}
 	
-	\clearpage
+\section{Comentarios finales}
+En este avance, se ha iniciado el desarrollo de una herramienta Web ArgosMol. Esta herramienta permite ver tres formas distintas una proteina; presenta cinco esquemas de colores, manteniendo relación entre 
+el modelo 3D y la secuencia de aminoacidos; y permite ver etiquetas de los aminoacidos. Aún queda por desarrollar los eventos del mouse y teclado, visualización de varias cadenas polipeptídicas y la integración con CONFOLD2.
+
+	
+	%\clearpage
 	\bibliographystyle{apalike}
 	%\bibliographystyle{IEEEtranN}
 	\bibliography{bibliography}

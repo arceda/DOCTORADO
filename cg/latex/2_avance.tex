@@ -11,18 +11,17 @@
 \usepackage{natbib}
 \usepackage{pdfpages}
 \usepackage{multirow}
-\usepackage{multirow}
 \usepackage[normalem]{ulem}
 \useunder{\uline}{\ul}{}
 \usepackage{amsmath}
-\usepackage{float}
+\usepackage{float} % para que las imagens eaprecezacan bien
 \usepackage{multicol}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\csemail}{vmachacaa@ulasalle.edu.pe}
 \newcommand{\csdocente}{MSc. Vicente Enrique Machaca Arceda}
 \newcommand{\cscurso}{Tópicos en Computación Gráfica}
-\newcommand{\csuniversidad}{Universidad San Agustín de Arequipa}
+\newcommand{\csuniversidad}{Universidad Nacional de San Agustín}
 \newcommand{\csescuela}{Doctorado en Ciencias de la Computación}
 \newcommand{\cspracnr}{02}
 \newcommand{\cstema}{Predicción y modelado en 3D de estructuras terciarias de proteinas a partir del \textit{contact map}}
@@ -185,7 +184,7 @@
 			\label{fig:cns}
 		\end{figure}
 	
-		\item Se clono el repositorio de CONFOLD2 desde \href{https://github.com/multicom-toolbox/CONFOLD2}{Github} y se probó su código de ejemplo. Este proceso, empieza a generar archivos .pbd que representan pequeñas porciones de la estructura de una proteína, En la Figura \ref{fig:protein_1} mostramos algunas de estas estructuras. 
+		\item Se clono el repositorio de CONFOLD2 desde \href{https://github.com/multicom-toolbox/CONFOLD2}{Github} y se probó su código de ejemplo. Este proceso, empieza a generar archivos .pbd que representan posibles estructuras de la proteína, En la Figura \ref{fig:protein_1} mostramos algunas de estas estructuras. 
 		
 		
 		
@@ -203,7 +202,7 @@
 		
 	
 		
-		\item El tiempo de procesamiento de CONFOLD2, tomo alrededor de 30 minutos, pero al final en las ultimas etapas mostro errores (al parecer en esta etapa uniría las pequeñas estructuras generadas anteriormente). En la Figura \ref{fig:confold_error_1} y \ref{fig:confold_error_2} mostramos los errores, aún se está trabajando en la solución.
+		\item El tiempo de procesamiento de CONFOLD2, tomo alrededor de una hora aproximadamente, pero al final, en las ultimas etapas mostro errores. En la Figura \ref{fig:confold_error_1} y \ref{fig:confold_error_2} mostramos los errores.
 		
 		\begin{figure}[H]
 			\centering
@@ -217,6 +216,30 @@
 			\includegraphics[width=\textwidth]{img/papers/confold_error_2}
 			\caption{Error al finalizar la ejecución de CONFOLD2.}
 			\label{fig:confold_error_2}
+		\end{figure}
+	
+	
+		\item Despues de revisar los errores, estos se debian a que algunos programas no tenian permisos de ejecución. Se solucionó esto y se logró culminar el procesamiento de CONFOLD2. En la Figura \ref{fig:confold}, mostromas los mensajes retornados por CONFOLD, en este vemos que me indica las 5 mejores estructuras encontradas.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{img/papers/confold}
+			\caption{CONFOLD2 termina de generar las estructuras.}
+			\label{fig:confold}
+		\end{figure}
+	
+		\item Despues de revisar los errores, estos se debian a que algunos programas no tenian permisos de ejecución. Se soluciono esto y se logro culminar el procesamiento de CONFILD2. En la Figura \ref{fig:confold2}, las 4 mejores estructuras encontradas por CONFOLD2.
+	
+		\begin{figure}[H]
+			\centering
+			\begin{multicols}{2}
+				\includegraphics[width=7.5cm,height=5cm]{img/papers/top_model_1}\par 
+				\includegraphics[width=7.5cm,height=5cm]{img/papers/top_model_2}\par 
+				\includegraphics[width=7.5cm,height=5cm]{img/papers/top_model_3}\par 
+				\includegraphics[width=7.5cm,height=5cm]{img/papers/top_model_4}\par 
+			\end{multicols}
+			\caption{Ejemplo de la construcción de la proteína con CONFOLD2.}
+			\label{fig:confold2}
 		\end{figure}
 		
 	\end{enumerate}
