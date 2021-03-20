@@ -1,0 +1,183 @@
+%\documentclass{beamer}
+\ProvidesPackage{beamerthemeAGH}[2020/03/09]
+
+\RequirePackage{tikz}[2015/08/07]
+\RequirePackage{ifthen}
+\usetikzlibrary{positioning}
+
+\newif\ifAGH@dark
+\AGH@darkfalse %Default, do not use dark version
+\DeclareOptionBeamer{dark}{
+	\AGH@darktrue %Use dark version if option 'dark' was given
+	\PassOptionsToPackage{dark=#1}{beamercolorthemeAGH} %Pass information about the level of darkness to the 'beamercolorthemeAGH.sty' file
+}
+\DeclareOptionBeamer{parttitle}{\def\AGH@parttitle{#1}} %Option 'parttitle' specifies where part title should be displayed, values:
+                                                        % 'leftfooter' - in left footer, instead of author's name
+							% 'rightfooter' - in right footer, instead of date
+\ProcessOptionsBeamer
+
+\newdimen\coloredlinesskip %Distance between lines
+\newdimen\leftedgeskip     %Distance between left edge of slide and lines
+\coloredlinesskip=2mm
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mode<presentation>
+\useinnertheme[shadow=\ifAGH@dark false\else true\fi]{rounded}
+\useoutertheme{infolines}
+\usecolortheme{AGH}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\AtBeginDocument{%
+	\typeout{..................................................................}
+	\typeout{You are using the AGH beamer theme created by Stanislaw Polak}
+	\typeout{Version: 1.3.2, Apr 2017}
+	\typeout{..................................................................}
+	\ifdefined\AGH@parttitle
+		%Display part title
+		\ifthenelse{\equal{\AGH@parttitle}{leftfooter}}{\def\beamer@shortauthor{\insertpart}\def\beamer@shortinstitute{}}{} %In left footer (instead of author's name and institute name) 
+		\ifthenelse{\equal{\AGH@parttitle}{rightfooter}}{\def\beamer@shortdate{\insertpart}}{} %In right footer (instead of date)
+	\fi
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tikzstyle{every picture}+=[remember picture]
+\tikzset { %Tikz code generated from SVG by 'svg2tikz' tool
+        %%%%%%%%%
+        %AGH logo
+	%%%%%%%%%
+	logo/.pic= { 
+		\begin{scope}[cm={{1.25,0.0,0.0,-1.25,(0.0,190.12419)}}]
+  			\begin{scope}[shift={(-221.07081,-349.03133)}]
+				\ifAGH@dark
+					\colorlet{AGH@greenAGH@silver}{AGH@white}
+					\colorlet{}{AGH@white}
+					\colorlet{AGH@blue}{AGH@white}
+				\fi
+      				%%Logo cs en tikz
+      				 %\node at (175, 500) {\resizebox{\linewidth}{!}{\includegraphics[width=50mm,scale=0.05]{images/logo.png}}};
+      				 \node[inner sep=0pt] (cslogo) at (200,475)
+    {\includegraphics[width=.25\textwidth]{img/logo.png}};
+    \draw
+      (0, 0) -- (2, 2);
+      			
+      		
+				\node (AGH) at (295,450) {};
+					
+  			\end{scope}
+		\end{scope}
+	},
+	%%%%%%%%%%%%%%
+	%Lineas coloreadas
+	%%%%%%%%%%%%%%
+	lines/.pic={ 
+		%silver line
+		\ifnum\thepage=1 %If a title page
+			\coordinate [xshift=\leftedgeskip] (black_x1) at (current page.north west);
+		\else % If a non-title page 
+			\coordinate [xshift=\leftedgeskip,yshift=-9.5\headheight] (black_x1) at (current page.north west);
+		\fi
+		\coordinate [xshift=\leftedgeskip,yshift=3ex] (black_x2) at (current page.south west);
+		\draw[AGH@blue,thick] (black_x1) -- (black_x2);
+		%green line
+		\coordinate [below left =  0.05\textheight and \coloredlinesskip of black_x1] (green_x1);
+		\coordinate [above left =  0.25\textheight and \coloredlinesskip of black_x2] (green_x2); %THE GREEN LINE NEXT TO THE EMAIL
+		\draw[AGH@green,thick] (green_x1) -- (green_x2);
+		%blue line
+		\coordinate [below right = 0.2\textheight and \coloredlinesskip of black_x1] (red_x1);
+		\coordinate [above right = 0.2\textheight and \coloredlinesskip of black_x2] (red_x2);
+		\draw[AGH@silver ,thick] (red_x1) -- (red_x2);
+	}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%
+%Background images
+%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{background}{
+	\ifnum\thepage=1 % I assume that the title page is the first page of presentation ;-)
+	%%%%%%%%%%%%%%%%%%%%%%%
+	% Content of title page
+	%%%%%%%%%%%%%%%%%%%%%%%
+		\leftedgeskip=4em
+		%%%%%%%%%%%%%%%
+	   	% Colored lines			
+		%%%%%%%%%%%%%%%
+		\tikz[overlay]\pic {lines};
+		%%%%%%
+		% Logo
+		%%%%%%
+		\tikz[overlay,transform shape,transform canvas,x=0.80pt,y=0.80pt,yscale=-1.000000, xscale=1.000000,inner sep=0pt, outer sep=0pt] 
+			\path pic  [below right = -2ex and -1em of black_x1,scale=0.5] (logo-) {logo}; 
+		%%%%%%%%%%%%%%%%
+		% Name in Polish
+		%%%%%%%%%%%%%%%%
+		\tikz[overlay]
+			\node (polish) [align=left,right = 2em of logo-AGH,font={\tiny\bfseries}]{
+				Escuela Profesional de \\Ciencia de la Computación
+			};
+		%%%%%%%%%%%%%%%%%
+		% Name in English
+		%%%%%%%%%%%%%%%%%
+		\tikz[overlay]	
+			\node (english) [align=left,below = 1.5ex of polish.south west,anchor=west,color=AGH@gray,font=\tiny\bfseries]{
+				\nameUp
+			};
+        \else
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Content of non-title page
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		\leftedgeskip=4mm
+		%%%%%%%%%%%%%%%
+	   	% Colored lines			
+		%%%%%%%%%%%%%%%
+		\tikz[overlay]\pic {lines};
+		%%%%%%
+		% Logo
+		%%%%%%
+		\tikz[overlay,transform shape,transform canvas,x=0.80pt,y=0.80pt,yscale=-1.000000, xscale=1.000000,inner sep=0pt, outer sep=0pt] 
+			\path pic at (current page.north west) [xshift=-\leftedgeskip,yshift=4.5\headheight,scale=0.3] {logo}; 
+		%%%%%%%%%%%%%
+		% WWW address
+		%%%%%%%%%%%%%
+		\tikz[overlay]\node[above = of black_x2,rotate=90,color=AGH@gray,font={\tiny}]{\csemail};
+			
+        \fi
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+%Slide content margins
+%%%%%%%%%%%%%%%%%%%%%%
+\setbeamersize{text margin left=6em} 
+\setbeamersize{text margin right=2em}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Title page look and contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\defbeamertemplate*{title page}{EPCC}[1][]
+{
+	\vspace*{0.15\paperheight}
+	\vbox{}
+	\vfill
+	\hspace*{0.01\paperwidth}
+	\begingroup
+	\centering
+	\begin{beamercolorbox}[rounded=true,shadow=\ifAGH@dark false\else true\fi,sep=8pt,wd=0.6\textwidth,center,#1]{title}
+		\usebeamerfont{title}\inserttitle\par%
+		\ifx\insertsubtitle\@empty%
+		\else%
+			\vskip0.25em%
+			{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+		\fi%     
+	\end{beamercolorbox}%
+	\vskip1em\par
+	\begin{beamercolorbox}[sep=8pt,center,#1]{author}
+		\usebeamerfont{author}\insertauthor
+	\end{beamercolorbox}
+	\begin{beamercolorbox}[sep=8pt,center,#1]{institute}
+		\usebeamerfont{institute}\insertinstitute
+	\end{beamercolorbox}
+	\begin{beamercolorbox}[sep=8pt,center,#1]{date}
+	\usebeamerfont{date}\insertdate
+	\end{beamercolorbox}\vskip0.5em
+	{\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
+	\endgroup
+	\vfill
+}
+\mode<all>
+
