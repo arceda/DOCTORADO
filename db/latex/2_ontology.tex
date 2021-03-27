@@ -8,9 +8,9 @@
 % INFORMATION IN THE TITLE PAGE
 %-------------------------------------------------------
 
-\newcommand{\cstitle}{\textbf{Base de datos}}
-\subtitle[]{Spanner: Becoming a SQL System}
-\newcommand{\cscourseCode}{Tópicos en Computación Gráfica}
+\newcommand{\cstitle}{\textbf{Data bases}}
+\subtitle[]{The COVID-19 Ontology}
+\newcommand{\cscourseCode}{Data bases}
 \newcommand{\csauthor}{MSc. Vicente Machaca Arceda}
 \institute[UNSA]{Universidad Nacional de San Agustín}
 \newcommand{\csemail}{vmachacaa@unsa.edu.pe}
@@ -88,7 +88,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Spanner}
+\section{The COVID-19 Ontology}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,51 +96,137 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{What is spanner?}
+\subsection{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %-------------------------------------------------------
 %-------------------------------------------------------
-\begin{frame}{Spanner}{What is spanner?}		
-	\begin{block}{}
-		``Spanner is Google’s \textbf{scalable}, \textbf{multiversion}, \textbf{globally distributed}, and \textbf{synchronously replicated database}'' \cite{corbett2013spanner}.
+\begin{frame}{Motivation and objective}{}		
+	\begin{block}{Motivation}
+		According to Sargsyan \cite{sargsyan2020covid}, there is lots of research about COVID-19. 
 	\end{block}	
-	%\pause
-	\begin{block}{}
-		Spanner is used as an OLTP database management system ( for AdWords and Google Play), and is publicly available in Cloud Spanner on the Google Cloud Platform (GCP) \cite{bacon2017spanner}.
-	\end{block}
 
-	\begin{figure}[]
+	\begin{block}{}
+		For example, a simple search with the key words: ``(covid-19 OR SARS COV 2) AND drug'' return \textbf{375000} results on Google Schoolar.
+	\end{block}	
+
+	\begin{block}{Objective}
+		Develop an COVID-19 ontology to facilitate dedicated literature searches on COVID-19 pathophysiology, epidemiology, targets and medical implications.
+	\end{block}	
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Material and methods}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Material and methods}{Source of information}	
+	\begin{itemize}
+		\item 32 Research articles and 10 Reviews.
+		 \item WHO.
+		 \item Radiology Assistant COVID-19.
+		 \item Centre for Evidence-Based Medicine.
+		 \item Texas Medical Center.
+		 \item Yale Medicine.
+		 \item Targeting COVID-19: GHDDI Info Sharing Portal.
+		 \item Summit Medical	Group.
+		 \item Georgetown University.
+		 \item SciBiteLabs.
+	\end{itemize}
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Material and methods}{Construction of the ontology}	
+	\begin{columns}
+		\begin{column}{0.48\textwidth}
+				\begin{figure}
+					\centering
+					\includegraphics[width=5cm]{img/ontology/protege}
+				\end{figure}			
+		\end{column}
+		\begin{column}{0.48\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=5cm]{img/ontology/OBO}
+			\end{figure}			
+		\end{column}
+	\end{columns}
+
+	\vspace{1cm}
+
+	\begin{figure}
 		\centering
-		\includegraphics[width=0.6\textwidth]{img/spanner/spanner_1}
-		%\label{img:mot2}
-		%\caption{Image example in 2 gray levels.}
+		\includegraphics[width=8cm]{img/ontology/BFO}
 	\end{figure}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
 
+
 %-------------------------------------------------------
 %-------------------------------------------------------
-\begin{frame}{Spanner}{What is spanner?}		
+\begin{frame}{Material and methods}{Metadata}	
 	\begin{table}
-		\centering	
-		\begin{tabular}{ p{1.8cm} p{1.8cm} p{2cm} p{2.5cm} }
+		\setlength{\tabcolsep}{0.5em} % for the horizontal padding
+		{\renewcommand{\arraystretch}{1.2}% for the vertical padding
+		\begin{tabular}{p{4.7cm} p{4.8cm}}			 
+			\textbf{Property} & \textbf{Description} \\
 			\hline 
-			& \textbf{Spanner} & \textbf{Traditional relational} & \textbf{Traditional non-relational}   \\
-			\hline 
-			Scheme  		& \textcolor{teal}{yes} & \textcolor{teal}{yes} & \textcolor{red}{no} \\
-			SQL 			& \textcolor{teal}{yes} & \textcolor{teal}{yes} & \textcolor{red}{no} \\
-			Consistency		& \textcolor{teal}{strong} &  \textcolor{teal}{strong}  & \textcolor{red}{eventual} \\
-			Availavility	& \textcolor{teal}{high} & \textcolor{red}{Failover} &  \textcolor{teal}{High} \\
-			Scalability		& \textcolor{teal}{Horizontal} & \textcolor{red}{Vertical} &  \textcolor{teal}{Horizontal} \\
-			Replication		& \textcolor{teal}{Automatic} &  \textcolor{blue}{Configurable} & \textcolor{blue}{Configurable} \\
+			\textit{label} 						& Name of the concept \\
+			\textit{oboInowl:hasDefinition} 		& Definition  \\
+			\textit{rdfs:isDefinedBy} 			& Source of the definition  \\
+			\textit{oboInOwl:hasDbXRef} 			& Link from Pubmed/NCBI  \\
+			\textit{rdfs:seeAlso}	 			& Additional relevant links  \\
+			\textit{oboInOwl:hasExactSynonym}	& Synonyms  \\
+			\textit{oboInOwl:hasRelatedSynonym}	& Related synonyms  \\
 			\hline 
 		\end{tabular}
-		\caption{Properties of Spanner. Source: \chref{https://www.youtube.com/watch?v=IFbydfGV2lQ}{Cloud spanner}}
-	\end{table}
+	}
+\caption{Metadata used in COVID-19 ontology}
+	\end{table}	
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Material and methods}{Custom metadata}	
+	\begin{table}
+		\setlength{\tabcolsep}{0.5em} % for the horizontal padding
+		{\renewcommand{\arraystretch}{1.2}% for the vertical padding
+			\begin{tabular}{p{4.7cm} p{5cm}}			 
+				\textbf{Property} & \textbf{Description} \\
+				\hline 
+				\textit{fromSciBite} 						& SciBite \\
+				\textit{fromBEL} 		& COVID-19 BEL  \\
+				\textit{fromPubMed} 			& PubMed  \\
+				\textit{fromArticle} 			& Other resources than PubMed  \\
+				\textit{fromNCBIBook}	 			& NCBI Books  \\
+				\textit{CommentonDefinition}	& The information is modified  \\
+				\textit{CommentonHierarchy}	& Explain the hierarchy  \\
+				\textit{DrugsinVirtualScreening}	& Mention the drugs suggested in virtual screening  \\
+				\hline 
+			\end{tabular}
+		}
+	\caption{Metadata to indicate the source of information.}
+	\end{table}	
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
@@ -149,102 +235,47 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Architecture}
+\subsection{Results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %-------------------------------------------------------
 %-------------------------------------------------------
-\begin{frame}{Architecture}{Horizontal partition}
-	\begin{figure}[]
+\begin{frame}{Results}{Comparison}	
+	\begin{table}
+		\setlength{\tabcolsep}{0.5em} % for the horizontal padding
+		{\renewcommand{\arraystretch}{1.2}% for the vertical padding
+			\begin{tabular}{p{3cm} p{2cm} p{2cm} p{2cm}}			 
+				\textbf{Property} & \textbf{No of concepts} & \textbf{Common concepts} & \textbf{Uncommon concepts} \\
+				\hline 
+				COVID-19 		& 2268 & & \\
+				COVID19-Whuan 	& 52 & 1 & 51  \\
+				COVIDCRFRAPID	& 398 & 46 & 352  \\
+				IDO-COVID-19 	& 486 & 60 & 426  \\
+				CIDO	 		& 5156 & 528 & 4628  \\
+				CODO	& 52 & 3 & 49  \\
+				\hline 
+			\end{tabular}
+		}
+		\caption{Metadata to indicate the source of information.}
+	\end{table}	
+\end{frame}
+%-------------------------------------------------------
+%-------------------------------------------------------
+
+
+%-------------------------------------------------------
+%-------------------------------------------------------
+\begin{frame}{Results}{Filtering the relevant documents of COVID-19}	
+	\begin{figure}
 		\centering
-		\includegraphics[width=\textwidth]{img/spanner/arch_1}
-		\label{img:mot2}
-		\caption{Example of horizontal partition.}
+		\includegraphics[width=10cm]{img/ontology/result1}
+		\caption{Results filtering COVID-19 in \href{https://covid.scaiview.com/results}{scaiview}.}
 	\end{figure}
 \end{frame}
 %-------------------------------------------------------
 %-------------------------------------------------------
-
-%-------------------------------------------------------
-%-------------------------------------------------------
-\begin{frame}{Architecture}{Sharded, geo-replicated relational database}
-	\begin{figure}[]
-		\centering
-		\includegraphics[width=\textwidth]{img/spanner/arch_2}
-		\label{img:mot2}
-		\caption{Spanner is a sharded, geo-replicated relational database. It uses a replicated write-ahead redo log, and the Paxos protocol.}
-	\end{figure}
-\end{frame}
-%-------------------------------------------------------
-%-------------------------------------------------------
-
-%-------------------------------------------------------
-%-------------------------------------------------------
-\begin{frame}{Architecture}{Consistent read}
-	\begin{figure}[]
-		\centering
-		\includegraphics[width=\textwidth]{img/spanner/arch_3}
-		\label{img:mot2}
-		\caption{Slave is updated.}
-	\end{figure}
-\end{frame}
-%-------------------------------------------------------
-%-------------------------------------------------------
-
-%-------------------------------------------------------
-%-------------------------------------------------------
-\begin{frame}{Architecture}{Consistent read}
-	\begin{figure}[]
-		\centering
-		\includegraphics[width=\textwidth]{img/spanner/arch_4}
-		\label{img:mot2}
-		\caption{Slave is not updated.}
-	\end{figure}
-\end{frame}
-%-------------------------------------------------------
-%-------------------------------------------------------
-
-%-------------------------------------------------------
-%-------------------------------------------------------
-\begin{frame}{Architecture}{Consistent read}
-	\begin{figure}[]
-		\centering
-		\includegraphics[width=\textwidth]{img/spanner/arch_5}
-		\label{img:mot2}
-		\caption{Read-write transaction.}
-	\end{figure}
-\end{frame}
-%-------------------------------------------------------
-%-------------------------------------------------------
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Scalability and Disponibility}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%-------------------------------------------------------
-%-------------------------------------------------------
-\begin{frame}{Scalability and Disponibility}{ }
-	\textbf{Why Spanner is scalable? }
-	\begin{block}{}
-		Spanner follows a range sharding architecture, so it reduce disk space and memory use.
-	\end{block}
-
-\hspace{1cm}
-
-	\textbf{What technologies support Spanner's disponibility?} 
-	\begin{block}{}
-		Truetime \cite{brewer2017spanner}, automatic replication.
-	\end{block}
-\end{frame}
-%-------------------------------------------------------
-%-------------------------------------------------------
-
 
 %-------------------------------------------------------
 %-------------------------------------------------------
