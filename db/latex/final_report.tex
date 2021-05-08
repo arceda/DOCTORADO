@@ -45,8 +45,8 @@
 \titlerunning{SplitThreader}  
 
 \author{Vicente Machaca Arceda }
-\authorrunning{M.A Machaca et al.} 
-\tocauthor{M.A. Machaca Arceda}
+\authorrunning{Vicente Machaca Arceda et al.} 
+\tocauthor{Vicente Machaca Arceda}
 \institute{Universidad Nacional de San Agustín, Arequipa-Perú,\\
 \email{vmachacaa@unsa.edu.pe}} 
 
@@ -123,6 +123,26 @@ In this section, we present the most relevant concepts related to bioinformatics
 	\label{fig:dna}
 \end{figure}
 
+\subsection{Sequence alignment}
+In Bio-informatics, sequence alignment could be defined as a way to arranging DNA, RNA and amino-acids  sequences in order to find similarities \cite{xiong2006essential}. For example, in Figure \ref{fig:al1}, we present two alignments, the top alignment (no alignment) seems to denote that there is not identity or similarity regions between two sequences, meanwhile, the bottom alignment shows that both sequences are similar.
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\textwidth]{img/splitthreader/al1}
+	\caption{Example of sequence alignment adding gaps.}
+	\label{fig:al1}
+\end{figure}
+
+\subsubsection{Concordance reads}
+.- This type of alignment refers when the reads have span size within the range of expected fragment size and consistent orientation of read pairs with respect to reference \cite{alig_2021}.
+
+\subsubsection{Discordance reads}
+.- In this case, the reads have unexpected span size or inconsistent orientation of read pairs. It is important to identify this type of read in order to analyze genome alteration events \cite{alig_2021}.
+
+\subsubsection{Split reads}
+.- When one portion of an read, maps to several locations of the same read map. Then, these are reads that have two or more alignments to the reference from unique region of the read. \cite{alig_2021}.
+
 \subsection{Structural variants}
 According to the National Center for Biotechnology Information (NCBI): ``Structural variation (SV) is generally defined as a region of DNA approximately 1 kb and larger in size and can include inversions and balanced translocations or genomic imbalances (insertions and deletions), commonly referred to as copy number variants (CNVs)'' \cite{sv_ncbi_2021}. In other words, this variations represent mutation in DNA, this mutations could be: insertions, deletions, inversions and translocations. In Figure \ref{fig:variants}, we present some examples.
 
@@ -138,7 +158,7 @@ According to the National Center for Biotechnology Information (NCBI): ``Structu
 
 .- According to the National Human Genome (NIH): ``A copy number variation (CNV) is when the number of copies of a particular gene varies from one individual to the next'' \cite{cnv_nih_2021}. For example in Figure \ref{fig:cnv}, we present some examples of CNV, we could see how the number of genes varies individual 2 to 6. Additionally, it is recognized that some cancer diseases are associated to CNV \cite{cnv_nih_2021, nattestad2016splitthreader, shlien2009copy, mitelman2007impact}.
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{img/splitthreader/copy_number_variation}
 	\caption{Example of copy number variation. Source: \cite{cnv_nih_2021}}
@@ -158,8 +178,13 @@ fusion discovered in cancer was BCR/ABL (related to leukemia), it is resulted fr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+Detection of structural variants are the key point in cancer rearrangement analysis. For example, Lumpy \cite{layer2014lumpy}, stands as a probabilistic framework for structural variant discovery. This framework uses three alignments inputs: concordant alignment, discordant alignment and split reads. Then, it uses a probabilistic method to detect structural variants like breakpoints (a pair of bases that are adjacent in an sequence sampĺe but not in the reference genome). \\
 
+Furthermore, there are studies about the perspective and challenges of structural variant detection for precision oncology \cite{van2021structural}. Some techniques are used for short-reads \cite{ruffalo2011comparative, liu2015structural}. For long-read sequencing, technologies like PacBio and Oxford Nanopore Technologies (ONT) are valuable for structural variant detection \cite{de2019newest}. Moreover, some algorithms have been develop to improve the quality of alignments and structural variant detection \cite{rang2018squiggle, travers2010flexible}.\\
 
+Despite, there are many techniques to detect structural variants, they does not have 100\% accuracy. Furthermore, it is difficult to evaluate and see the structural variants from Variant Call Files (VCF), these are files that represent the structural variants detected in genomes. In this context, there are some visualization tools, that stand for the analysis and discovery of structural variants. SplitThreader \cite{nattestad2016splitthreader}, for example, is used to graphically see copy number variations. Additionally, this tool used an algorithm to detect gene fusions.\\
+
+MoMI-G is other tool that used a graph-based approach to represent structural variants \cite{yokoyama2019momi}. This tool, used the same methodology of SplitThreader, but it is designed specifically for long-reads. Finally, there are several tools to detect and analyze structural variants,  some authors reviewed and analyzed them \cite{yokoyama2020visualization}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -167,7 +192,17 @@ fusion discovered in cancer was BCR/ABL (related to leukemia), it is resulted fr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-In this work, we replicated the results of SplitThreader
+In this work, we replicated the results of SplitThreader \cite{nattestad2016splitthreader}. This is a open source web application that stand for  analysis and visualization of genomic rearrangements and copy number variation in cancer genomes. It constructs a graph of genomic rearrangements and uses a priority queue breadth-first search algorithm to search for novel interactions.\\
+
+SplitThreader follows the pipeline in Figure \ref{fig:pipeline}. First, we aligns the sample genome with a reference genome using SpeedSeq (we could use another tool that generated bam files). After alignment, three files are generated: concordance alignment, discordance alignment and split-reads. These files are taken by Lumpy and Copycat in order to detect structural variants. This step, generates two files: a variant calling file and a copy number file, these files are taken by SplitThreader in order to detect gene fusions, then SplitThreader plot the rearrangements using circle plots. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{img/splitthreader/pipeline}
+	\caption{SplitThreader pipeline. Two sequences are aligned using SpeedSeq, then output files are taken by Lumpy and Copycat in order to detect structural variants, finally SplitThreader takes its outputs and plot the rearrangements and gene fusions.}
+	\label{fig:pipeline}
+\end{figure}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
