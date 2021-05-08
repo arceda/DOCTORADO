@@ -41,7 +41,7 @@
 \begin{document}
 \mainmatter              % start of a contribution
 %
-\title{Analysis of SplitThreader: A Weeb tool for exploration and analysis of rearrangements in cancer genomes}
+\title{Analysis of SplitThreader: A web tool for exploration and analysis of rearrangements in cancer genomes}
 %
 \titlerunning{Analysis of SplitThreader}  
 
@@ -56,9 +56,9 @@
 
 \begin{abstract}
 
-Phylogenetics analysis is a very important task in Bioinformatics, we could learn about evolution, the relation between specimens. Nevertheless, a phylogenetics tree depends on the similarity analysis performed before. This similarity analysis is based on sequence alignment methods like  BLAST and CLUSTALW, but they are too slow and we need other algorithms to process similarity between sequences. In this work, we present an analysis of four alignment-free algorithms based on the image texture computed from a sequence. We compared first-order statistics, gray level co-occurrence matrix, local binary patterns, and multi-resolution local binary patterns. Moreover, we used several mapping functions for each base. Then, we compared which of these algorithms were more similar to CLUSTALW. Finally, we got that first-order statistics is the method that is more likely to CLUSTALW with the advantage of having a low computational cost.
+In this work, we reviewed and replicated the results of SplitThreader. It is a web tool for the analysis of structural variants in cancer genomes. This tool uses a variant calling file with a profile of copy numbers in order to graphically show copy number variants and gene fusions. Moreover, the proposal, represents structural variants in a graph, then it uses a priority queue breath-first search to detect gene fusions. Furthermore, SplitThreader is open source and it is easy to use, its architecture is based on PHP, Javascript, R and Python. Finally, SplitThreader is a usefull tool that helps the analysis of structural variants, nevertheless it depends on other tools/algorithms like Lumpy and Sniffles that limit its performance.
 
-\keywords{Similarity analysis, Phylogentics trees, alignment-free methods, image textures.}
+\keywords{SplitThreader, cancer genomcs, visualization }
 \end{abstract}
 
 
@@ -304,10 +304,13 @@ After analysis, SplitThreader plot graphs (Figure \ref{fig:split_threader_2}). I
 
 In this work, we analyzed and replicated the results of SplitThreader. It is a Web tool for exploration and analysis of rearrangements in cancer genomes.\\
 
-SplitThreader have a simple architecture but it is robust for genome analysis. It basically uses PHP to perform API Restfull services and Javascript to plot the graphs. Additionally, it uses R and Python for processing the data.\\
+It is know that structural variant are key markers in cancer genomics. Most of them are related to high copy number variants and gene fusions. Nevertheless, despite the new sequencing technologies and alignment algorithm, it is difficult to detect this variants. \\
 
+Visualization is a emerging area that can be applied in Bioinformatics, it is used in Proteomics, Genomics, Metagenomics and Cancer genomics. Moreover, several tools have emerged like SplitThreader and MoMI-G to help the analysis and visualization of structural variants and its relation in cancer genomes.\\
 
+SplitThreader have a simple architecture but it is robust for genome analysis. It basically uses PHP to perform API Restfull services and Javascript to plot the graphs. Additionally, it uses R and Python scripts for processing the data.\\
 
+Finally, SplitThreader uses a breath-first search algorithm in order to detect gene fusions, then it plots copy number variants and gene fusions graphically. Nevertheless, the results of SpliThreader depends on  Lumpy and Sniffles.   
 
 % ---- Bibliography ----
 %\clearpage
