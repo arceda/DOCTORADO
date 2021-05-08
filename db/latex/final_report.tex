@@ -24,6 +24,7 @@
 \usepackage{multicol}
 \usepackage{array}
 \usepackage{float}
+\usepackage{subfig}
 \newcolumntype{x}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
 
 % to typeset URLs, URIs, and DOIs
@@ -40,9 +41,9 @@
 \begin{document}
 \mainmatter              % start of a contribution
 %
-\title{SplitThreader: Exploration and analysis of rearrangements in cancer genomes}
+\title{Analysis of SplitThreader: A Weeb tool for exploration and analysis of rearrangements in cancer genomes}
 %
-\titlerunning{SplitThreader}  
+\titlerunning{Analysis of SplitThreader}  
 
 \author{Vicente Machaca Arceda }
 \authorrunning{Vicente Machaca Arceda et al.} 
@@ -194,7 +195,7 @@ MoMI-G is other tool that used a graph-based approach to represent structural va
 
 In this work, we replicated the results of SplitThreader \cite{nattestad2016splitthreader}. This is a open source web application that stand for  analysis and visualization of genomic rearrangements and copy number variation in cancer genomes. It constructs a graph of genomic rearrangements and uses a priority queue breadth-first search algorithm to search for novel interactions.\\
 
-SplitThreader follows the pipeline in Figure \ref{fig:pipeline}. First, we aligns the sample genome with a reference genome using SpeedSeq (we could use another tool that generated bam files). After alignment, three files are generated: concordance alignment, discordance alignment and split-reads. These files are taken by Lumpy and Copycat in order to detect structural variants. This step, generates two files: a variant calling file and a copy number file, these files are taken by SplitThreader in order to detect gene fusions, then SplitThreader plot the rearrangements using circle plots. 
+SplitThreader follows the pipeline in Figure \ref{fig:pipeline}. First, we aligns the sample genome with a reference genome using SpeedSeq (we could use another tool that generated bam files). After alignment, three files are generated: concordance alignment, discordance alignment and split-reads. These files are taken by Lumpy and Copycat in order to detect structural variants. This step, generates two files: a variant calling file and a copy number file, these files are taken by SplitThreader in order to detect gene fusions, then SplitThreader plot the rearrangements using circle plots. \\
 
 \begin{figure}[h]
 	\centering
@@ -204,17 +205,107 @@ SplitThreader follows the pipeline in Figure \ref{fig:pipeline}. First, we align
 \end{figure}
 
 
+Formally, SplitThreader uses a graph, where a node represent sequences from DNA (reference genome) spanning between rearrangements breakpoints. Moreover, edges are used to represent rearrangements variants and no-rearranged reference-spanning connections. First, the graph is constructed where each node represents a chromosome, then each node is split each time we detect breakpoints. In Figure \ref{fig:graph}, we present this graph-based approach. \\
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{img/splitthreader/graph}
+	\caption{Representation of rearrangements using a graph-based approach (SplitThreader proposal). Source: \cite{nattestad2016splitthreader}}
+	\label{fig:graph}
+\end{figure}
+
+
+
+\subsection{Gene fusion detection}
+Normally, gene fusion could be detected using RNA-seq and PCR validation to confirm transcriptome link between fusion genes \cite{edgren2011identification}. However, there are scenarios where this analysis could no detect all gene fusions. For instance, when there is not a single variant that intersect both gene, when cancer genomes have ``two hop'' gene fusions and when the corresponding genomic region are not directly fused to each other but instead, it require passing through a third or more genomic region. \\
+
+SplitThreader detect gene fusions searching for the shortest and lowest variant count path that connects the fusion genes. SplitThread uses a priority queue breath-first search to detect the shortest path in base pairs connecting two genes.\\
+
+\subsection{Variant neighborhood and copy number concordance}
+SplitThreader, can detect rearrangements responsible for copy number changes. The Web tool, categorizes each rearrangement variant by its copy number concordance. These concordances could be: matching, partial, non-matching or neutral. Finally, SplitThreader categorize each the rearrangements like reciprocal, simple, solo or crowded. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{img/splitthreader/var_cat}
+	\caption{Variant rearrangement categorization propose by SplitThreader based on copy number concordance. Source: \cite{nattestad2016splitthreader}}
+	\label{fig:graph}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+In this work we deployed SplitThreader locally. This Web tool is hosted on \href{https://github.com/MariaNattestad/SplitThreader}{Github}. In Figure \ref{fig:split_threader_1}, we show SplitThreader deployed locally. We performed some changes in order to have a more simple interface. SplitThreader uses two source files for the analysis: a Variant Calling File (VCF) and a Copy number profile, in Tables \ref{tab:vcf} and \ref{tab:cn}, we show examples of these files.\\
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{img/splitthreader/split_threader_1}
+	\caption{SplitThreader locally hosted. }
+	\label{fig:split_threader_1}
+\end{figure}
+
+\begin{table}[H]
+	\centering
+	\caption{Example of a Variant Calling File (VCF). Some columns and several rows were deleted. It was built using Lumpy.}
+	\label{tab:vcf}
+	\begin{tabular}{ccccccccc}
+		\hline
+		\textbf{chrom1} & \textbf{start1}    & \textbf{stop1}     & \textbf{chrom2} & \textbf{start2}    & \textbf{stop2}     & \textbf{name} & \textbf{type} & \textbf{split} \\ \hline
+		1      & 17051740  & 17051740  & 1      & 234912188 & 234912188 & 35665         & BND           & 71    \\
+		1      & 47659735  & 47659735  & 8      & 105739138 & 105739138 & 573599        & BND           & 6     \\
+		1      & 87069066  & 87069066  & 2      & 82854932  & 82854932  & 571553        & BND           & 6     \\
+		1      & 109650635 & 109650635 & 22     & 30163373  & 30163373  & 575755        & BND           & 36    \\
+		1      & 150593722 & 150593722 & 5      & 55447995  & 55447995  & 572639        & BND           & 19    \\
+		1      & 153306043 & 153306043 & 16     & 76228788  & 76228788  & 575219        & BND           & 6     \\
+		1      & 168186186 & 168186186 & 1      & 182274316 & 182274316 & 20968         & BND           & 11    \\
+		1      & 201288206 & 201288206 & 10     & 52642286  & 52642286  & 574013        & BND           & 9     \\
+		1      & 208992122 & 208992122 & 3      & 87327147  & 87327147  & 572038        & BND           & \\ 
+		... \\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Example of a copy number profile. It was built using Copycat.}
+	\label{tab:cn}
+	\begin{tabular}{cccc} 
+		\hline
+		\textbf{chromosome} & \textbf{start}  & \textbf{end}    & \textbf{coverage} \\ \hline
+		1          & 0      & 10000  & 0        \\
+		1          & 10000  & 20000  & 0.9605   \\
+		1          & 20000  & 30000  & 0        \\
+		1          & 30000  & 40000  & 0        \\
+		1          & 40000  & 50000  & 0.0059   \\
+		1          & 50000  & 60000  & 0.775    \\
+		1          & 60000  & 70000  & 0.6154   \\
+		1          & 100000 & 110000 & 0.3666  \\
+		... \\ \hline
+	\end{tabular}
+\end{table}
+
+
+After analysis, SplitThreader plot graphs (Figure \ref{fig:split_threader_2}). It uses a circle plot in order to show genome rearrangements. Moreover, we could see copy numbers and gene fusion for a pair of chromosomes. For instance, in Figure \ref{fig:split_threader_2}, we see chromosome 1 and chromosome 2 ( histograms), then the lines between them, represent copy regions.\\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{img/splitthreader/split_threader_2}
+	\caption{Plots generated by SplitThreader.}
+	\label{fig:split_threader_2}
+\end{figure}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions} \label{section:conclusions}	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this work, we analyzed and replicated the results of SplitThreader. It is a Web tool for exploration and analysis of rearrangements in cancer genomes.\\
+
+SplitThreader have a simple architecture but it is robust for genome analysis. It basically uses PHP to perform API Restfull services and Javascript to plot the graphs. Additionally, it uses R and Python for processing the data.\\
+
 
 
 
